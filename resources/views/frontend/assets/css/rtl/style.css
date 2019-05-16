@@ -1,0 +1,26 @@
+.main-content {
+    float: left;
+}
+
+div.tab-pane ul li > div {
+    padding-right: 0;
+    padding-left: 17px;
+}
+
+span.star li {
+    float: right;
+}
+
+.dropdown-content {
+  right: 127px;
+}
+
+.dropdown-content .dropdown .dropdown-content{
+  right: 160px;
+}
+
+
+.dropdown-content li a:hover span {
+    color: #41a161 !important;
+}
+

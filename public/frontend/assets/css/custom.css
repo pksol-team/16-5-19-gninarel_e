@@ -1,0 +1,12 @@
+
+div.alert-red {
+    background: #e74c3c;
+    border-left: 5px solid rgba(0,0,0,.1);
+    font-size: 12px;
+}
+
+div.alert-green {
+    background: #41a161;
+    border-left: 5px solid rgba(0,0,0,.1);
+    font-size: 12px;
+}
