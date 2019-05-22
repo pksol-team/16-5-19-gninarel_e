@@ -939,7 +939,7 @@ li.featureli {
   -moz-box-sizing: content-box;
   -webkit-box-shadow: 0 0 6px 6px rgba(0, 0, 0, 0.08);
   -moz-box-shadow: 0 0 6px 6px rgba(0, 0, 0, 0.08);
-  z-index: 1000;
+  z-index: 15;
   background-color: #4ca161;
 }
 
@@ -1629,7 +1629,7 @@ form.searchform button:hover {
 }
 
 .img-forex {
-  background-color: #fff;
+  /*background-color: #fff;*/
   text-align: center;
 }
 
@@ -1774,15 +1774,6 @@ a.resp-menu {
     display: inline-block;
 }
 
-/*.side-menu .closebtn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 36px;
-  margin-bottom: : 50px;
-}
-*/
-
 .side-menu .closebtn {
     font-size: 36px;
     display: block;
@@ -1829,7 +1820,157 @@ a.resp-menu {
    margin: 0;
 }
 
+.border-top {
+border-top: 1px solid #e5e5e5;
+}
 
+.border-bottom {
+border-bottom: 1px solid #e5e5e5;
+}
+
+.border-top-gray {
+border-top-color: #adb5bd;
+}
+
+.box-shadow {
+box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.lh-condensed {
+line-height: 1.25;
+}
+
+button.qty-change {
+height: 30px;
+width: 30px;
+border-radius: 50%;
+background: #fff;
+border: 1px solid #e3e3e3;
+}
+
+.qty-input {
+height: 30px !important;
+width: 80px !important;
+text-align: center;
+margin-bottom: 0;
+}
+
+h6.my-0.quantity-h {
+line-height: normal;
+padding-top: 4px;
+}
+
+.checkout {
+padding-bottom: 55px;
+}
+
+.checkout input[type="text"],
+.checkout select {
+height: 40px;
+border: 1px solid #ccc;
+margin-bottom: 12px;
+}
+
+.checkout label {
+font-size: 20px;
+padding-bottom: 5px;
+}
+
+h6.my-0 {
+font-size: 24px;
+margin-bottom: 5px !important;
+}
+
+small.text-muted {
+font-size: 20px;
+}
+
+span.text-muted {
+font-size: 30px;
+color: #000 !important;
+}
+
+button.btn.submmit {
+color: #ffffff;
+font-weight: 600;
+font-size: 20px;
+background: linear-gradient( to top, #41a161, #41a161);
+border-width: 0px;
+border-radius: 2px;
+cursor: pointer;
+padding: 14px 37px;
+line-height: normal;
+margin-top: 20px;
+}
+
+
+input.book_price_main {
+   border: 0 !important;
+   width: 62px !important;
+   height: unset !important;
+}
+
+span.text-muted.book_price {
+   text-align: right;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+ -webkit-appearance: none;
+}
+
+.qty-changer button {
+   cursor: pointer;
+}
+
+.thanks-box i {
+  font-size: 60px;
+  color: green;
+  border: 1px #000 solid;
+  border-radius: 50px;
+  padding: 10px 10px;
+}
+
+.thanks-box p {
+  color: #203443;
+}
+
+hr.thank_you_sep-shadow {
+  background: radial-gradient(ellipse at 50% -50%, #41a161 0px, rgba(255, 255, 255, 0) 80%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.profile-form input.file-upload {
+    padding: 9px 23px;
+}
+
+li.language_change {
+  padding: 14px 8px !important;
+}
+
+li.language_change li{
+  padding: 0 !important;
+}
+
+li.language_change span.flag-icon {
+  display: inline-block !important;
+}
+li.language_change span.check-mark {
+  display: none !important;
+}
+
+li.language_change span.text {
+  color: #000 !important;
+}
+div a.amazon_url_link {
+  font-size: 16px;
+}
+
+div .product-price_detail{
+    font-size: 20px;
+}
+
+
+/***************************************************** Responsive *********************************************/
 @media all and (max-width: 1460px) {
   .btn {
     display: inline-block;

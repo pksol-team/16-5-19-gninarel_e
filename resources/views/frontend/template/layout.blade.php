@@ -1,8 +1,7 @@
-<?php use Illuminate\Support\Facades\DB; ?>
-<?php use storage\framework\sessions; ?>
 <?php $user = Auth::user(); ?>
+<?php $direction = \Request::get('direction'); ?>
 <!DOCTYPE html>
-<html dir="rtl">
+<html dir="<?= $direction ?>" >
    <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -10,7 +9,11 @@
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>@yield('title')- E Learning</title>
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/font-awesome.min.css">
-      <link rel="stylesheet" type="text/css" href="/frontend/assets/css/rtl/bootstrap.min.css">
+      <?php if ($direction == 'rtl'): ?>
+         <link rel="stylesheet" type="text/css" href="/frontend/assets/css/rtl/bootstrap.min.css">
+      <?php else: ?>
+         <link rel="stylesheet" type="text/css" href="/frontend/assets/css/bootstrap.min.css">
+      <?php endif ?>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Questrial">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700,800">
@@ -19,8 +22,12 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Yantramanav:300,400,500,700">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Questrial">
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/raleway.css">
+      <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css'>
+      <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css'>
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/style.css">
-      <link rel="stylesheet" type="text/css" href="/frontend/assets/css/rtl/style.css">
+      <?php if ($direction == 'rtl'): ?>
+         <link rel="stylesheet" type="text/css" href="/frontend/assets/css/rtl/style.css">
+      <?php endif ?>
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/custom.css">
    </head>
    <body class="join-page">
@@ -29,98 +36,100 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
             <nav class="main-menu" aria-label="Main Menu">
                <ul id="menu-front-end" class="menu">
+                  <!-- <li>
+                     <a href="{{ lang_url('') }}">
+                     <span class="menu-text">@t('Features')</span>
+                     </a>
+                  </li> -->
+                  <li class="language_change">
+                     <select class="selectpicker" data-width="fit">
+                        <option value="en" data-content='<span class="flag-icon flag-icon-us"></span> English' <?= (Request::locale() == 'en') ? 'selected': NULL; ?> >English</option>
+                        <option value="ar" data-content='<span class="flag-icon flag-icon-sa"></span> Arabic' <?= (Request::locale() == 'ar') ? 'selected': NULL; ?>>Arabic</option>
+                     </select>
+                  </li>
                   <li>
-                     <a href="/">
-                     <span class="menu-text">Features</span>
+                     <a href="{{ lang_url('plans_pricing') }}">
+                     <span class="menu-text">@t('Plans and Pricing')</span>
                      </a>
                   </li>
                   <li>
-                     <a href="plans-pricing.html">
-                     <span class="menu-text">Plans and Pricing</span>
+                     <a href="{{ lang_url('podcasts') }}">
+                     <span class="menu-text">@t('Podcast')</span>
                      </a>
                   </li>
                   <li>
-                     <a href="the-trading-coach-podcast.html">
-                     <span class="menu-text">Podcast</span>
+                     @if (Auth::check())
+                        <a href="{{ lang_url('logout_frontend') }}">
+                        <span class="menu-text">@t('LogOut')</span>
+                        </a>
+                     @else
+                        <a href="{{ lang_url('userlogin') }}">
+                        <span class="menu-text">@t('LogIn')</span>
+                        </a>
+                     @endif
+                  </li>
+                  <li>
+                     <a href="{{ lang_url('/') }}">
+                     <span class="menu-text">@t('Homepage')</span>
                      </a>
                   </li>
                   <li>
-                     <a href="/userlogin">
-                     <span class="menu-text">LogIn</span>
+                     <a href="{{ lang_url('about') }}">
+                     <span class="menu-text">@t('About')</span>
                      </a>
                   </li>
+                  @if (Auth::check())
                   <li>
-                     <a href="/">
-                     <span class="menu-text">Homepage</span>
+                     <a href="{{ lang_url('profile') }}">
+                     <span class="menu-text">@t('Profile')</span>
                      </a>
                   </li>
-                  <li>
-                     <a href="/about">
-                     <span class="menu-text">About</span>
-                     </a>
-                  </li>
-                  <li>
-                     <a href="/profile">
-                     <span class="menu-text">Profile</span>
-                     </a>
-                  </li>
+                  @endif
                   <li class="dropdown">
-                     <a href="#">
-                        <span class="menu-text">Media</span>
+                     <a href="{{ lang_url('media') }}">
+                        <span class="menu-text">@t('Media')</span>
                         <ul class="dropdown-content">
                            <li>
-                     <a href="">Videos </a>
+                     <a href="">@t('Videos')</a>
                   </li>
-                     <li><a href="">Images </a></li>
-                     <li><a href="">Files  </a></li>
-                     <li><a href="">News & Economic Calander </a></li>
-                     <li><a href="">Newsletter </a></li>
-                     <li><a href="">Email List Subscription  </a></li>
+                     <li><a href="{{ lang_url('media') }}">@t('Images ')</a></li>
+                     <li><a href="{{ lang_url('media') }}">@t('Files  ')</a></li>
+                     <li><a href="{{ lang_url('media') }}">@t('News & Economic Calander ')</a></li>
+                     <li><a href="{{ lang_url('media') }}">@t('Newsletter ')</a></li>
+                     <li><a href="{{ lang_url('media') }}">@t('Email List Subscription  ')</a></li>
                      </ul>
                      </a>
                   </li>
                   <li class="dropdown">
                      <a href="#">
-                        <span>Services & Products</span>
+                        <span>@t('Events')</span>
                         <ul class="dropdown-content">
-                           <li class="dropdown">
-                     <a href="#">Events
-                        <ul class="dropdown-content">
-                        <li><a href="">Online Courses & Events</a></li>
-                        <li><a href="">Live Training Room</a></li>
-                        <li><a href="">Private Online Sessions</a></li>
-                        <li><a href="">Off Site Courses & Events</a></li>
-                        </ul> 
-                     </a>
-                     <a href="/products">Books
-                        <ul class="dropdown-content">
-                           <li class="dropdown">
-                              <a href="#">Books</a>
-                           </li>
+                           <li><a href="">@t('Online Courses & Events')</a></li>
+                           <li><a href="">@t('Live Training Room')</a></li>
+                           <li><a href="">@t('Private Online Sessions')</a></li>
+                           <li><a href="">@t('Off Site Courses & Events')</a></li>
                         </ul>
                      </a>
-                     </li>
-                     </ul>
-                     </a>
                   </li>
                   <li class="dropdown">
                      <a href="#">
-                        <span class="menu-text">Tools</span>
+                        <span>@t('Services & Products')</span>
                         <ul class="dropdown-content">
-                           <li>
-                     <a href="">Better Trend Master File</a></li>
-                     <li><a href="">E-Books</a></li>
-                     </ul>
+                               <ul class="dropdown-content">
+                                  <li><a href="">@t('Online Courses & Events')</a></li>
+                                  <li><a href="">@t('Live Training Room')</a></li>
+                                  <li><a href="">@t('Private Online Sessions')</a></li>
+                                  <li><a href="">@t('Off Site Courses & Events')</a></li>
+                               </ul>   
+                           </a></li>
+                           <li><a href="{{ lang_url('products/book') }}">@t('Books')</a></li>
+                           <li><a href="{{ lang_url('products/tool') }}">@t('Tools')</a></li>
+                        </ul>
                      </a>
                   </li>
-                  <li class="dropdown">
-                     <a href="#">
-                        <span class="menu-text">Books</span>
-                        <ul class="dropdown-content">
-                           <li>
-                     <a href="">The Key in Trading Success</a></li>
-                     <li><a href="">....</a></li>
-                     </ul>
+                  <li>
+                     <a href="{{ lang_url('our_partners') }}">
+                     <span class="menu-text">@t('Our Partners')</span>
                      </a>
                   </li>
                </ul>
@@ -136,13 +145,13 @@
                      <div class="fusion-copyright-notice">
                         <div class="text-center">
                            <p>
-                              <a href="disclaimers.html">Disclaimers</a> | 
-                              <a href="terms-and-conditions.html">Terms &amp; Conditions</a> | 
-                              <a href="refund_policy.html">Refund Policy</a> | 
-                              <a href="contact.html">Contact Us</a>
+                              <a href="{{ lang_url('disclaimers') }}">@t('Disclaimers')</a> | 
+                              <a href="{{ lang_url('terms_and_conditions') }}">@t('Terms & Conditions')</a> | 
+                              <a href="{{ lang_url('refund_policy') }}">@t('Refund Policy')</a> | 
+                              <a href="{{ lang_url('contact_us') }}">@t('Contact Us')</a>
                            </p>
-                           <p>Copyright 2019-2020 </p>
-                           <p>All Rights Reserved | XYZ Rd Ste 999, Dumy</p>
+                           <p>@t('Copyright 2019-2020 ')</p>
+                           <p>@t('All Rights Reserved | XYZ Rd Ste 999, Dumy')</p>
                         </div>
                      </div>
                   </div>
@@ -150,10 +159,27 @@
             </footer>
          </div>
       </div>
+      
       <script src="/frontend/assets/js/jquery-3.4.0.min.js"></script>
       <script src="/frontend/assets/js/proper.js"></script>
       <script src="/frontend/assets/js/bootstrap.min.js"></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js'></script>
       <script src="/frontend/assets/js/app.js"></script>
       <script src="/frontend/assets/js/custom.js"></script>
+      <script> 
+        $(document).ready(function() {
+
+         $(".selectpicker").change(function() {
+            var $this = $(this),
+               code = $this.val(),
+               url = window.location.pathname,
+               urlArray = url.split('/'),
+               newPathname = url.replace(urlArray[1], code);
+            
+            window.location.href = newPathname;
+
+         }); 
+        }); 
+    </script> 
    </body>
 </html>

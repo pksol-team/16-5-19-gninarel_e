@@ -24,3 +24,19 @@ span.star li {
     color: #41a161 !important;
 }
 
+.person-about h4 i {
+    color: #41a161;
+    padding-left: 15px;
+    padding-right: 0;
+}
+
+.person-detail i {
+    padding-right: 0;
+    padding-left: 15px;
+}
+
+.person-detail p span:last-child {
+     padding-right: 15px; 
+     padding-left: 0; 
+}
+

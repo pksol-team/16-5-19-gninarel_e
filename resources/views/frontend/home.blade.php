@@ -6,7 +6,7 @@
    <div class="row">
       <div class="offset-md-4 col-md-4">
          <div class="our_logo">
-            <a href="/"><img src="/frontend/assets/img/logo21.png" alt="Logo"></a>
+            <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt="Logo"></a>
          </div>
       </div>
    </div>
@@ -37,7 +37,7 @@
       <div class="offset-md-4 col-md-4 text-center">
          <div class="elegant-dual-button">
             <div class="first-btn">
-               <a class="btn" href="plans-pricing.html">See Plans &amp; Pricing</a>
+               <a class="btn" href="{{ lang_url('plans_pricing') }}">See Plans &amp; Pricing</a>
             </div>
             <div class="middle-or">
                <span>OR</span>
@@ -45,7 +45,7 @@
          </div>
          <div class="elegant-dual-button">
             <div class="last-btn">
-               <a class="btn" href="14-day-trial.html">
+               <a class="btn" href="{{ lang_url('') }}">
                <span>Start A 14 Day Trial</span>
                </a>
             </div>

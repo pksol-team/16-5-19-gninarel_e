@@ -7,7 +7,7 @@
       <div class="row">
          <div class="offset-md-4 col-md-4">
             <div class="our_logo">
-               <a href="/"><img src="/frontend/assets/img/logo21.png" alt=""></a>
+               <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt=""></a>
             </div>
          </div>
       </div>

@@ -18,6 +18,9 @@ use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
 use Validator;
 use App\User;
+use App\Product;
+use App\ProductsNative;
+use App\Order;
 use Mail;
 use Log;
 
@@ -31,10 +34,12 @@ class IndexController extends Controller
      *
      * @return void
      */
+	public $langCode;
 
 	public function __construct()
     {
-
+        $this->langCode = Request::locale();
+		
     }
 
      /**
@@ -44,11 +49,10 @@ class IndexController extends Controller
      */
 	
 	// View Home Page
-	public function index($lang = NULL)
+	public function index()
 	{
 		$title = 'Home';
-		var_dump($lang);
-		// return view('frontend.home', compact('title'));
+		return view('frontend.home', compact('title'));
 
 	}
 
@@ -57,7 +61,7 @@ class IndexController extends Controller
 	{
 		$title = 'Login';
 		if (Auth::check()) {
-			return redirect('/');
+			return redirect(lang_url('/'));
 		} else {
 			return view('frontend.login', compact('title'));
 		}
@@ -73,7 +77,7 @@ class IndexController extends Controller
 			$passwordchecked = $userGet->password;
 			if (Hash::check($password, $passwordchecked)) {
 				Auth::attempt(['email' => $email, 'password' => $password]);
-				return redirect('/');
+				return redirect(lang_url(''));
 			}
 			else{
 				return redirect()->back()->withInput()->with('error', 'User password does not match! If you do not have your account <a href="/userrregister">Register here </a>');
@@ -87,14 +91,7 @@ class IndexController extends Controller
 	public function logout_frontend() {
 		Auth::logout();
 		session()->flush();
-		return redirect('/userlogin');
-	}
-
-	// View About Page
-	public function about()
-	{
-		$title = 'About';
-		return view('frontend.about', compact('title'));
+		return redirect(lang_url('userlogin'));
 	}
 
 	// View register Page
@@ -102,7 +99,7 @@ class IndexController extends Controller
 	{
 		$title = 'Register';
 		if (Auth::check()) {
-			return redirect('/home');
+			return redirect(lang_url(''));
 		} else {
 			return view('frontend.register', compact('title'));
 		}
@@ -127,47 +124,47 @@ class IndexController extends Controller
 		    'gender' => 'Male',
 		    'created_at' => Carbon::now(),
 		  ];
-		$insertedEmployees = DB::table('employees')->insert($employee);
-		$getInsertedId = DB::getPdo()->lastInsertId();
+		// $insertedEmployees = DB::table('employees')->insert($employee);
+		// $getInsertedId = DB::getPdo()->lastInsertId();
        
-		if ($insertedEmployees) {
-			$confirm_email = uniqid(time()).uniqid();
-			$referral = strtoupper(substr($name, 0, 3)).substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
-			$user = [
-	            'name' => $name,
-	            'email' => $email,
-	            'password' => bcrypt($password),
-	            'context_id' => $getInsertedId,
-			    'marital_status' => 'Single',
-	            'type' => '',
-	            'hash_key' => $hashKey,
-			    'created_at' => Carbon::now(),
-			    'status' => 'deactive',
-			    'referral_code' => $referral,
-			    'confirm_email' => $confirm_email,
+		// if ($insertedEmployees) {
+		// 	$confirm_email = uniqid(time()).uniqid();
+		// 	$referral = strtoupper(substr($name, 0, 3)).substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
+		// 	$user = [
+	 //            'name' => $name,
+	 //            'email' => $email,
+	 //            'password' => bcrypt($password),
+	 //            'context_id' => $getInsertedId,
+		// 	    'marital_status' => 'Single',
+	 //            'type' => '',
+	 //            'hash_key' => $hashKey,
+		// 	    'created_at' => Carbon::now(),
+		// 	    'status' => 'deactive',
+		// 	    'referral_code' => $referral,
+		// 	    'confirm_email' => $confirm_email,
 			    
-	        ];
-			$insertedUsers = DB::table('users')->insert($user);
-			$earning = [
-	            'earning' => 0,
-			    'status' => 'Initial',
-			    'user_id' => $getInsertedId,
-	        ];
-			$insertedEarning = DB::table('earnings')->insert($earning);
+	 //        ];
+		// 	$insertedUsers = DB::table('users')->insert($user);
+		// 	$earning = [
+	 //            'earning' => 0,
+		// 	    'status' => 'Initial',
+		// 	    'user_id' => $getInsertedId,
+	 //        ];
+		// 	$insertedEarning = DB::table('earnings')->insert($earning);
 
-			if ($insertedUsers) {
-				// if ($type == 'doctor') {
-				// 	$role_id = 2;
-				// } else {
-					$role_id = 3;
-				// }
-				$role = [
-					'role_id' => $role_id,
-					'user_id' => $getInsertedId,
-				];
-				DB::table('role_user')->insert($role);
-			}
-		}
+		// 	if ($insertedUsers) {
+		// 		// if ($type == 'doctor') {
+		// 		// 	$role_id = 2;
+		// 		// } else {
+		// 			$role_id = 3;
+		// 		// }
+		// 		$role = [
+		// 			'role_id' => $role_id,
+		// 			'user_id' => $getInsertedId,
+		// 		];
+		// 		DB::table('role_user')->insert($role);
+		// 	}
+		// }
 		// $baseUrl = url('/');
 		// $msg_template = '
 		// 	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
@@ -193,7 +190,7 @@ class IndexController extends Controller
   //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
   //   	});
 
-		return redirect('/userlogin')->with('message', 'Registration completed successfully kindly login');
+		return redirect(lang_url('userlogin'))->with('message', 'Registration Work in progress');
 		} else {
 			return redirect()->back()->withInput()->with('error', $authenticateResult);
 		}
@@ -202,7 +199,7 @@ class IndexController extends Controller
 	// email address check if already check
 	public function register_authenticate($email)
 	{
-        $haveUser = DB::table('users')->WHERE('email', $email)->first();
+        $haveUser = User::WHERE('email', $email)->first();
         if ($haveUser) {
     		return $messsage = 'This email address is already registered!';
         }
@@ -211,13 +208,19 @@ class IndexController extends Controller
         }
 	}
 
+	// View About Page
+	public function about()
+	{
+		$title = 'About';
+		return view('frontend.about', compact('title'));
+	}
 
 	// View Forgot password Page
 	public function forgot_password()
 	{
 		$title = 'Reset Password';
 		if (Auth::check()) {
-			return redirect('/userlogin');
+			return redirect(lang_url('userlogin'));
 		} else {
 			return view('frontend.reset', compact('title'));
 		}
@@ -261,13 +264,13 @@ class IndexController extends Controller
 	{
 		$title = 'Reset your password';
 		if (Auth::check()) {
-			return redirect('/home');
+			return redirect(lang_url('home'));
 		} else {
 			$userGet = User::where('GUID', $GUID)->first();
 			if ($userGet != NULL) {
 				return view('frontend.reset_password', compact('title', 'userGet'));
 			} else {
-				return redirect('/');
+				return redirect(lang_url('/'));
 			}
 		}
 	}
@@ -276,7 +279,7 @@ class IndexController extends Controller
 	public function forgot_reset_password(Request $request)
 	{
 		if (Auth::check()) {
-			return redirect('/');
+			return redirect(lang_url('/'));
 		} else {
 			$GUID = $request->input('GUID');
 			$password = $request->input('password');
@@ -285,7 +288,7 @@ class IndexController extends Controller
 		    	$Updatepassword = ['password' => bcrypt($confirm_password), 'GUID' => NULL];
 		        $UserUpd = User::where('GUID', $GUID)->update($Updatepassword);
 		        if ($UserUpd == TRUE) {
-					return redirect('/userlogin')->with('message', 'Contraseña restablecida con éxito');
+					return redirect(lang_url('userlogin'))->with('message', 'Contraseña restablecida con éxito');
 		        } else {
 					return redirect()->back()->withInput()->with('error', '¡Uy! Algo salió mal..');
 		        }
@@ -300,7 +303,7 @@ class IndexController extends Controller
 	{
 		$title = 'Confirmar correo electrónico';
 		if (Auth::check()) {
-			// return redirect('/');
+			// return redirect(lang_url('/'));
 			return view('frontend.confirm_email', compact('title'));
 		} else {
 			return view('frontend.confirm_email', compact('title'));
@@ -338,7 +341,7 @@ class IndexController extends Controller
 	        $UserTbl = Auth::user();
 			return view('frontend.profile', compact('title', 'UserTbl'));
 		} else {
-			return redirect('/');
+			return redirect(lang_url('/'));
 		}
 	}
 
@@ -397,18 +400,191 @@ class IndexController extends Controller
 			return redirect()->back()->with('message', 'Profile updated successfully');
 
 		} else {
-			return redirect('/');
+			return redirect(lang_url('/'));
 		}
 
 	}
 
 	// View all Prducts
-	public function products()
+	public function products($type)
 	{
 		$title = 'All Products';
+
+    	$products = ProductsNative::with('productSpec')->whereHas('productSpec', function ($query) use ($type) {
+    		$query->where('type', $type);
+    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+    	$productsDecode = json_decode($products);
+
+		return view('frontend.product', compact('title', 'productsDecode', 'type'));
+	}
+
+	// View all Prducts
+	public function product_detail($product_id)
+	{
+    	$product = ProductsNative::with('productSpec')->where([['lang', $this->langCode], ['product_id', $product_id]])->first();
+
+    	if (count($product) > 0) {
+	    	
+	    	$productDecode = json_decode($product);
+			$title = $productDecode->name;
+			return view('frontend.product_detail', compact('title', 'productDecode'));
+
+    	} else {
+			return redirect(lang_url('/'));
+    	}
+	}
+
+	// Buy Product
+	public function buy_product($product_native_id)
+	{
+    	$productNative = ProductsNative::with('productSpec')->where([['lang', $this->langCode], ['id', $product_native_id]])->first();
+		if (Auth::check() && count($productNative) > 0) {
+
+
+	    	if (count($productNative) > 0) {
+		    	
+		    	$productNativeDecode = json_decode($productNative);
+				$title = $productNativeDecode->name;
+				return view('frontend.buy_product', compact('title', 'productNativeDecode'));
+
+	    	} else {
+				return redirect('/');
+	    	}
+    	} else {
+			return redirect(lang_url('userlogin'));
+    	}
+	}
+
+	public function checkout_post(Request $request)
+	{
 		$user = Auth::user();
-		return view('frontend.profile', compact('title'));
+		$product_native_id = $request->input('product_native_id');
+		$qty_input = $request->input('qty-input');
+		$product_price = $request->input('product_price');
+		$total_price = $request->input('total_price_hidden');
+		$user_name = $request->input('first_name');
+		$user_last_name = $request->input('last_name');
+		$user_address = $request->input('user_address');
+
+		$newOrder = [
+			'product_native_id' => $product_native_id,
+			'product_price' => $product_price,
+			'total_price' => $total_price,
+			'user_id' => $user->id,
+			'user_name' => $user_name,
+			'user_last_name' => $user_last_name,
+			'user_address' => $user_address,
+			'product_quantity' => $qty_input,
+			'created_at' => Carbon::now(),
+		];
+		
+		$orderInserted = Order::insert($newOrder);
+
+		return redirect(lang_url('thank_you'));
+
 	}
+
+	// View Thank You Page
+	public function thank_you()
+	{
+		$title = 'Thank You';
+		return view('frontend.thankyou', compact('title'));
+	}
+
+	// View plans_pricing Page
+	public function plans_pricing()
+	{
+		$title = 'Plans and Pricing';
+		return view('frontend.plans_pricing', compact('title'));
+	}
+
+	// View Contact Us page
+	public function contact_us()
+	{
+		$title = 'Contact Us';
+		return view('frontend.contact_us', compact('title'));
+	}
+
+	// Contact Us Email Section
+	public function contact_us_email(Request $request)
+	{
+		$admin = User::where('role_id', 1)->first();
+		$first_name = $request->first_name;
+		$last_name = $request->last_name;
+		$email = $request->email;
+		$message = $request->message;
+
+    	$msg_template = '
+		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+			    	<h3>Contact: </h3>
+			    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
+			    		'.$first_name.' have sent a message through the contact form.
+			    		the details are below
+			    	</h4>
+			    	<p>
+			    		<ul style="list-style: none;">
+			    			<li>First Name: '.$first_name.'</li>
+			    			<li>Last Name: '.$last_name.'</li>
+			    			<li>Email: '.$email.'</li>
+			    			<li>Message: '.$message.'</li>
+			    		</ul>
+			    	</p>
+		    	</div>
+		    	';
+        
+        $content = $msg_template;
+        $subject = 'Contact';
+
+		$data = array( 'email' => $admin->email, 'subject' => $subject, 'message' => $content);
+		// Mail::send([], $data, function ($m) use($data) {
+  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+  //   	});
+		return redirect()->back()->withInput()->with('message', 'Thank you for contacting us');
+	}
+
+	// View Terms and conditions Page
+	public function terms()
+	{
+		$title = 'Terms and Conditions';
+		return view('frontend.terms', compact('title'));
+	}
+
+	// View refund policy Page
+	public function refund_policy()
+	{
+		$title = 'Refund Policy';
+		return view('frontend.refund_policy', compact('title'));
+	}
+
+	// View Disclaimers Page
+	public function disclaimers()
+	{
+		$title = 'Disclaimers';
+		return view('frontend.disclaimers', compact('title'));
+	}
+
+	// View Partners Page
+	public function our_partners()
+	{
+		$title = 'Our Partners';
+		return view('frontend.our_partners', compact('title'));
+	}
+
+	// View podcasts Page
+	public function podcasts()
+	{
+		$title = 'Podcasts';
+		return view('frontend.podcasts', compact('title'));
+	}
+
+	// View media Page
+	public function media()
+	{
+		$title = 'Media';
+		return view('frontend.media', compact('title'));
+	}
+
+
 
 	
 
@@ -416,244 +592,18 @@ class IndexController extends Controller
 
 	
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// View Publisher Earning
 	
-	public function earnings()
-	{
-		$title = 'Earnings';
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-			$currentMonth = date('m');
-	        $allEarnings = Earning::where('user_id', $userID)->orderBy('id', 'DESC')->get();
-	        $todayEarning = Earning::where('user_id', $userID)->where('date', date('Y-m-d'))->sum('earning');
-	        $monthlyEarning = Earning::where('user_id', $userID)->whereRaw('MONTH(date) = ?',[$currentMonth])->sum('earning');
-	        if ($todayEarning == NULL) {
-	        	$todayEarning = 0;
-	        }
-	        if ($monthlyEarning == NULL) {
-	        	$monthlyEarning = 0;
-	        }
-			return view('frontend.earnings', compact('title', 'allEarnings', 'todayEarning', 'monthlyEarning'));
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-	// VIew Active Task
-	public function active_tasks()
-	{
-		$title = 'Active';
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-	        $allActiveTasks = Employee::find($userID)->tasks()->where('task_joins.status', 'Pending')->orwhere([['task_joins.status', 'Submitted'], ['task_joins.user_id', $userID]])->orderBy('task_joins.id', 'DESC')->get();
-			return view('frontend.active', compact('title', 'allActiveTasks'));
-		} else {
-			return redirect('/userlogin');
-		}
-	}
 
-	// VIew Completed Task
-	public function completed_tasks()
-	{
-		$title = 'Completed';
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-	        $allCompletedTasks = Employee::find($userID)->tasks()->where('task_joins.status', 'Completed')->orderBy('task_joins.id', 'DESC')->get();
-	        
-			return view('frontend.completed', compact('title', 'allCompletedTasks'));
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	// View withdrawals Page
-	public function withdrawals()
-	{
-		$title = 'Withdrawals';
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-	        $allWithdrawals = Withdrawal::where('user_id', $userID)->orderBy('id', 'DESC')->get();
-	       
-			return view('frontend.withdrawals', compact('title', 'allWithdrawals'));
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	//Create New Withdrawal
-	public function create_withdrawal()
-	{
-		$title = 'Create Withdrawal';
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-	    	$allBanksencoded = User_Account::with('bank')->where('user', $userID)->get();
-	    	$allBanks = json_decode($allBanksencoded);
-
-			return view('frontend.create_withdrawal', compact('title', 'allBanks'));
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	public function request_withdrawal(Request $request)
-	{
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-	        $requestedAmount = $request->amount;
-	        $bank = $request->bank;
-	        $haveBank = User_Account::where('user', $userID)->where('bank', $bank)->first();
-	        $empEarnings = Earning::where('user_id', $userID)->sum('earning');
-
-	        if ($requestedAmount < 10 ) {
-				return redirect()->back()->with('errorAmount', 'Minimum withdrawal amount is $10');
-	        }
-	        if (!$haveBank) {
-				return redirect()->back()->with('errorAmount', 'This Bank is Not in records');
-	        }
-	        if ($requestedAmount > $empEarnings) {
-				return redirect()->back()->with('errorAmount', 'Your balance is less then requested amount');
-	        }
-
-	        $withdrawal = [
-	        	'to' => 'testing',
-	        	'date' => Carbon::now()->toDateString(),
-	        	'amount' => $requestedAmount,
-	        	'user_id' => $userID,
-	        	'bank' => $bank,
-	        	'account_number' => $haveBank->account_number
-	        ];
-
-	        $inserted = Withdrawal::insert($withdrawal);
-	        return redirect('/withdrawals')->with('message', 'Your request has been sent for approval');
-
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	//Create New Withdrawal
-	public function advertiser_earnings()
-	{
-		$title = 'Buy Credit';
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-			return view('frontend.advertiser_credit', compact('title'));
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	// Join Task 
-	public function join_task(request $request)
-	{
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-	        $task_join_insert = [
-	        	'task_id' => $request->task_id,
-	        	'user_id' => $userID,
-	        ];
-
-	        Task_Join::insert($task_join_insert);
-	        return redirect()->back();
-
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	// cancel Task
 	
-	public function cancelwork(request $request)
-	{
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
 
-	        DB::table('task_joins')->where([['user_id', $userID], ['task_id', $request->task_id]])->delete();
-	        return redirect()->back();
-
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	// Submit Task
-	public function submit_task(request $request)
-	{
-		if (Auth::check()) {
-
-			$userID = Auth::user()->id;
-	        $task_join_row = Task_Join::where([['task_id', $request->task_id], ['user_id', $userID]]);
-			$user = $task_join_row->first();
-
-			if(Input::hasFile('screenshots')) {
-
-		        $images = $request->file('screenshots');
-		        $newPhotosStr = [];
-		        foreach ($images as $key => $image) {
-		        	if ($image == NULL) {
-		        		continue;
-		        	}
-			        $extension = $image->getClientOriginalExtension();
-					$imageName = uniqid(time()).'.'.$extension;
-			        $image->move(public_path('upload'), $imageName);
-
-					$newPhotos = '"'.$imageName.'"';
-					array_push($newPhotosStr, $newPhotos);
-		        }
-				$newPhotosStr = implode(",",$newPhotosStr);
-
-				$updatePhotos = [
-			        	'status' => 'Submitted',
-			            'uploads' => $newPhotosStr
-				    ];
-		        $done = $task_join_row->update($updatePhotos);
-		        return redirect()->back();
-			} else {
-		        return redirect()->back()->with('error', 'The screenshots field is required.');
-			}
-		} else {
-			return redirect('/userlogin');
-		}
-	}
-
-	// Work Submitted view for advertiser
 	
-	public function work_submitted()
-	{
-		if (Auth::check()) {
-			$userID = Auth::user()->id;
-			$title = 'All Works Submitted';
-			// $tasks = DB::table('task_joins')->where('tasks.user_id', $userID)
-			// ->leftjoin('tasks','task_joins.task_id', '=', 'tasks.id')
-			// ->leftjoin('employees','task_joins.user_id', '=', 'employees.id')
-			// ->get();
 
-			$task = Task::where('user_id', $userID)->get();
-			var_dump($task->employee);
-
-
-
-			// return view('frontend.work_submitted', compact('title', 'tasks'));
-
-		} else {
-			return redirect('/userlogin');
-		}
-	}
 	
+
+
+
 	
+
 	
 
 	
@@ -668,24 +618,7 @@ class IndexController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
 	// create GUID (General Uniquq ID)
 	function getGUID(){
 	    if (function_exists('com_create_guid')){
@@ -705,52 +638,5 @@ class IndexController extends Controller
 	    }
 	}
 	
-	// Contact Us page
-	public function contact_us()
-	{
-		$title = 'Contáctenos';
-		return view('frontend.contact_us', compact('title'));
-	}
-
-	// Contact Us Email Section
-	public function contact_us_email(Request $request)
-	{
-		$admin = DB::table('employees')->where('type', 'admin')->first();
-		$reason = $request->reason;
-		$first_name = $request->first_name;
-		$last_name = $request->last_name;
-		$email = $request->email;
-		$comment = $request->comment;
-
-    	$baseUrl = url('/');
-    	$msg_template = '
-		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-			    	<h3>psicologosVibemar.cl contacto: </h3>
-			    	<h4 style="padding: 0 20px 0 0;">Hola '.$admin->first_name.'! <br><br>
-			    		'.$first_name.' ha enviado un mensaje a través del formulario de contacto.
-			    		abajo están los detalles
-			    	</h4>
-			    	<p>
-			    		<ul style="list-style: none;">
-			    			<li>Razón: '.$reason.'</li>
-			    			<li>Nombre de pila: '.$first_name.'</li>
-			    			<li>apellido: '.$last_name.'</li>
-			    			<li>correo electrónico: '.$email.'</li>
-			    			<li>Comentario: '.$comment.'</li>
-			    		</ul>
-			    	</p>
-		    	</div>
-		    	';
-        
-        //Updating Email content [Metakey]
-        $content = $msg_template;
-        $subject = 'Contacto';
-
-		$data = array( 'email' => $admin->email, 'subject' => $subject, 'message' => $content);
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
-		return redirect()->back()->withInput()->with('message', 'Gracias por contactarnos');
-	}
 
 }

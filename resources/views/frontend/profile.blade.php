@@ -6,7 +6,7 @@
    <div class="row">
       <div class="col-md-12">
          <div class="our_logo text-center">
-            <a href="/"><img src="/frontend/assets/img/logo_trans.png" alt="Logo" class="logo_black"></a>
+            <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo_trans.png" alt="Logo" class="logo_black"></a>
             <h1 class="text-center"><span>Profile</span></h1>
             <div class="elegant-special-heading-wrapper profile-wrapper">
                <p class="special-heading-description">{{ $UserTbl->name }}</p>
@@ -25,7 +25,7 @@
    <div class="col-md-4 podcasting-img-desc">
       <div class="text-center">
          <div class="podcastimg">
-            <img src="/frontend/assets/img/user.jpg" class="avatar" alt="User Image" height="230">
+            <img src="\public\storage\{{ $UserTbl->avatar }}" class="avatar" alt="User Image" height="230">
          </div>
       </div>
       <div class="share-this row">
@@ -96,11 +96,11 @@
             </div>
             <div class="tab-pane" id="update">
                <br>
-               <form class="form profile-form" action="/update_my_data" method="post" id="updateprofileForm" enctype="multipart/form-data">
+               <form class="form profile-form" action="{{ lang_url('update_my_data') }}" method="post" id="updateprofileForm" enctype="multipart/form-data">
+                  @csrf
                   <div class="form-group">
-                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
                      <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 pl-0 pr-0">
                            <label for="first_name">
                               <h4>First name</h4>
                            </label>
@@ -116,11 +116,11 @@
                   </div>
                   <div class="form-group">
                      <div class="row">
-                        <div class="col-md-6">
-                           <label for="phone">
+                        <div class="col-md-6 pl-0 pr-0">
+                           <label for="mobile">
                               <h4>Phone</h4>
                            </label>
-                           <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter phone" value="{{ $UserTbl->mobile }}" title="enter your phone number" >
+                           <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter phone" value="{{ $UserTbl->mobile }}" title="enter your phone number">
                         </div>
                         <div class="col-md-6">
                            <label for="email">
@@ -136,10 +136,10 @@
                   </div>
                   <div class="form-group">
                      <div class="col-xs-6">
-                        <label for="email">
+                        <label for="address">
                            <h4>Location</h4>
                         </label>
-                        <input type="text" class="form-control" name="address" id="location" placeholder="somewhere" value="{{ $UserTbl->address }}" title="enter a location">
+                        <input type="text" class="form-control" name="address" id="address" placeholder="somewhere" value="{{ $UserTbl->address }}" title="enter your address">
                      </div>
                   </div>
                   <div class="form-group">
@@ -160,7 +160,7 @@
                   </div>
                   <div class="form-group">
                      <div class="col-xs-6">
-                        <label for="password2">
+                        <label for="profile_picture">
                            <h4>Upload a photo</h4>
                         </label>
                         <input type="file" class="text-center center-block file-upload form-control" name="profile_picture" type="file" accept=".jpg,.jpeg,.png,.gif">

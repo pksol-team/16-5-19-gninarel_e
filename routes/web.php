@@ -14,29 +14,92 @@
 //     return view('welcome');
 // });
 
-// login user
-Route::get('/userlogin', 'Frontend\IndexController@login');
-// Login Check
-Route::post('/login_check', 'Frontend\IndexController@login_check');
-// user logout
-Route::get('/logout_frontend', 'Frontend\IndexController@logout_frontend');
+MultiLang::routeGroup(function($router) {
 
-//forgot Password
-Route::get('/forgot_password', 'Frontend\IndexController@forgot_password');
-Route::post('/forgot_send_email', 'Frontend\IndexController@forgot_send_email');
-//View About Page
-Route::get('/about', 'Frontend\IndexController@about');
-//profile update page
-Route::get('/profile', 'Frontend\IndexController@profile');
-//profile update request
-Route::post('/update_my_data', 'Frontend\IndexController@update_my_data');
-//profile update page
-Route::get('/products', 'Frontend\IndexController@products');
+	Route::middleware(['direction'])->group(function(){
 
-// Route::get('/', 'Frontend\IndexController@login');
-Route::get('/{lang?}', 'Frontend\IndexController@index');
+		//  home Page
+		Route::get('/', 'Frontend\IndexController@index');
+		// login user
+		Route::get('/userlogin', 'Frontend\IndexController@login');
 
+		// Login Check
+		Route::post('/login_check', 'Frontend\IndexController@login_check');
 
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
+		// user logout
+		Route::get('/logout_frontend', 'Frontend\IndexController@logout_frontend');
+
+		// Register
+		Route::get('/register', 'Frontend\IndexController@register');
+
+		//forgot Password
+		Route::get('/forgot_password', 'Frontend\IndexController@forgot_password');
+		Route::post('/forgot_send_email', 'Frontend\IndexController@forgot_send_email');
+
+		//profile update page
+		Route::get('/profile', 'Frontend\IndexController@profile');
+
+		//profile update request
+		Route::post('/update_my_data', 'Frontend\IndexController@update_my_data');
+
+		//Product Listings
+		Route::get('/products/{type}', 'Frontend\IndexController@products');
+
+		//Product Detail Page
+		Route::get('/product/{product_id}/view', 'Frontend\IndexController@product_detail');
+
+		// Buy Product
+		Route::get('/product/{product_native_id}/checkout', 'Frontend\IndexController@buy_product');
+
+		//checkout Post request
+		Route::post('/checkout_post', 'Frontend\IndexController@checkout_post');
+
+		// Thank You Page
+		Route::get('/thank_you', 'Frontend\IndexController@thank_you');
+		
+		//View About Page
+		Route::get('/about', 'Frontend\IndexController@about');
+
+		//View About Page
+		Route::get('/plans_pricing', 'Frontend\IndexController@plans_pricing');
+
+		//View Contact Us Page
+		Route::get('/contact_us', 'Frontend\IndexController@contact_us');
+
+		// Contact Us post request
+		Route::post('/contact_us_email', 'Frontend\IndexController@contact_us_email');
+
+		//View Contact Us Page
+		Route::get('/terms_and_conditions', 'Frontend\IndexController@terms');
+
+		//View Contact Us Page
+		Route::get('/refund_policy', 'Frontend\IndexController@refund_policy');
+
+		//View Disclaimers Page
+		Route::get('/disclaimers', 'Frontend\IndexController@disclaimers');
+
+		//View Partners Page
+		Route::get('/our_partners', 'Frontend\IndexController@our_partners');
+
+		//View podcasts Page
+		Route::get('/podcasts', 'Frontend\IndexController@podcasts');
+
+		//View Media Page
+		Route::get('/media', 'Frontend\IndexController@media');
+
+		
+		
+
+		
+
+	});
+
 });
+
+
+Route::group(['prefix' => '/'.Request::segment(1).'/admin'], function () {
+	Voyager::routes();
+});
+
+
+
