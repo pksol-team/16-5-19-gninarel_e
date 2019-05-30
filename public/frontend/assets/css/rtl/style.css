@@ -40,3 +40,13 @@ span.star li {
      padding-left: 0; 
 }
 
+.watch_all_video {
+    padding: 1px 11px !important;
+    margin-left: 15px !important;
+}
+
+.section-li ul li {
+    border-right: 4px solid #41a161;
+    border-left: 0;
+}
+

@@ -1038,7 +1038,7 @@ p.special-heading-description {
   padding-left: 30px;
 }
 
-.col-md-4.podcasting-img-desc {
+.col-md-3.podcasting-img-desc {
   /*padding: 15px 121px 15px 43px;*/
   margin-top: -226px;
 }
@@ -1969,6 +1969,112 @@ div .product-price_detail{
     font-size: 20px;
 }
 
+.course-some-video {
+   margin-bottom: 20px;
+   padding-bottom: 0;
+}
+
+.course-some-video h2 {
+   padding: 0;
+   margin: 0;
+       color: #333;
+}
+a.btn.all_video {
+   color: #fff;
+}
+.course-detail h3 {
+   color: #203444;
+}.section-li ul {
+   padding: 0;
+   margin: 0;
+   list-style: none;
+}
+
+.section-li ul li {
+   border-bottom: 1px solid #ccc;
+   background: #fff;
+   padding: 13px 14px;
+   border-left: 4px solid #41a161;
+}
+
+.section-li ul li i {
+   font-size: 18px;
+}
+
+.section-li ul li i.fa.fa-file-text {
+   color: #fff;
+   background: #41a161;
+   border-radius: 50%;
+   padding: 9px 10px;
+   margin-left: 11px;
+}
+
+i.fa.fa-ellipsis-v {
+   color: #2d3b56;
+   position: relative;
+   top: 5px;
+   font-size: 28px;
+}
+
+.section-li ul li a span {
+   padding-left: 12px;
+   font-size: 27px;
+   color: #2d3b56;
+   line-height: normal;
+   position: relative;
+   top: 4px;
+}
+
+.section-li ul li a {
+   line-height: normal;
+   text-decoration: none !important;
+}
+
+.section-li ul {
+   border-top: 1px solid #ccc;
+}
+
+.course-detail .mb-0 > a {
+  display: block;
+  position: relative;
+}
+.course-detail .mb-0 > a:after {
+  content: "\f0dd"; /* fa-sort-down */
+  font-family: 'FontAwesome';
+  position: absolute;
+  right: 0;
+}
+.course-detail .mb-0 > a[aria-expanded="true"]:after {
+  content: "\f0de"; /* fa-sort-up */
+}
+
+.podcast-desc-text ul li {
+    display: inline-block;
+    border: 1px solid #ddd;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+    margin: 5px 3px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    float: left;
+}
+
+.watch_all_video {
+    padding: 1px 11px !important;
+    margin-right: 15px !important;
+}
+
+.video-detail {
+   margin-top: 25px;
+   margin-bottom: 50px;
+}
+
+.video-detail a:hover {
+   text-decoration: none !important;
+}
+
+.topbar-logo {
+   background: #d3d8dc;
+}
 
 /***************************************************** Responsive *********************************************/
 @media all and (max-width: 1460px) {
@@ -2007,7 +2113,7 @@ div .product-price_detail{
   .main-content {
     width: 100%;
   }
-  .col-md-4.podcasting-img-desc {
+  .col-md-3.podcasting-img-desc {
     margin-top: 0;
   }
   .rating-Episodes-view {
@@ -2044,7 +2150,7 @@ div .product-price_detail{
   .single-podcast-aside {
     width: 100%;
   }
-  .col-md-4.podcasting-img-desc {
+  .col-md-3.podcasting-img-desc {
     padding: 0;
   }
   div.tab-pane ul li .date-and-formats,

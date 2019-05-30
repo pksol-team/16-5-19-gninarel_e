@@ -87,10 +87,15 @@ MultiLang::routeGroup(function($router) {
 		//View Media Page
 		Route::get('/media', 'Frontend\IndexController@media');
 
-		
-		
+		//View courses Page
+		Route::get('/courses', 'Frontend\IndexController@courses');
 
-		
+		//Course Detail Page
+		Route::get('/courses/{course_id}/view', 'Frontend\IndexController@course_detail');
+
+		//Watch Video Page
+		Route::get('/courses/{course_id}/video/{video_id}', 'Frontend\IndexController@watch_video');
+
 
 	});
 

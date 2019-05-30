@@ -73,6 +73,13 @@
                      <span class="menu-text">@t('Homepage')</span>
                      </a>
                   </li>
+                  @if (Auth::check())
+                  <li>
+                     <a href="{{ lang_url('courses') }}">
+                     <span class="menu-text">@t('Online School')</span>
+                     </a>
+                  </li>
+                  @endif
                   <li>
                      <a href="{{ lang_url('about') }}">
                      <span class="menu-text">@t('About')</span>

@@ -15,7 +15,7 @@
          <div class="offset-md-2 col-md-8">
             <h1 class="text-center"><span>{{ $productDecode->name }}</span></h1>
             <div class="img-forex">
-               <img src="\public\storage\{{ $productDecode->thumbnail }}" alt="">
+               <img src="\public\storage\{{ $productDecode->thumbnail }}" alt="{{ $productDecode->name }}">
             </div>
             <div class="date-n-price">
                <p><span class="product-price_detail"><strong>Price:</strong> $ {{ $productDecode->price }}</span></p>

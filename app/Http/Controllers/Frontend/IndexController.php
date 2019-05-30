@@ -21,6 +21,16 @@ use App\User;
 use App\Product;
 use App\ProductsNative;
 use App\Order;
+use App\Category;
+use App\CategoryNative;
+use App\Course;
+use App\CoursesNative;
+use App\Chapter;
+use App\ChaptersNative;
+use App\Section;
+use App\SectionNative;
+use App\Video;
+use App\VideoNative;
 use Mail;
 use Log;
 
@@ -583,6 +593,51 @@ class IndexController extends Controller
 		$title = 'Media';
 		return view('frontend.media', compact('title'));
 	}
+
+	// View all Courses Page
+	public function courses()
+	{
+		$title = 'All Courses';
+    	$courseNative = CoursesNative::with('courses')->where([['lang', $this->langCode], ['status', 'active']])->get();
+		return view('frontend.courses', compact('title', 'courseNative'));
+	}
+
+	// Course Detail Page
+	public function course_detail($course_id)
+	{
+		//categories of single course
+		$categories = Course::find($course_id)->categories()->get();
+
+    	// chapters of single course
+    	$chapterNative = ChaptersNative::with('chapters')->whereHas('chapters', function ($query) use ($course_id) {
+    		$query->where('course_id', $course_id);
+    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+
+    	// Single Course
+    	$course = Course::find($course_id)->courseDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
+    	if (count($course) > 0) {
+	    	
+			$title = $course->name;
+			return view('frontend.courses_detail', compact('title', 'categories', 'course_id', 'course', 'chapterNative', 'categoryNative'));
+
+    	} else {
+			return redirect(lang_url('courses'));
+    	}
+	}
+
+	// Watch Video Page
+	public function watch_video($course_id, $video_id)
+	{
+    	// if (count($course) > 0) {
+			$title = 'Video';
+			return view('frontend.video_watch', compact('title'));
+
+   //  	} else {
+			// return redirect(lang_url('courses'));
+   //  	}
+	}
+
+	
 
 
 
