@@ -2,7 +2,6 @@
    use App\Course; 
    use App\SectionNative; 
    use App\CategoryNative; 
-   use App\VideoNative; 
 ?>
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop

@@ -32,6 +32,9 @@ MultiLang::routeGroup(function($router) {
 		// Register
 		Route::get('/register', 'Frontend\IndexController@register');
 
+		// register post request
+		Route::post('/register_check', 'Frontend\IndexController@register_check');
+
 		//forgot Password
 		Route::get('/forgot_password', 'Frontend\IndexController@forgot_password');
 		Route::post('/forgot_send_email', 'Frontend\IndexController@forgot_send_email');
@@ -87,14 +90,36 @@ MultiLang::routeGroup(function($router) {
 		//View Media Page
 		Route::get('/media', 'Frontend\IndexController@media');
 
-		//View courses Page
-		Route::get('/courses', 'Frontend\IndexController@courses');
+		// View Schools of users
+		Route::get('/schools', 'Frontend\IndexController@schools');
+
+		//View courses Page 
+		Route::get('/schools/{school_id}/view', 'Frontend\IndexController@school_detail');
 
 		//Course Detail Page
-		Route::get('/courses/{course_id}/view', 'Frontend\IndexController@course_detail');
+		Route::get('/chapters/{chapter_id}/view', 'Frontend\IndexController@chapter_detail');
 
 		//Watch Video Page
 		Route::get('/courses/{course_id}/video/{video_id}', 'Frontend\IndexController@watch_video');
+		
+		//All Schools 
+		Route::get('/allschools', 'Frontend\IndexController@allschools');
+
+		//View school detail page
+		Route::get('/school/{school_id}/view', 'Frontend\IndexController@school_view');
+
+		//All Approved Coaches
+		Route::get('/coaches', 'Frontend\IndexController@coaches');
+
+		//Buy Plan for School
+		Route::post('/buy_plan', 'Frontend\IndexController@buy_plan');
+
+		//Buy Plan for School Final
+		Route::post('/buy_plan_school', 'Frontend\IndexController@buy_plan_school');
+
+		
+		
+
 
 
 	});

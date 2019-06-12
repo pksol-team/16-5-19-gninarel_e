@@ -4,13 +4,15 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Str;
 use Session;
 use Carbon\Carbon;
 use Auth;
@@ -31,6 +33,10 @@ use App\Section;
 use App\SectionNative;
 use App\Video;
 use App\VideoNative;
+use App\School;
+use App\SchoolsNative;
+use App\VideoYoutube;
+use App\UserSubscription;
 use Mail;
 use Log;
 
@@ -87,7 +93,12 @@ class IndexController extends Controller
 			$passwordchecked = $userGet->password;
 			if (Hash::check($password, $passwordchecked)) {
 				Auth::attempt(['email' => $email, 'password' => $password]);
-				return redirect(lang_url(''));
+				if (session()->has('url.intended')) {
+					return redirect()->intended();
+				} else {
+					$request->session()->forget('url.intended');
+					return redirect(lang_url(''));
+				}
 			}
 			else{
 				return redirect()->back()->withInput()->with('error', 'User password does not match! If you do not have your account <a href="/userrregister">Register here </a>');
@@ -101,7 +112,7 @@ class IndexController extends Controller
 	public function logout_frontend() {
 		Auth::logout();
 		session()->flush();
-		return redirect(lang_url('userlogin'));
+		return redirect(lang_url(''));
 	}
 
 	// View register Page
@@ -120,61 +131,31 @@ class IndexController extends Controller
 	{
 		$name = $request->input('name');
 		$email = $request->input('email');
-		$mobile = $request->input('mobile');
+		$phone = $request->input('phone');
 		$password = $request->input('password');
 
 		$authenticateResult = $this->register_authenticate($email);
 		if ($authenticateResult === true) {
 		$hashKey = uniqid(time());
-		$employee = [
+		$user = [
 		    'name' => $name,
-		    'mobile' => $mobile,
-            'hash_key' => $hashKey,
+		    'role_id' => 2,
 		    'email' => $email,
-		    'gender' => 'Male',
-		    'created_at' => Carbon::now(),
-		  ];
-		// $insertedEmployees = DB::table('employees')->insert($employee);
-		// $getInsertedId = DB::getPdo()->lastInsertId();
-       
-		// if ($insertedEmployees) {
-		// 	$confirm_email = uniqid(time()).uniqid();
-		// 	$referral = strtoupper(substr($name, 0, 3)).substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
-		// 	$user = [
-	 //            'name' => $name,
-	 //            'email' => $email,
-	 //            'password' => bcrypt($password),
-	 //            'context_id' => $getInsertedId,
-		// 	    'marital_status' => 'Single',
-	 //            'type' => '',
-	 //            'hash_key' => $hashKey,
-		// 	    'created_at' => Carbon::now(),
-		// 	    'status' => 'deactive',
-		// 	    'referral_code' => $referral,
-		// 	    'confirm_email' => $confirm_email,
-			    
-	 //        ];
-		// 	$insertedUsers = DB::table('users')->insert($user);
-		// 	$earning = [
-	 //            'earning' => 0,
-		// 	    'status' => 'Initial',
-		// 	    'user_id' => $getInsertedId,
-	 //        ];
-		// 	$insertedEarning = DB::table('earnings')->insert($earning);
+		    'phone' => $phone,
+		    'password' => bcrypt($password),
+		    'settings' => '{"locale":"en"}',
+		    'created_at' => Carbon::now()
+		];
+		$insertedUser = User::insert($user);
+		$getInsertedId = DB::getPdo()->lastInsertId();
+			$role = [
+				'user_id' => $getInsertedId,
+				'role_id' => 2,
+			];
+		DB::table('user_roles')->insert($role);
 
-		// 	if ($insertedUsers) {
-		// 		// if ($type == 'doctor') {
-		// 		// 	$role_id = 2;
-		// 		// } else {
-		// 			$role_id = 3;
-		// 		// }
-		// 		$role = [
-		// 			'role_id' => $role_id,
-		// 			'user_id' => $getInsertedId,
-		// 		];
-		// 		DB::table('role_user')->insert($role);
-		// 	}
-		// }
+		// var_dump($insertedUser);
+		// var_dump($getInsertedId);
 		// $baseUrl = url('/');
 		// $msg_template = '
 		// 	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
@@ -200,7 +181,7 @@ class IndexController extends Controller
   //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
   //   	});
 
-		return redirect(lang_url('userlogin'))->with('message', 'Registration Work in progress');
+		return redirect(lang_url('userlogin'))->with('message', 'Registration completed successfully kindly login');
 		} else {
 			return redirect()->back()->withInput()->with('error', $authenticateResult);
 		}
@@ -347,10 +328,10 @@ class IndexController extends Controller
 	{
 		$title = 'Profile';
 		if (Auth::check()) {
-			$user = Auth::user();
 	        $UserTbl = Auth::user();
 			return view('frontend.profile', compact('title', 'UserTbl'));
 		} else {
+			Session::put('url.intended', lang_url('profile'));
 			return redirect(lang_url('/'));
 		}
 	}
@@ -358,51 +339,56 @@ class IndexController extends Controller
 	// Update Normal Profile
 	public function update_my_data(Request $request)
 	{
+		$monthFolder =  date('FY');
 		$user = Auth::user();
 		$first_name = $request->input('first_name');
 		$last_name = $request->input('last_name');
-		$mobile = $request->input('mobile');
-		$address = $request->input('address');
+		$phone = $request->input('phone');
+		$location = $request->input('location');
 		$password = $request->input('password');
 		$password2 = $request->input('password2');
 
 		if ($password != $password2) {
 			return redirect()->back()->with('error', 'Password and Confirm password does not match');
 		}
+		if ($password == '' && $password2 == '') {
+			$newPassword = $user->password;
+		} else {
+			$newPassword = bcrypt($password2);
+		}
 
+		$oldPic = $user->avatar;
 		if(Input::hasFile('profile_picture')) {
 			$file = Input::file('profile_picture');
-			$folder = public_path('upload');
-			$filename = uniqid(time());
+			$folder = 'storage/users/'.$monthFolder;
 			$path = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+			$newPicName = 'users'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
 			if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif') {
 				return redirect()->back()->with('error', 'Only Image Allowed');
 			}
-			$upload_success = Input::file('profile_picture')->move($folder, $filename.'.'.$path);
+			$upload_success = Input::file('profile_picture')->move($folder, $newPicName);
 
-			$oldPic = $user->profile_picture;
-			if ($oldPic != NULL) {
-				$myFile = public_path().'/upload/'.$oldPic;
+			if ($oldPic != 'users/default.png') {
+				$myFile = public_path().'/storage/'.$oldPic;
 				if(file_exists($myFile)){
 					unlink($myFile);
 				}
 			}
 
-			$fileName = $filename.'.'.$path;
+			$fileName = $newPicName;
 		} else {
-			$fileName = NULL;
+			$fileName = $oldPic;
 		}
 
 		if (Auth::check()) {
 
-			$employee = [
-		    'name' => $first_name,
-		  ];
-
-	        // $UpdateEmployee = DB::table('employees')->where('id', $user->id)->update($employee);
-
 			$userUpdate = [
-	            'name' => $first_name,
+				'name' => $first_name,
+				'last_name' => $last_name,
+				'phone' => $phone,
+				'location' => $location,
+				'password' => $newPassword,
+	            'avatar' => $fileName,
 		    ];
 		    
 	        $done = User::where('id', $user->id)->update($userUpdate);	
@@ -475,6 +461,12 @@ class IndexController extends Controller
 		$user_name = $request->input('first_name');
 		$user_last_name = $request->input('last_name');
 		$user_address = $request->input('user_address');
+
+		// Start Payment Process
+		// 
+
+		// 
+		// End Payment Process
 
 		$newOrder = [
 			'product_native_id' => $product_native_id,
@@ -591,7 +583,85 @@ class IndexController extends Controller
 	public function media()
 	{
 		$title = 'Media';
-		return view('frontend.media', compact('title'));
+    	$youtubeVideos = VideoYoutube::where('status', 'active')->get();
+		return view('frontend.media', compact('title', 'youtubeVideos'));
+	}
+
+	// View Schools of users
+
+	public function schools()
+	{
+		if (Auth::check()) {
+			$title = 'All Schools';
+	    	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
+			return view('frontend.schools', compact('title', 'schoolNative'));
+		} else {
+			Session::put('url.intended', lang_url('schools'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// Course Detail Page
+	public function school_detail($school_id)
+	{
+    	// Single School
+    	$schoolNative = School::find($school_id)->schoolDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
+    	
+    	$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($school_id) {
+    		$query->where('school_id', $school_id);
+    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+    	
+    	if (count($schoolNative) > 0) {
+	    	
+			$title = $schoolNative->name;
+			return view('frontend.school_detail', compact('title', 'schoolNative', 'courseNative'));
+
+    	} else {
+			return redirect(lang_url('schools'));
+    	}
+	}
+
+	// View Schools
+
+	public function allschools()
+	{
+		$title = 'All Schools';
+    	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
+		return view('frontend.all_schools', compact('title', 'schoolNative'));
+	}
+
+	// School Detail Page
+	public function school_view($school_id)
+	{
+    	// Single School
+    	$schoolNative = School::find($school_id)->schoolDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
+    	
+    	if (count($schoolNative) > 0) {
+	    	
+			$title = $schoolNative->name;
+			return view('frontend.school_view', compact('title', 'schoolNative'));
+
+    	} else {
+			return redirect(lang_url('allschools'));
+    	}
+	}
+
+	// Chapter Detail Page
+	public function chapter_detail($chapter_id)
+	{
+
+		// chapters of single course
+
+    	$chapter = Chapter::find($chapter_id)->chapterDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
+
+    	if (count($chapter) > 0) {
+	    	
+			$title = $chapter->name;
+			return view('frontend.chapter_detail', compact('title', 'chapter'));
+
+    	} else {
+			return redirect(lang_url('courses'));
+    	}
 	}
 
 	// View all Courses Page
@@ -628,44 +698,93 @@ class IndexController extends Controller
 	// Watch Video Page
 	public function watch_video($course_id, $video_id)
 	{
-    	// if (count($course) > 0) {
-			$title = 'Video';
-			return view('frontend.video_watch', compact('title'));
+		$videoNative = VideoNative::where([['id', $video_id], ['lang', $this->langCode], ['status', 'active']])->first();
+    	if (count($videoNative) > 0) {
 
-   //  	} else {
-			// return redirect(lang_url('courses'));
-   //  	}
+			$title = $videoNative->name;
+			return view('frontend.video_watch', compact('title', 'course_id', 'videoNative'));
+
+    	} else {
+			return redirect(lang_url('courses/'.$course_id.'/view'));
+    	}
+	}
+
+	// View All Coaches Page
+	public function coaches()
+	{
+		$title = 'All Coaches';
+		$allUsers = User::where([['role_id', '!=',  1], ['status', 'active']])->get();
+
+		return view('frontend.coaches', compact('title', 'allUsers'));
+	}
+
+	// View Plan FOrm Page
+	public function buy_plan(Request $request)
+	{
+		$title = 'Buy Plan';
+		$price = $request->price;
+		$no = $request->no;
+		$plan_name = $request->plan_name;
+    	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
+		if (($request->no != '1' && $request->no != '2' && $request->no != '3' && $request->no != '4') OR ($request->price != '100' && $request->price != '200' && $request->price != '500' && $request->price != '999'))
+		{
+			return redirect(lang_url('plans_pricing'));
+		}
+		return view('frontend.plan_purchase', compact('title', 'schoolNative', 'no', 'price', 'plan_name'));
+	}
+
+	// View About Page
+	public function buy_plan_school(Request $request)
+	{
+		$user_id = Auth::user()->id;
+		$plan_name = $request->plan_name;
+		$no = $request->no;
+		$price = $request->price;
+		$package_start_date = $request->package_start_date;
+		$package_end_date = $request->package_end_date;
+		if ($no == '1') {
+			$package_end_date = NULL;
+		}
+		$school = $request->school;
+		$status = 'active';
+		if (($request->no != '1' && $request->no != '2' && $request->no != '3' && $request->no != '4') OR ($request->price != '100' && $request->price != '200' && $request->price != '500' && $request->price != '999'))
+		{
+			return redirect(lang_url('plans_pricing'));
+		}
+
+		// Start Payment Process
+		// 
+
+		// 
+		// End Payment Process
+
+
+
+		$userData = [
+			'user_id' => $user_id,
+			'school_id' => $school,
+			'package_name' => $plan_name,
+			'package_price' => $price,
+			'status' => $status,
+			'package_start_date' => $package_start_date,
+			'package_end_date' => $package_end_date
+		];
+
+		$inserted = UserSubscription::insert($userData);
+
+		if ($inserted) {
+			return redirect(lang_url('thank_you'));
+		} else {
+			return redirect()->back()->with('error', 'Opps! something went wrong');
+		}
+
 	}
 
 	
 
-
-
 	
 
 	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-
-
 
 
 

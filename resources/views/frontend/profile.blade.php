@@ -88,10 +88,10 @@
               </div>
               <div class="person-detail">
                  <h4><i class="fa fa-info" aria-hidden="true"></i>Personal Details</h4>
-                 <p><span>Full Name </span>:<span>{{ $UserTbl->name }}</span></p>
-                 <p><span>Phone</span>:<span>{{ $UserTbl->mobile }}</span></p>
+                 <p><span>Full Name </span>:<span>{{ $UserTbl->name.' '.$UserTbl->last_name }}</span></p>
+                 <p><span>Phone</span>:<span>{{ $UserTbl->phone }}</span></p>
                  <p><span>Email</span>:<span>{{ $UserTbl->email }}</span></p>
-                 <p><span>Location</span>:<span>{{ $UserTbl->address }}</span></p>
+                 <p><span>Location</span>:<span>{{ $UserTbl->location }}</span></p>
               </div>
             </div>
             <div class="tab-pane" id="update">
@@ -110,17 +110,17 @@
                            <label for="last_name">
                               <h4>Last name</h4>
                            </label>
-                           <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name" required>
+                           <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" value="{{ $UserTbl->last_name }}"  title="enter your last name" required>
                         </div>
                      </div>
                   </div>
                   <div class="form-group">
                      <div class="row">
                         <div class="col-md-6 pl-0 pr-0">
-                           <label for="mobile">
+                           <label for="phone">
                               <h4>Phone</h4>
                            </label>
-                           <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter phone" value="{{ $UserTbl->mobile }}" title="enter your phone number">
+                           <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" value="{{ $UserTbl->phone }}" title="enter your phone number">
                         </div>
                         <div class="col-md-6">
                            <label for="email">
@@ -136,16 +136,17 @@
                   </div>
                   <div class="form-group">
                      <div class="col-xs-6">
-                        <label for="address">
+                        <label for="location">
                            <h4>Location</h4>
                         </label>
-                        <input type="text" class="form-control" name="address" id="address" placeholder="somewhere" value="{{ $UserTbl->address }}" title="enter your address">
+                        <input type="text" class="form-control" name="location" id="location" placeholder="somewhere" value="{{ $UserTbl->location }}" title="enter your location">
                      </div>
                   </div>
                   <div class="form-group">
                      <div class="col-xs-6">
                         <label for="password">
                            <h4>Password</h4>
+                           <span><small>Leave Password field blank if you don't want to change it</small></span>
                         </label>
                         <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
                      </div>

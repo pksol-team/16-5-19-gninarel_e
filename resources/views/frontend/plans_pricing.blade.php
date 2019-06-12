@@ -14,131 +14,12 @@
    </div>
    <div class="pricing-table">
       <div class="row">
-         <div class="panel-wrapper active pricingtable-column col-md-4">
-            <div class="panel-container">
-               <div class="main-panel">
-                  <div class="panel-heading">
-                     <h3 class="title-row">
-                        Free Plan
-                     </h3>
-                  </div>
-                  <div class="panel-body pricing-row">
-                     <div class="price ">
-                        <span class="currency">$</span>
-                        <span class="integer-part">00</span>
-                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
-                     </div>
-                  </div>
-                  <ul class="features-ul">
-                     <li class="featureli">
-                        <strong>1 Month FREE</strong>
-                     </li>
-                     <li class="featureli">All Inclusive Membership</li>
-                     <li class="featureli">Every Update Guarantee*</li>
-                     <li class="featureli">Price Lock Guarantee**</li>
-                  </ul>
-                  <div class="panel-footer footer-row">
-                     <a target="_self" href="{{ lang_url('register') }}">Sign Up Now</a>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="panel-wrapper  pricingtable-column col-md-4">
-            <div class="panel-container">
-               <div class="main-panel">
-                  <div class="panel-heading">
-                     <h3 class="title-row">
-                        14 Days Plan
-                     </h3>
-                  </div>
-                  <div class="panel-body pricing-row">
-                     <div class="price ">
-                        <span class="currency">$</span>
-                        <span class="integer-part">247</span>
-                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
-                     </div>
-                  </div>
-                  <ul class="features-ul">
-                     <li class="featureli">
-                        <strong>2 Months FREE</strong>
-                     </li>
-                     <li class="featureli">All Inclusive Membership</li>
-                     <li class="featureli">Every Update Guarantee*</li>
-                     <li class="featureli">Price Lock Guarantee**</li>
-                  </ul>
-                  <div class="panel-footer footer-row">
-                     <a target="_self" href="{{ lang_url('register') }}">Sign Up Now</a>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="panel-wrapper  pricingtable-column col-md-4">
+         <div class="panel-wrapper  pricingtable-column col-md-3">
             <div class="panel-container">
                <div class="main-panel main-panel_last">
                   <div class="panel-heading">
                      <h3 class="title-row">
-                        1 Month Plan
-                     </h3>
-                  </div>
-                  <div class="panel-body pricing-row">
-                     <div class="price ">
-                        <span class="currency">$</span>
-                        <span class="integer-part">294</span>
-                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
-                     </div>
-                  </div>
-                  <ul class="features-ul">
-                     <li class="featureli">
-                        <strong>2 Months FREE</strong>
-                     </li>
-                     <li class="featureli">All Inclusive Membership</li>
-                     <li class="featureli">Every Update Guarantee*</li>
-                     <li class="featureli">Price Lock Guarantee**</li>
-                  </ul>
-                  <div class="panel-footer footer-row">
-                     <a target="_self" href="{{ lang_url('register') }}">Sign Up Now</a>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="row">
-         <div class="col-md-2"></div>
-         <div class="panel-wrapper  pricingtable-column col-md-4">
-            <div class="panel-container">
-               <div class="main-panel main-panel_last">
-                  <div class="panel-heading">
-                     <h3 class="title-row">
-                        Annual
-                     </h3>
-                  </div>
-                  <div class="panel-body pricing-row">
-                     <div class="price ">
-                        <span class="currency">$</span>
-                        <span class="integer-part">294</span>
-                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
-                     </div>
-                  </div>
-                  <ul class="features-ul">
-                     <li class="featureli">
-                        <strong>2 Months FREE</strong>
-                     </li>
-                     <li class="featureli">All Inclusive Membership</li>
-                     <li class="featureli">Every Update Guarantee*</li>
-                     <li class="featureli">Price Lock Guarantee**</li>
-                  </ul>
-                  <div class="panel-footer footer-row">
-                     <a target="_self" href="{{ lang_url('register') }}">Sign Up Now</a>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="panel-wrapper  pricingtable-column col-md-4">
-            <div class="panel-container">
-               <div class="main-panel main-panel_last">
-                  <div class="panel-heading">
-                     <h3 class="title-row">
-                        Lifetime 
+                        Gold Plan
                      </h3>
                   </div>
                   <div class="panel-body pricing-row">
@@ -148,23 +29,141 @@
                         <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
                      </div>
                   </div>
-                  <ul class="features-ul">
+                  <ul class="features-ul" style="height:425px;">
                      <li class="featureli">
-                        <strong>FREE</strong>
+                        <strong>Lifetime Subscription</strong>
+                     </li>
+                     <li class="featureli">All Inclusive Membership</li>
+                     <li class="featureli">Every Update Guarantee*</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                     <li class="featureli">All Inclusive Membership</li>
+                     <li class="featureli">Every Update Guarantee*</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                  </ul>
+                  <div class="panel-footer footer-row">
+                     <form name="buy_req" id="buy_req" method="POST" action="{{ lang_url('buy_plan') }}" class="buy_req">
+                        @csrf
+                        <input type="hidden" name="plan_name" value="Gold" />
+                        <input type="hidden" name="no" value="1" />
+                        <input type="hidden" name="price" value="999" />
+                        <button class="btn btn-success btn-lg" type="submit">Buy Now</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-2"></div>
+         </div>
+         <div class="panel-wrapper  pricingtable-column col-md-3">
+            <div class="panel-container">
+               <div class="main-panel main-panel_last">
+                  <div class="panel-heading">
+                     <h3 class="title-row">
+                        Silver Plan
+                     </h3>
+                  </div>
+                  <div class="panel-body pricing-row">
+                     <div class="price ">
+                        <span class="currency">$</span>
+                        <span class="integer-part">500</span>
+                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
+                     </div>
+                  </div>
+                  <ul class="features-ul" style="height:425px;">
+                     <li class="featureli">
+                        <strong>Annullay Subscription</strong>
+                     </li>
+                     <li class="featureli">All Inclusive Membership</li>
+                     <li class="featureli">Every Update Guarantee*</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                     <li class="featureli">Every Update Guarantee*</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                  </ul>
+                  <div class="panel-footer footer-row">
+                     <form name="buy_req" id="buy_req" method="POST" action="{{ lang_url('buy_plan') }}" class="buy_req">
+                        @csrf
+                        <input type="hidden" name="plan_name" value="Silver" />
+                        <input type="hidden" name="no" value="2" />
+                        <input type="hidden" name="price" value="500" />
+                        <button class="btn btn-success btn-lg" type="submit">Buy Now</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="panel-wrapper  pricingtable-column col-md-3">
+            <div class="panel-container">
+               <div class="main-panel main-panel_last">
+                  <div class="panel-heading">
+                     <h3 class="title-row">
+                        Monthly Plan
+                     </h3>
+                  </div>
+                  <div class="panel-body pricing-row">
+                     <div class="price ">
+                        <span class="currency">$</span>
+                        <span class="integer-part">200</span>
+                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
+                     </div>
+                  </div>
+                  <ul class="features-ul" style="height:425px;">
+                     <li class="featureli">
+                        <strong>1 Month Subscription</strong>
+                     </li>
+                     <li class="featureli">All Inclusive Membership</li>
+                     <li class="featureli">Every Update Guarantee*</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                     <li class="featureli">Price Lock Guarantee**</li>
+                  </ul>
+                  <div class="panel-footer footer-row">
+                     <form name="buy_req" id="buy_req" method="POST" action="{{ lang_url('buy_plan') }}" class="buy_req">
+                        @csrf
+                        <input type="hidden" name="plan_name" value="Monthly" />
+                        <input type="hidden" name="no" value="3" />
+                        <input type="hidden" name="price" value="200" />
+                        <button class="btn btn-success btn-lg" type="submit">Buy Now</button>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="panel-wrapper pricingtable-column col-md-3">
+            <div class="panel-container">
+               <div class="main-panel">
+                  <div class="panel-heading">
+                     <h3 class="title-row">
+                        Weekly Plan
+                     </h3>
+                  </div>
+                  <div class="panel-body pricing-row">
+                     <div class="price ">
+                        <span class="currency">$</span>
+                        <span class="integer-part">100</span>
+                        <span class="time price-without-decimal">Price per month, billed annually until cancelled</span>
+                     </div>
+                  </div>
+                  <ul class="features-ul" style="height:425px;">
+                     <li class="featureli">
+                        <strong>1 week Subscription</strong>
                      </li>
                      <li class="featureli">All Inclusive Membership</li>
                      <li class="featureli">Every Update Guarantee*</li>
                      <li class="featureli">Price Lock Guarantee**</li>
                   </ul>
                   <div class="panel-footer footer-row">
-                     <a target="_self" href="{{ lang_url('register') }}">Sign Up Now</a>
+                     <form name="buy_req" id="buy_req" method="POST" action="{{ lang_url('buy_plan') }}" class="buy_req">
+                        @csrf
+                        <input type="hidden" name="plan_name" value="Weekly" />
+                        <input type="hidden" name="no" value="4" />
+                        <input type="hidden" name="price" value="100" />
+                        <button class="btn btn-success btn-lg" type="submit">Buy Now</button>
+                     </form>
                   </div>
                </div>
             </div>
-            <div class="col-md-2"></div>
          </div>
       </div>
-   </div>
+   </div><!-- /.row -->
    <div class="pricing-disclimar">
       <div class="row">
          <div class="col-md-12">

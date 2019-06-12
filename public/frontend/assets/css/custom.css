@@ -10,3 +10,37 @@ div.alert-green {
     border-left: 5px solid rgba(0,0,0,.1);
     font-size: 12px;
 }
+
+.coaches_listing {
+    width: 28%;
+    padding: 20px;
+    text-align: center;
+    margin: 10px 18px;
+}
+
+.coaches_listing p.coach_about {
+	text-align: left;
+}
+
+.coaches_listing img {
+	width: 95%;
+	margin-bottom: 10px;
+	max-height: 255px;
+}
+
+.coaches_listing ul li i {
+	font-size: 20px;
+}
+
+.all-schools .school_listing {
+    width: 28%;
+    padding: 20px;
+    text-align: center;
+    margin: 10px 18px;
+}
+
+.all-schools .school_listing .main {
+    width: 90%;
+    margin: 0 auto;
+
+}

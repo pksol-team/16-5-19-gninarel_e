@@ -73,10 +73,15 @@
                      <span class="menu-text">@t('Homepage')</span>
                      </a>
                   </li>
+                  <li>
+                     <a href="{{ lang_url('schools') }}">
+                     <span class="menu-text">@t('Online School')</span>
+                     </a>
+                  </li>
                   @if (Auth::check())
                   <li>
-                     <a href="{{ lang_url('courses') }}">
-                     <span class="menu-text">@t('Online School')</span>
+                     <a href="{{ lang_url('coaches') }}">
+                     <span class="menu-text">@t('Coaches')</span>
                      </a>
                   </li>
                   @endif
@@ -95,16 +100,6 @@
                   <li class="dropdown">
                      <a href="{{ lang_url('media') }}">
                         <span class="menu-text">@t('Media')</span>
-                        <ul class="dropdown-content">
-                           <li>
-                     <a href="">@t('Videos')</a>
-                  </li>
-                     <li><a href="{{ lang_url('media') }}">@t('Images ')</a></li>
-                     <li><a href="{{ lang_url('media') }}">@t('Files  ')</a></li>
-                     <li><a href="{{ lang_url('media') }}">@t('News & Economic Calander ')</a></li>
-                     <li><a href="{{ lang_url('media') }}">@t('Newsletter ')</a></li>
-                     <li><a href="{{ lang_url('media') }}">@t('Email List Subscription  ')</a></li>
-                     </ul>
                      </a>
                   </li>
                   <li class="dropdown">
@@ -131,6 +126,7 @@
                            </a></li>
                            <li><a href="{{ lang_url('products/book') }}">@t('Books')</a></li>
                            <li><a href="{{ lang_url('products/tool') }}">@t('Tools')</a></li>
+                           <li><a href="{{ lang_url('allschools') }}">@t('Schools')</a></li>
                         </ul>
                      </a>
                   </li>
@@ -185,7 +181,8 @@
             
             window.location.href = newPathname;
 
-         }); 
+         });
+
         }); 
     </script> 
    </body>

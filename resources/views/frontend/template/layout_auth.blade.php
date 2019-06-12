@@ -33,7 +33,7 @@
          <div class="row">
             <div class="offset-md-3 col-md-6 box-bg">
                <div class="login-box">
-                  <img src="/frontend/assets/img/logo21.png" alt="Logo">
+                  <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt="Logo"></a>
                   <!-- Main Content -->
                   @yield('content')
                   <!-- Main Content -->

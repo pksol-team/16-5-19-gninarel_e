@@ -21,16 +21,16 @@
       </div>
       @endif
       <p class="username">
-         <label for="name">Full Name:</label><br>
+         <label for="name">Name:</label><br>
          <input type="text" name="name" class="input" value="{{ old('name') }}" size="20" required>
       </p>
       <p class="email">
          <label for="email">Email:</label><br>
-         <input type="email" name="email" class="input" value="{{ old('email') }}" required>
+         <input type="email" name="email" id="email" class="input" value="{{ old('email') }}" required>
       </p>
       <p class="phone">
-         <label for="mobile">Phone Number:</label><br>
-         <input type="text" name="mobile" class="input" value="{{ old('mobile') }}" size="20" required>
+         <label for="phone">Phone Number:</label><br>
+         <input type="text" name="phone" id="phone" class="input" value="{{ old('phone') }}" size="20" required>
       </p>
       <p class="password">
          <label for="password">Password:</label><br>

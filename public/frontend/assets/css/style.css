@@ -2076,6 +2076,15 @@ i.fa.fa-ellipsis-v {
    background: #d3d8dc;
 }
 
+#school-Datatable th, #school-Datatable td, .course-detail th, .course-detail td {
+  padding: 7px;
+}
+li.videos_design_li {
+  border: 4px solid #41a161;
+  border-radius: 15px;
+  background-color: #f0f1f4;
+}
+
 /***************************************************** Responsive *********************************************/
 @media all and (max-width: 1460px) {
   .btn {

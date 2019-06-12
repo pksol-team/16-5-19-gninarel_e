@@ -14,201 +14,56 @@
 </div>
 <div class="main-ref">
    <div class="row">
-      <div class="col-md-8">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img8.jpg" class="img-responguyusive" alt="">
+      <div class="col-12 ">
+         <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+               <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Video</a>
+               <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Photos</a>
+               <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Tools</a>
+            </div>
+         </nav>
+         <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+               <?php if ($youtubeVideos): ?>
+                  <div class="row">
+                  <?php foreach ($youtubeVideos as $key => $singleVideo): ?>
+                        <div class="col-4 p-0 d-inline-block">
+                           <iframe width="95%" height="200" src="{{ $singleVideo->link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
+                  <?php endforeach ?>
+                  </div><!-- /.row -->
+               <?php else: ?>
+                  <p>No Video found</p>
+               <?php endif ?>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+               <div class="row">
+                  <div class="col-4 mb-3 d-inline-block">
+                     <img src="/frontend/assets/img/media/dsf.jpg" alt="Image" />
                   </div>
-               </div>
+                  <div class="col-4 mb-3 d-inline-block">
+                     <img src="/frontend/assets/img/media/FL-29-04-2019-07-24-20.jpg" alt="Image" />
+                  </div>
+                  <div class="col-4 mb-3 d-inline-block">
+                     <img src="/frontend/assets/img/media/FL-29-04-2019-07-24-30.jpg" alt="Image" />
+                  </div>
+                  <div class="col-4 mb-3 d-inline-block">
+                     <img src="/frontend/assets/img/media/FL-29-04-2019-07-25-01.jpg" alt="Image" />
+                  </div>
+                  <div class="col-4 mb-3 d-inline-block">
+                     <img src="/frontend/assets/img/media/FL-29-04-2019-07-27-49.jpg" alt="Image" />
+                  </div>
+                   <div class="col-4 mb-3 d-inline-block">
+                     <img src="/frontend/assets/img/cornerstone.png" alt="Image" />
+                  </div>
+               </div><!-- /.row -->
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+               <h2>Lorem Ipsum dolor sit</h2>
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus nostrum, ratione quia. Accusamus quia cupiditate inventore iste commodi, possimus asperiores consequuntur facere nesciunt sequi error deserunt fugit pariatur, porro amet numquam necessitatibus officia dolorum molestias rem aspernatur, iusto suscipit? Eligendi quo vero quod commodi accusantium esse cum expedita et sit!
             </div>
          </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <iframe width="100%" height="200" src="https://www.youtube.com/embed/faCiZq1xtuU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img5.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img6.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img3.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img2.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img5.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="fusion-flip-boxes flip-boxes flip-effect-classic">
-            <div class="fusion-flip-box-wrapper">
-               <div class="fusion-flip-box flip-right">
-                  <div class="flip-box-inner-wrapper">
-                     <div class="flip-box-front">
-                        <div class="flip-box-front-inner">
-                           <img src="/frontend/assets/img/media/img2.jpg" class="img-responsive" alt="">
-                        </div>
-                     </div>
-                     <div class="flip-box-back">
-                        <div class="flip-box-back-inner">
-                           <h3 class="text-center flip-box-heading-back">Demo</h3>
-                           <h5 class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</h5>
-                           <a href="#" class="btn">Read More</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+      
       </div>
    </div>
 </div>

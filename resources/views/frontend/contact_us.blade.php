@@ -69,7 +69,7 @@
                <span>ExampleTrading LLC</span>
                </h3> -->
             <h3>
-               <a href="mailto:Info@abc.com"><i class="fa fa-envelope-o"></i>  Info@abc.com</a> 
+               <a href="mailto:Info@abc.com"><i class="fa fa-envelope-o"></i>  support@bettertrend.net</a> 
             </h3>
             <h3>
                <a href="#"><i class="fa fa-map-marker"></i>  ABC Rd, KS 66062</a>
