@@ -37,6 +37,9 @@ use App\School;
 use App\SchoolsNative;
 use App\VideoYoutube;
 use App\UserSubscription;
+use App\EmailSubscribe;
+use App\AppliedCoach;
+use App\User_access;
 use Mail;
 use Log;
 
@@ -323,84 +326,6 @@ class IndexController extends Controller
 		return view('frontend.thankyou_email', compact('title', 'message'));
 	}
 
-	// View Profile Page
-	public function profile()
-	{
-		$title = 'Profile';
-		if (Auth::check()) {
-	        $UserTbl = Auth::user();
-			return view('frontend.profile', compact('title', 'UserTbl'));
-		} else {
-			Session::put('url.intended', lang_url('profile'));
-			return redirect(lang_url('/'));
-		}
-	}
-
-	// Update Normal Profile
-	public function update_my_data(Request $request)
-	{
-		$monthFolder =  date('FY');
-		$user = Auth::user();
-		$first_name = $request->input('first_name');
-		$last_name = $request->input('last_name');
-		$phone = $request->input('phone');
-		$location = $request->input('location');
-		$password = $request->input('password');
-		$password2 = $request->input('password2');
-
-		if ($password != $password2) {
-			return redirect()->back()->with('error', 'Password and Confirm password does not match');
-		}
-		if ($password == '' && $password2 == '') {
-			$newPassword = $user->password;
-		} else {
-			$newPassword = bcrypt($password2);
-		}
-
-		$oldPic = $user->avatar;
-		if(Input::hasFile('profile_picture')) {
-			$file = Input::file('profile_picture');
-			$folder = 'storage/users/'.$monthFolder;
-			$path = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-			$newPicName = 'users'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
-			if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif') {
-				return redirect()->back()->with('error', 'Only Image Allowed');
-			}
-			$upload_success = Input::file('profile_picture')->move($folder, $newPicName);
-
-			if ($oldPic != 'users/default.png') {
-				$myFile = public_path().'/storage/'.$oldPic;
-				if(file_exists($myFile)){
-					unlink($myFile);
-				}
-			}
-
-			$fileName = $newPicName;
-		} else {
-			$fileName = $oldPic;
-		}
-
-		if (Auth::check()) {
-
-			$userUpdate = [
-				'name' => $first_name,
-				'last_name' => $last_name,
-				'phone' => $phone,
-				'location' => $location,
-				'password' => $newPassword,
-	            'avatar' => $fileName,
-		    ];
-		    
-	        $done = User::where('id', $user->id)->update($userUpdate);	
-
-			return redirect()->back()->with('message', 'Profile updated successfully');
-
-		} else {
-			return redirect(lang_url('/'));
-		}
-
-	}
-
 	// View all Prducts
 	public function products($type)
 	{
@@ -511,12 +436,17 @@ class IndexController extends Controller
 	public function contact_us_email(Request $request)
 	{
 		$admin = User::where('role_id', 1)->first();
+		$adminEmail = $admin->email;
+
 		$first_name = $request->first_name;
 		$last_name = $request->last_name;
+		$mobile_Number = $request->mobile_Number;
+		$subject = $request->subject;
 		$email = $request->email;
 		$message = $request->message;
 
-    	$msg_template = '
+        $subject = 'Better Trend Contact';
+    	$msg_templateAdmin = '
 		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
 			    	<h3>Contact: </h3>
 			    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
@@ -527,17 +457,30 @@ class IndexController extends Controller
 			    		<ul style="list-style: none;">
 			    			<li>First Name: '.$first_name.'</li>
 			    			<li>Last Name: '.$last_name.'</li>
+			    			<li>Mobile Number: '.$mobile_Number.'</li>
+			    			<li>Subject: '.$subject.'</li>
 			    			<li>Email: '.$email.'</li>
 			    			<li>Message: '.$message.'</li>
 			    		</ul>
 			    	</p>
 		    	</div>
 		    	';
+		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+		// Mail::send([], $data, function ($m) use($data) {
+  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+  //   	});
+    	$msg_templateUser = '
+    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+	    	<h3>Contact: </h3>
+	    	<h4 style="padding: 0 20px 0 0;">Hello '.$first_name.' '.$last_name.'! <br><br>
+	    	</h4>
+	    	<br>
+	    	<p>we received your Email and thank you to contact us and we usually response within 48 hours</p>
+    	</div>
+    	';
         
-        $content = $msg_template;
-        $subject = 'Contact';
+		$data = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
 
-		$data = array( 'email' => $admin->email, 'subject' => $subject, 'message' => $content);
 		// Mail::send([], $data, function ($m) use($data) {
   //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
   //   	});
@@ -592,9 +535,16 @@ class IndexController extends Controller
 	public function schools()
 	{
 		if (Auth::check()) {
-			$title = 'All Schools';
-	    	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
-			return view('frontend.schools', compact('title', 'schoolNative'));
+	    	$user = Auth::user();
+			$title = 'Purchased Schools';
+	        $my_subscriptions = DB::table('users_subscription')
+            ->join('schools_natives', 'users_subscription.id', '=', 'schools_natives.school_id')
+	    	->select('schools_natives.*', 'users_subscription.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status')
+	    	->where([['users_subscription.user_id', $user->id], ['schools_natives.status', 'active'], ['schools_natives.lang', $this->langCode]])
+            ->orderBy('users_subscription.id', 'DESC')
+            ->get();
+
+			return view('frontend.schools', compact('title', 'my_subscriptions'));
 		} else {
 			Session::put('url.intended', lang_url('schools'));
 			return redirect(lang_url('userlogin'));
@@ -602,23 +552,36 @@ class IndexController extends Controller
 	}
 
 	// Course Detail Page
-	public function school_detail($school_id)
+	public function school_detail($school_id, $subscriptions_id)
 	{
-    	// Single School
-    	$schoolNative = School::find($school_id)->schoolDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
-    	
-    	$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($school_id) {
-    		$query->where('school_id', $school_id);
-    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
-    	
-    	if (count($schoolNative) > 0) {
-	    	
-			$title = $schoolNative->name;
-			return view('frontend.school_detail', compact('title', 'schoolNative', 'courseNative'));
+		$user = Auth::user();
 
-    	} else {
+        $schoolAccess = DB::table('users_subscription')
+        ->join('schools', 'users_subscription.school_id', '=', 'schools.id')
+        ->join('schools_natives', 'schools.id', '=', 'schools_natives.school_id')
+    	->select('schools_natives.*', 'users_subscription.*', 'schools.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status', 'schools.id AS schoolID', 'schools.name AS schoolOriginalName')
+    	->where([['users_subscription.user_id', $user->id], ['users_subscription.id', $subscriptions_id], ['users_subscription.status', 'active'], ['schools.id', $school_id], ['schools_natives.school_id', $school_id], ['schools_natives.status', 'active'], ['schools_natives.lang', $this->langCode]])
+        ->first();
+
+		if ($schoolAccess) {
+    		// Single School
+	    	$schoolNative = School::find($school_id)->schoolDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
+	    	
+	    	$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($school_id) {
+	    		$query->where('school_id', $school_id);
+	    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+	    	
+	    	if (count($schoolNative) > 0) {
+		    	
+				$title = $schoolNative->name;
+				return view('frontend.school_detail', compact('title', 'schoolNative', 'courseNative'));
+
+	    	} else {
+				return redirect(lang_url('schools'));
+	    	}
+		} else {
 			return redirect(lang_url('schools'));
-    	}
+		}
 	}
 
 	// View Schools
@@ -649,6 +612,16 @@ class IndexController extends Controller
 	// Chapter Detail Page
 	public function chapter_detail($chapter_id)
 	{
+		$user = Auth::user();
+
+		// $chapterAccess = DB::table('videos')->where('chapter_id', $chapter_id)->orderBy('id', 'ASC')->first();
+
+    	// ->join('user_access', 'videos.id', '=', 'user_access.object_id')
+    	// ->select('videos.*', 'user_access.*', 'user_access.id AS subscription_id')
+    	// ->where([['videos.chapter_id', $chapter_id], ['user_access.user_id', $user->id], ['user_access.status', 'watched']])
+    	// ->get();
+
+		
 
 		// chapters of single course
 
@@ -779,6 +752,508 @@ class IndexController extends Controller
 		}
 
 	}
+
+
+	// View Profile Page
+	public function profile()
+	{
+		$title = 'Profile';
+		if (Auth::check()) {
+	        $UserTbl = Auth::user();
+			return view('frontend.profile', compact('title', 'UserTbl'));
+		} else {
+			Session::put('url.intended', lang_url('profile'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// Update  Profile
+	public function update_my_data(Request $request)
+	{
+		$monthFolder =  date('FY');
+		$user = Auth::user();
+		$first_name = $request->input('first_name');
+		$last_name = $request->input('last_name');
+		$phone = $request->input('phone');
+		$gender = $request->input('gender');
+		$dob = $request->input('dob');
+		$location = $request->input('location');
+		$password = $request->input('password');
+
+		if ($password == '') {
+			$newPassword = $user->password;
+		} else {
+			$newPassword = bcrypt($password);
+		}
+
+		$oldPic = $user->avatar;
+		if(Input::hasFile('profile_picture')) {
+			$file = Input::file('profile_picture');
+			$folder = 'storage/users/'.$monthFolder;
+			$path = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+			$newPicName = 'users'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+			if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif') {
+				return redirect()->back()->with('error', 'Only Image Allowed');
+			}
+			$upload_success = Input::file('profile_picture')->move($folder, $newPicName);
+
+			if ($oldPic != 'users/default.png') {
+				$myFile = public_path().'/storage/'.$oldPic;
+				if(file_exists($myFile)){
+					unlink($myFile);
+				}
+			}
+
+			$fileName = $newPicName;
+		} else {
+			$fileName = $oldPic;
+		}
+
+		if (Auth::check()) {
+
+			$userUpdate = [
+				'name' => $first_name,
+				'last_name' => $last_name,
+				'phone' => $phone,
+				'gender' => $gender,
+				'birth_date' => $dob,
+				'location' => $location,
+				'password' => $newPassword,
+	            'avatar' => $fileName,
+		    ];
+		    
+	        $done = User::where('id', $user->id)->update($userUpdate);	
+
+			return redirect()->back()->with('message', 'Profile updated successfully');
+
+		} else {
+			return redirect(lang_url('/'));
+		}
+
+	}
+
+	// View My Purchases Page
+	public function my_purchases()
+	{
+		$title = 'My Purchases';
+		if (Auth::check()) {
+	        $user = Auth::user();
+	        $all_purchases = Order::with('ProductsNative')->where('user_id', $user->id)->get();
+			return view('frontend.my_purchases', compact('title', 'all_purchases'));
+		} else {
+			Session::put('url.intended', lang_url('my_purchases'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// View My Subscription Page
+	public function my_subscriptions()
+	{
+		$title = 'My Subscriptions';
+		if (Auth::check()) {
+	        $user = Auth::user();
+	        $my_subscriptions = UserSubscription::where('user_id', $user->id)->get();
+			return view('frontend.my_subscriptions', compact('title', 'my_subscriptions'));
+		} else {
+			Session::put('url.intended', lang_url('my_subscriptions'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// View My Subscription Page
+	public function training_activities()
+	{
+		$title = 'My Training Activities';
+		if (Auth::check()) {
+	        $user = Auth::user();
+			return view('frontend.training_activities', compact('title'));
+		} else {
+			Session::put('url.intended', lang_url('training_activities'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// View Communication Contact Us
+	public function communication()
+	{
+		$title = 'Contact Help Support';
+		if (Auth::check()) {
+	        $user = Auth::user();
+			return view('frontend.communication', compact('title'));
+		} else {
+			Session::put('url.intended', lang_url('communication'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// Contact Us Email Section
+	public function communication_contact_us_email(Request $request)
+	{
+		$admin = User::where('role_id', 1)->first();
+		$adminEmail = $admin->email;
+		$subject = $request->subject;
+		$email = $request->email;
+		$message = $request->message;
+
+        $subject = 'Better Trend Contact';
+    	$msg_templateAdmin = '
+		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+			    	<h3>Contact: </h3>
+			    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
+			    		'.Auth::user()->name.' have sent a message through the Commnunication Form.
+			    		the details are below
+			    	</h4>
+			    	<p>
+			    		<ul style="list-style: none;">
+			    			<li>Email: '.$email.'</li>
+			    			<li>Subject: '.$subject.'</li>
+			    			<li>Message: '.$message.'</li>
+			    		</ul>
+			    	</p>
+		    	</div>
+		    	';
+		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+		// Mail::send([], $data, function ($m) use($data) {
+  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+  //   	});
+    	$msg_templateUser = '
+    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+	    	<h3>Contact: </h3>
+	    	<h4 style="padding: 0 20px 0 0;">Hello! <br><br></h4>
+	    	<br>
+	    	<p>we received your Email and thank you to contact us and we usually response within 48 hours</p>
+    	</div>
+    	';
+        
+		$data = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
+
+		// Mail::send([], $data, function ($m) use($data) {
+  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+  //   	});
+		return redirect()->back()->withInput()->with('message', 'Thank you for contacting us');
+	}
+
+	// Email Subscribe Form Submitted
+	public function email_subscribe_user(Request $request)
+	{
+		$email = $request->email;
+		$status = 'active';
+
+		$subscribed = [
+			'email' => $email,
+			'status' => $status,
+			'created_at' => Carbon::now()
+		];
+
+		if (filter_var($email, FILTER_VALIDATE_EMAIL) ) {
+			$emailFound = EmailSubscribe::where('email', $email)->first();
+			if ($emailFound) {
+				return redirect()->back()->withInput()->with('emailSubscriptionError', 'You have already subscribed');
+			} else {
+				$inserted = EmailSubscribe::insert($subscribed);
+
+				return redirect()->back()->withInput()->with('emailSubscriptionMessage', 'You have successfully subscribed');
+			}
+		} else {
+			return redirect()->back()->withInput()->with('emailSubscriptionError', 'Incorrect Email Address');
+		}
+
+	}
+
+	
+
+	// Apply to be a coach form
+	public function be_a_coach()
+	{
+		$title = 'Apply to be a coach';
+        $requestStatus = NULL;
+		if (Auth::check()) {
+	        $user = Auth::user();
+	        $foundRequest = AppliedCoach::where('user_id', $user->id)->first();
+	        if ($foundRequest) {
+	        	$requestStatus = $foundRequest->status;
+	        	if ($requestStatus != 'approve') {
+					return view('frontend.be_a_coach', compact('title', 'requestStatus'));
+	        	} else {
+					return redirect(lang_url('profile'));	
+	        	}
+	        } else {
+				return view('frontend.be_a_coach', compact('title', 'requestStatus'));
+	        }
+		} else {
+			Session::put('url.intended', lang_url('be_a_coach'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// be a coach request submit
+	public function be_a_coach_submit(Request $request)
+	{
+		$monthFolder =  date('FY');
+
+		$exp_attch = [];
+		$cert_attch = [];
+		$edu_attc = [];
+		$lic_attch = [];
+
+		if (Auth::check()) {
+
+			if(Input::hasFile('exp_attch')) {
+				$expfiles = Input::file('exp_attch');
+				foreach ($expfiles as $key => $expfile) {
+
+					$originalName = $expfile->getClientOriginalName();
+
+					$folder = 'storage/applied-coach/'.$monthFolder;
+					$path = pathinfo($expfile->getClientOriginalName(), PATHINFO_EXTENSION);
+					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					}
+
+					if ($expfile->getSize() > 11140000) {
+						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					}
+
+					$upload_success = $expfile->move($folder, $newPicName);
+					if (count($upload_success) === 1) {
+						$newUpload = [
+							'download_link' => $newPicName,
+							'original_name' => $originalName
+						];
+						array_push($exp_attch, json_encode($newUpload));
+					}
+				}
+				$exp_attch = '['.implode(",",$exp_attch).']';
+			} else {
+				$exp_attch = '[]';
+			}
+
+			if(Input::hasFile('cert_attch')) {
+				$certfiles = Input::file('cert_attch');
+				foreach ($certfiles as $key => $certfile) {
+
+					$originalName = $certfile->getClientOriginalName();
+
+					$folder = 'storage/applied-coach/'.$monthFolder;
+					$path = pathinfo($certfile->getClientOriginalName(), PATHINFO_EXTENSION);
+					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					}
+
+					if ($certfile->getSize() > 11140000) {
+						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					}
+
+					$upload_success = $certfile->move($folder, $newPicName);
+					if (count($upload_success) === 1) {
+						$newUpload = [
+							'download_link' => $newPicName,
+							'original_name' => $originalName
+						];
+						array_push($cert_attch, json_encode($newUpload));
+					}
+				}
+				$cert_attch = '['.implode(",",$cert_attch).']';
+			} else {
+				$cert_attch = '[]';
+			}
+
+			if(Input::hasFile('edu_attc')) {
+				$edufiles = Input::file('edu_attc');
+				foreach ($edufiles as $key => $edufile) {
+
+					$originalName = $edufile->getClientOriginalName();
+
+					$folder = 'storage/applied-coach/'.$monthFolder;
+					$path = pathinfo($edufile->getClientOriginalName(), PATHINFO_EXTENSION);
+					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					}
+
+					if ($edufile->getSize() > 11140000) {
+						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					}
+
+					$upload_success = $edufile->move($folder, $newPicName);
+					if (count($upload_success) === 1) {
+						$newUpload = [
+							'download_link' => $newPicName,
+							'original_name' => $originalName
+						];
+						array_push($edu_attc, json_encode($newUpload));
+					}
+				}
+				$edu_attc = '['.implode(",",$edu_attc).']';
+			} else {
+				$edu_attc = '[]';
+			}
+
+			if(Input::hasFile('lic_attch')) {
+				$licfiles = Input::file('lic_attch');
+				foreach ($licfiles as $key => $licfiles) {
+
+					$originalName = $licfiles->getClientOriginalName();
+
+					$folder = 'storage/applied-coach/'.$monthFolder;
+					$path = pathinfo($licfiles->getClientOriginalName(), PATHINFO_EXTENSION);
+					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					}
+
+					if ($licfiles->getSize() > 11140000) {
+						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					}
+
+					$upload_success = $licfiles->move($folder, $newPicName);
+					if (count($upload_success) === 1) {
+						$newUpload = [
+							'download_link' => $newPicName,
+							'original_name' => $originalName
+						];
+						array_push($lic_attch, json_encode($newUpload));
+					}
+				}
+				$lic_attch = '['.implode(",",$lic_attch).']';
+			} else {
+				$lic_attch = '[]';
+			}
+
+			$admin = User::where('role_id', 1)->first();
+			$adminEmail = $admin->email;
+
+	        $user_id = Auth::user()->id;
+	        $name = $request->name;
+	        $phone = $request->phone;
+	        $email = $request->email;
+	        $experience = $request->experience;
+	        $certificates = $request->certificates;
+	        $education = $request->education;
+	        $training_license = $request->training_license;
+	        $about_coach = $request->about_coach;
+	        $status = 'pending';
+
+	        $updateRequestedCoach = [
+	        	'user_id' => $user_id,
+	        	'name' => $name,
+	        	'phone' => $phone,
+	        	'email' => $email,
+	        	'experience' => $experience,
+	        	'exp_attch' => $exp_attch,
+	        	'certificates' => $certificates,
+	        	'cert_attch' => $cert_attch,
+	        	'education' => $education,
+	        	'edu_attc' => $edu_attc,
+	        	'training_license' => $training_license,
+	        	'lic_attch' => $lic_attch,
+	        	'about_coach' => $about_coach,
+	        	'status' => $status,
+				'created_at' => Carbon::now()
+	        ];
+
+    		$subject = 'Request to be a Coach - Better Trend';
+
+	        $foundRequest = AppliedCoach::where('user_id', $user_id)->first();
+	        if ($foundRequest) {
+	        	if ($foundRequest->status == 'cancel') {
+	        		$updated = AppliedCoach::where('id', $foundRequest->id)->update($updateRequestedCoach);
+	        		
+    		    	$msg_templateAdmin = '
+    				    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+    					    	<h3>Contact: </h3>
+    					    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
+    					    		'.$name.' ('.$email.') again sent a request to be a coach.
+    					    		the details are below
+    					    	</h4>
+    					    	<p>
+    					    		<ul style="list-style: none;">
+    					    			<li>Name: '.$name.'</li>
+    					    			<li>Mobile Number: '.$phone.'</li>
+    					    			<li>Email: '.$email.'</li>
+    					    			<li>About user: '.$about_coach.'</li>
+    					    		</ul>
+    					    	</p>
+    				    	</div>
+    				    	';
+    				$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+    				// Mail::send([], $data, function ($m) use($data) {
+    		  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    		  //   	});
+
+					return redirect(lang_url('profile'))->with('message', 'Your request has been sent again successfully');
+	        	} else {
+					return redirect()->back();
+	        	}
+	        } else {
+	        		$inserted = AppliedCoach::insert($updateRequestedCoach);
+
+    		    	$msg_templateAdmin = '
+    				    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+    					    	<h3>Contact: </h3>
+    					    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
+    					    		'.$name.' ('.$email.') have sent a request to be a coach.
+    					    		the details are below
+    					    	</h4>
+    					    	<p>
+    					    		<ul style="list-style: none;">
+    					    			<li>Name: '.$name.'</li>
+    					    			<li>Mobile Number: '.$phone.'</li>
+    					    			<li>Email: '.$email.'</li>
+    					    			<li>About user: '.$about_coach.'</li>
+    					    		</ul>
+    					    	</p>
+    				    	</div>
+    				    	';
+    				$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+    				// Mail::send([], $data, function ($m) use($data) {
+    		  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    		  //   	});
+					return redirect(lang_url('profile'))->with('message', 'Thank you for your interest to be a coach. Your request has been sent successfully!');
+	        }
+		} else {
+			Session::put('url.intended', lang_url('be_a_coach'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+
+	// Update Video Watched by user
+	public function updatevideowatched(Request $request)
+	{
+		$user_id = $request->user_id;
+		$object_id = $request->video_id;
+		$object_type = 'video';
+		$status = 'watched';
+
+		$insertAccess = [
+			'user_id' => $user_id,
+			'object_id' => $object_id,
+			'object_type' => $object_type,
+			'status' => $status,
+		    'created_at' => Carbon::now()
+		];
+		$alreadyWatched = User_access::where([['user_id', $user_id], ['object_id', $object_id], ['object_type', $object_type]])->first();
+		
+
+		if (count($alreadyWatched) > 0) {
+			return 0;
+		} else {
+			$alreadyWatched = User_access::insert($insertAccess);
+			return 1;
+		}
+	}
+
+
+	
+
+
+	
+
+
+	
 
 	
 

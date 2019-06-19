@@ -13,7 +13,7 @@
       </div>
       <div class="row">
          <div class="col-12">
-            <h1 class="text-center"><span class="blue_color">All Coaches</h1>
+            <h1 class="text-center"><span class="blue_color">All Coaches </span></h1>
                <ul class="list-unstyled">
                   <?php if ($allUsers): ?>
                      <?php foreach ($allUsers as $key => $coach): ?>

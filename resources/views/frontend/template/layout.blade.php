@@ -24,28 +24,42 @@
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/raleway.css">
       <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css'>
       <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css'>
+      <link rel='stylesheet' href='/frontend/assets/css/plyr.css'>
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/style.css">
       <?php if ($direction == 'rtl'): ?>
          <link rel="stylesheet" type="text/css" href="/frontend/assets/css/rtl/style.css">
       <?php endif ?>
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/custom.css">
    </head>
+   <!--Start of Tawk.to Script-->
+   <script type="text/javascript">
+   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+   (function(){
+   var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+   s1.async=true;
+   s1.src='https://embed.tawk.to/5d009929b534676f32ae799d/default';
+   s1.charset='UTF-8';
+   s1.setAttribute('crossorigin','*');
+   s0.parentNode.insertBefore(s1,s0);
+   })();
+   </script>
+   <!--End of Tawk.to Script-->
    <body class="join-page">
       <div class="body-wrapper">
          <div id="side-menu" class="side-menu">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
             <nav class="main-menu" aria-label="Main Menu">
                <ul id="menu-front-end" class="menu">
-                  <!-- <li>
-                     <a href="{{ lang_url('') }}">
-                     <span class="menu-text">@t('Features')</span>
-                     </a>
-                  </li> -->
                   <li class="language_change">
                      <select class="selectpicker" data-width="fit">
                         <option value="en" data-content='<span class="flag-icon flag-icon-us"></span> English' <?= (Request::locale() == 'en') ? 'selected': NULL; ?> >English</option>
                         <option value="ar" data-content='<span class="flag-icon flag-icon-sa"></span> Arabic' <?= (Request::locale() == 'ar') ? 'selected': NULL; ?>>Arabic</option>
                      </select>
+                  </li>
+                  <li>
+                     <a href="{{ lang_url('/') }}">
+                     <span class="menu-text">@t('Homepage')</span>
+                     </a>
                   </li>
                   <li>
                      <a href="{{ lang_url('plans_pricing') }}">
@@ -58,45 +72,20 @@
                      </a>
                   </li>
                   <li>
-                     @if (Auth::check())
-                        <a href="{{ lang_url('logout_frontend') }}">
-                        <span class="menu-text">@t('LogOut')</span>
-                        </a>
-                     @else
-                        <a href="{{ lang_url('userlogin') }}">
-                        <span class="menu-text">@t('LogIn')</span>
-                        </a>
-                     @endif
-                  </li>
-                  <li>
-                     <a href="{{ lang_url('/') }}">
-                     <span class="menu-text">@t('Homepage')</span>
+                     <a href="{{ lang_url('profile') }}">
+                     <span class="menu-text">{{ Auth::check() ? Auth::user()->name : t('Customer Gate') }}</span>
                      </a>
                   </li>
-                  <li>
-                     <a href="{{ lang_url('schools') }}">
-                     <span class="menu-text">@t('Online School')</span>
-                     </a>
-                  </li>
-                  @if (Auth::check())
                   <li>
                      <a href="{{ lang_url('coaches') }}">
                      <span class="menu-text">@t('Coaches')</span>
                      </a>
                   </li>
-                  @endif
                   <li>
                      <a href="{{ lang_url('about') }}">
                      <span class="menu-text">@t('About')</span>
                      </a>
                   </li>
-                  @if (Auth::check())
-                  <li>
-                     <a href="{{ lang_url('profile') }}">
-                     <span class="menu-text">@t('Profile')</span>
-                     </a>
-                  </li>
-                  @endif
                   <li class="dropdown">
                      <a href="{{ lang_url('media') }}">
                         <span class="menu-text">@t('Media')</span>
@@ -154,6 +143,27 @@
                               <a href="{{ lang_url('contact_us') }}">@t('Contact Us')</a>
                            </p>
                            <p>@t('Copyright 2019-2020 ')</p>
+                           @if(session()->has('emailSubscriptionError'))
+                           <div class="alert alert-red w-50" style="margin:0 auto;">
+                              <ul class="list-unstyled mb-0">
+                                 <li class="text-white">{!! session()->get('emailSubscriptionError') !!}</li>
+                              </ul>
+                           </div>
+                           @endif
+                           @if(session()->has('emailSubscriptionMessage'))
+                           <div class="alert alert-blue w-50" style="margin:0 auto;">
+                              <ul class="list-unstyled mb-0">
+                                 <li class="text-white">{!! session()->get('emailSubscriptionMessage') !!}</li>
+                              </ul>
+                           </div>
+                           @endif
+                           <form action="{{ lang_url('email_subscribe_user') }}" method="POST">
+                              <p class="d-inline-block">
+                                 @csrf
+                                 <input name="email" class="form-control w-100 d-inline mb-2" type="email" placeholder="example@example.com" value="{{ old('email') }}" required />
+                                 <button class="btn btn-primary" type="submit">Subscribe</button>
+                              </p>
+                           </form>
                            <p>@t('All Rights Reserved | XYZ Rd Ste 999, Dumy')</p>
                         </div>
                      </div>
@@ -169,6 +179,7 @@
       <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js'></script>
       <script src="/frontend/assets/js/app.js"></script>
       <script src="/frontend/assets/js/custom.js"></script>
+      @stack('scripts')
       <script> 
         $(document).ready(function() {
 

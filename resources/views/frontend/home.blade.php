@@ -34,22 +34,22 @@
       </div>
    </div>
    <div class="row">
-      <div class="offset-md-4 col-md-4 text-center">
-         <div class="elegant-dual-button">
+      <div class="col-12 text-center">
+         <div class="elegant-dual-button elegant-dual-button-homepage">
             <div class="first-btn">
                <a class="btn" href="{{ lang_url('plans_pricing') }}">See Plans &amp; Pricing</a>
             </div>
-            <div class="middle-or">
+            <!-- <div class="middle-or">
                <span>OR</span>
-            </div>
+            </div> -->
          </div>
-         <div class="elegant-dual-button">
+         <!-- <div class="elegant-dual-button">
             <div class="last-btn">
                <a class="btn" href="{{ lang_url('') }}">
                <span>Start A 14 Day Trial</span>
                </a>
             </div>
-         </div>
+         </div> -->
       </div>
    </div>
 </div>

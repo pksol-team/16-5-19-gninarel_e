@@ -1602,11 +1602,17 @@ form.searchform button:hover {
 
 .profile-form input {
   border: 2px #41a161 solid;
-  height: 50px;
-  border-radius: 51px;
+  height: 40px;
   background: transparent;
-  padding: 0 26px;
-  text-transform: capitalize;
+  padding: 0 18px;
+}
+
+.profile-form select {
+  border: 2px #41a161 solid;
+  border: 2px #41a161 solid;
+  height: 40px;
+  background: transparent;
+  padding: 0 18px;
 }
 
 .profile-form label {
@@ -1940,7 +1946,7 @@ hr.thank_you_sep-shadow {
 }
 
 .profile-form input.file-upload {
-    padding: 9px 23px;
+    padding: 3px 25px;
 }
 
 li.language_change {

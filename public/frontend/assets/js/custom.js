@@ -41,6 +41,18 @@ jQuery(document).ready(function($) {
    });
 
 
-   
   
 });
+  $('.chooseFileLicense').bind('change', function (e) {
+    var filename = $(this).val();
+    var parent = $(this).parent().parent('.file-upload');
+    var sibling = $(this).siblings('.file-select-name');
+     if (/^\s*$/.test(filename)) {
+       Parent.removeClass('active');
+       sibling.text("No file chosen..."); 
+     }
+     else {
+       parent.addClass('active');
+       sibling.text(filename.replace("C:\\fakepath\\", "")); 
+     }
+   });

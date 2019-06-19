@@ -94,7 +94,7 @@ MultiLang::routeGroup(function($router) {
 		Route::get('/schools', 'Frontend\IndexController@schools');
 
 		//View courses Page 
-		Route::get('/schools/{school_id}/view', 'Frontend\IndexController@school_detail');
+		Route::get('/schools/{school_id}/{subscriptions_id}/view/', 'Frontend\IndexController@school_detail');
 
 		//Course Detail Page
 		Route::get('/chapters/{chapter_id}/view', 'Frontend\IndexController@chapter_detail');
@@ -117,11 +117,35 @@ MultiLang::routeGroup(function($router) {
 		//Buy Plan for School Final
 		Route::post('/buy_plan_school', 'Frontend\IndexController@buy_plan_school');
 
+		// My all purchases
+		Route::get('/all_purchases', 'Frontend\IndexController@my_purchases');
+
+		// My all subscriptions
+		Route::get('/all_subscriptions', 'Frontend\IndexController@my_subscriptions');
+
+		// Apply to be a coach form
+		Route::get('/be_a_coach', 'Frontend\IndexController@be_a_coach');
+
+		// be a coach request submit
+		Route::post('/be_a_coach_submit', 'Frontend\IndexController@be_a_coach_submit');
+
+		// Training Activities
+		Route::get('/training_activities', 'Frontend\IndexController@training_activities');
+
+		// View Communication Contact Us
+		Route::get('/communication', 'Frontend\IndexController@communication');
+
+		// Contact Us post request from communication page
+		Route::post('/communication_contact_us_email', 'Frontend\IndexController@communication_contact_us_email');
+
+		// Email Subscribe by visitor or user
+		Route::post('/email_subscribe_user', 'Frontend\IndexController@email_subscribe_user');
+
+		// Email Subscribe by visitor or user
+		Route::post('/updatevideowatched', 'Frontend\IndexController@updatevideowatched');
+
 		
 		
-
-
-
 	});
 
 });

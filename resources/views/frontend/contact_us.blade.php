@@ -33,19 +33,37 @@
           @endif
             <div class="row contact-form">
                <div class="form-group col-md-6 col-lg-6">
-                  <label for="first_name">First Name</label>
+                  <label for="first_name">First Name <span>*</span></label>
                   <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" required>
                </div>
                <div class="form-group col-md-6 col-lg-6">
-                  <label for="last_name">Last Name</label>
+                  <label for="last_name">Last Name <span>*</span></label>
                   <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" required>
                </div>
                <div class="form-group col-lg-12 col-md-12">
-                  <label for="email">Email address</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                  <label for="email">Mobile Number <span>*</span></label>
+                  <input type="text" class="form-control" id="mobile_Number" name="mobile_Number" placeholder="Enter mobile number" required>
                </div>
                <div class="form-group col-lg-12 col-md-12">
-                  <label for="message">Message</label>
+                  <label for="subject">Subject <span>*</span></label>
+                  <select class="form-control" name="subject" id="subject">
+                    <option value="" hidden>Subject</option>
+                    <option value="Technical support">Technical support</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Complaint">Complaint</option>
+                    <option value="Suggestions">Suggestions</option>
+                    <option value="Special">Special</option>
+                    <option value="request">request</option>
+                    <option value="others">others</option>
+                  </select>
+               </div>
+               <div class="form-group col-lg-12 col-md-12">
+                  <label for="email">Email address <span>*</span></label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+               </div>
+
+               <div class="form-group col-lg-12 col-md-12">
+                  <label for="message">Message <span>*</span></label>
                   <textarea class="form-control" rows="5" id="message" name="message" required></textarea>
                </div>
                <button type="submit" class="btn btn-primary">Submit</button>
