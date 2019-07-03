@@ -1,3 +1,4 @@
+<?php use Illuminate\Support\Facades\DB; ?>
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop
 @section('content')
@@ -40,31 +41,82 @@
                   <th>Title</th>
                   <th>Location</th>
                   <th>Activity Start Date</th>
-                  <th>Hour/Day</th>
+                  <th>Days</th>
+                  <th>Hours</th>
                   <th>Price</th>
                   <th>Total</th>
                   <th>Paid</th>
+                  <th>Total Registerd</th>
                   <th>Status</th>
                   <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>12-3-2019</td>
-                <td>Course/Training Room/Consultants training/Cooperative Courses/Others/Private Courses</td>
-                <td>Online/Offsite</td>
-                <td>Title</td>
-                <td>Online/Hotel/Institution/Other</td>
-                <td>20-3-2019</td>
-                <td>1/20</td>
-                <td>$20000</td>
-                <td>$12390000</td>
-                <td>$50</td>
-                <td>Finish/Open Registration/Inprogress/Cancelled/Delayed/Closed Registration/On hold</td>
-                <td>
-                  <a href="{{ lang_url('') }}"><button class="btn btn-default"> View Details</button></a>
-                </td>
-              </tr>
+              <?php if (count($training_activities) > 0): ?>
+                <?php foreach ($training_activities as $key => $training_activity): ?>
+                
+                  <tr>
+                    <td>
+                       <?php 
+
+                         $dt = new DateTime($training_activity->enroll_date);
+                         echo $dt->format('d-m-Y');
+
+                      ?>
+                    </td>
+                    <td>{{ ucwords(str_replace('_', ' ', $training_activity->type)) }}</td>
+                    <!-- <td>Training Room/Training Consultant/Coperative Courses/Others/Private Courses</td> -->
+                    <td>{{ $training_activity->classification }}</td>
+                    <!-- <td>Online/Offsite</td> -->
+                    <td>{{ $training_activity->name }}</td>
+                    <td>{{ $training_activity->location }}</td>
+                    <!-- <td>Online/Hotel/Other/Institution</td> -->
+                    <td>
+                      <?php 
+
+                        $dt = new DateTime($training_activity->start_date);
+                         echo $dt->format('d-m-Y');
+
+                     ?>
+                    </td>
+                    <td>{{ $training_activity->days }}</td>
+                    <td>{{ $training_activity->hours }}</td>
+                    <td>
+                      <?php 
+
+                          $coperativeActivity = DB::table('course_subscriptions')
+                          ->join('courses', 'course_subscriptions.course_id', '=', 'courses.id')
+                          ->select('course_subscriptions.*', 'courses.*')
+                          ->where([['courses.type', $training_activity->type], ['course_subscriptions.status', 'active']])
+                          ->groupBy('course_subscriptions.user_id')
+                          ->get();
+
+                      ?>
+                      <?php if ($training_activity->type == 'cooperative_courses'): ?>
+                        
+                          <div class='text-success'><b> {{ $training_activity->price/count($coperativeActivity) }} </b></div>
+
+                      <?php else: ?>
+                        {{ $training_activity->price }}
+                      <?php endif ?>
+                    </td>
+                    <td>{{ $training_activity->enroll_price }}</td>
+                    <td>{{ $training_activity->paid }}</td>
+                    <td>{{ count($coperativeActivity) }}</td>
+                    <td>{{ ucwords(str_replace('_', ' ', $training_activity->course_enroll_status)) }}</td>
+
+                    <!-- <td>Finish/Open Registration/Inprogress/Cancelled/Delayed/Closed Registration/On hold</td> -->
+                    <td>
+                      <a href="{{ lang_url($training_activity->subscriptionID.'/activity_detail') }}"><button class="btn btn-default"> View Details</button></a>
+                    </td>
+                  </tr>
+
+                <?php endforeach ?>
+              <?php else: ?>
+                <tr>
+                  <td colspan="50">You have not enrolled in any course yet</td>
+                </tr>
+              <?php endif ?>
             </tbody>
           </table>
         </div>

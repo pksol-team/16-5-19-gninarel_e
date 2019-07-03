@@ -54,10 +54,10 @@
                   <label for="last_name">Last Name <span>*</span></label>
                   <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" value="{{ Auth::user()->last_name }}" required>
                </div> -->
-               <!-- <div class="form-group col-lg-12 col-md-12">
+               <div class="form-group col-lg-12 col-md-12">
                   <label for="email">Mobile Number <span>*</span></label>
                   <input type="text" class="form-control" id="mobile_Number" value="{{ Auth::user()->phone }}" name="mobile_Number" placeholder="Enter mobile number" required>
-               </div> -->
+               </div>
                <div class="form-group col-lg-12 col-md-12">
                   <label for="subject">Subject <span>*</span></label>
                   <select class="form-control" name="subject" id="subject" required>

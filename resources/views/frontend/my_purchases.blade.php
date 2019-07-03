@@ -48,7 +48,14 @@
                   <?php foreach ($all_purchases as $key => $purchase): ?>
                    
                    <tr>
-                       <td>{{ $purchase->created_at }}</td>
+                       <td>
+                         <?php 
+
+                           $dt = new DateTime($purchase->created_at);
+                           echo $dt->format('d-m-Y');
+
+                        ?>
+                       </td>
                        <td>{{ $purchase->ProductsNative->name }}</td>
                        <td>{{ $purchase->total_price }}</td>
                        <td><a href=""><button class="btn btn-default"> View Details</button></a></td>

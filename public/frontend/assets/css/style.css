@@ -1649,7 +1649,10 @@ form#loginform label {
 }
 
 form#loginform input {
-  padding: 20px;
+  padding: 0 20px;
+}
+form#loginform input#wp-submit {
+  padding: 10px 20px;
 }
 
 p.login-submit {
@@ -2090,6 +2093,45 @@ li.videos_design_li {
   border-radius: 15px;
   background-color: #f0f1f4;
 }
+
+/*Activity Detail Page*/
+
+.activity-detail table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.activity-detail td, .activity-detail th {
+  border: 1px solid #000;
+  text-align: left;
+  padding: 15px;
+}
+
+.activity-detail tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.activity-detail-one table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.activity-detail-one td, .activity-detail-one th {
+  text-align: left;
+  padding: 8px 8px 0px 8px;
+}
+
+table.activity-detail, table.activity-detail-one {
+  margin: 30px auto;
+}
+
+table.activity-detail-one{
+ margin: 30px 0; 
+}
+
+
 
 /***************************************************** Responsive *********************************************/
 @media all and (max-width: 1460px) {

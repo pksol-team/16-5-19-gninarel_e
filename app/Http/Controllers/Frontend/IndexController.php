@@ -40,6 +40,14 @@ use App\UserSubscription;
 use App\EmailSubscribe;
 use App\AppliedCoach;
 use App\User_access;
+use App\Comment;
+use App\VideoResume;
+use App\Exams;
+use App\TestQuestion;
+use App\TestAnswer;
+use App\UserAnswer;
+use App\TestResult;
+use App\UserLoginDetail;
 use Mail;
 use Log;
 
@@ -95,12 +103,36 @@ class IndexController extends Controller
 		if ($userGet) {
 			$passwordchecked = $userGet->password;
 			if (Hash::check($password, $passwordchecked)) {
-				Auth::attempt(['email' => $email, 'password' => $password]);
-				if (session()->has('url.intended')) {
-					return redirect()->intended();
+				if ($userGet->status == 'active') {
+					Auth::attempt(['email' => $email, 'password' => $password]);
+					
+					$userAgent = $request->header('User-Agent');
+					$loginUser = Auth::user();
+
+					$userLoginDetail = UserLoginDetail::where([['email', $loginUser->email], ['user_agent', $userAgent]])->first();
+					if (!$userLoginDetail) {
+						$loginDetailCount = UserLoginDetail::where([['email', $loginUser->email]])->count();
+						$status = 'saved';
+						if ($loginDetailCount >= 2) {
+							$status = 'new';
+						}
+						$insertLoginDetail = [
+							'email' => $loginUser->email,
+							'user_agent' => $userAgent,
+							'status' => $status,
+						    'created_at' => Carbon::now()
+						];
+						UserLoginDetail::insert($insertLoginDetail);
+					}
+
+					if (session()->has('url.intended')) {
+						return redirect()->intended();
+					} else {
+						$request->session()->forget('url.intended');
+						return redirect(lang_url(''));
+					}
 				} else {
-					$request->session()->forget('url.intended');
-					return redirect(lang_url(''));
+					return redirect()->back()->withInput()->with('error', 'You account is locked for some reason! kindly contact Support team');
 				}
 			}
 			else{
@@ -146,6 +178,7 @@ class IndexController extends Controller
 		    'email' => $email,
 		    'phone' => $phone,
 		    'password' => bcrypt($password),
+		    'status' => 'active',
 		    'settings' => '{"locale":"en"}',
 		    'created_at' => Carbon::now()
 		];
@@ -538,7 +571,7 @@ class IndexController extends Controller
 	    	$user = Auth::user();
 			$title = 'Purchased Schools';
 	        $my_subscriptions = DB::table('users_subscription')
-            ->join('schools_natives', 'users_subscription.id', '=', 'schools_natives.school_id')
+            ->join('schools_natives', 'users_subscription.school_id', '=', 'schools_natives.school_id')
 	    	->select('schools_natives.*', 'users_subscription.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status')
 	    	->where([['users_subscription.user_id', $user->id], ['schools_natives.status', 'active'], ['schools_natives.lang', $this->langCode]])
             ->orderBy('users_subscription.id', 'DESC')
@@ -554,33 +587,39 @@ class IndexController extends Controller
 	// Course Detail Page
 	public function school_detail($school_id, $subscriptions_id)
 	{
-		$user = Auth::user();
+		if (Auth::check()) {
 
-        $schoolAccess = DB::table('users_subscription')
-        ->join('schools', 'users_subscription.school_id', '=', 'schools.id')
-        ->join('schools_natives', 'schools.id', '=', 'schools_natives.school_id')
-    	->select('schools_natives.*', 'users_subscription.*', 'schools.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status', 'schools.id AS schoolID', 'schools.name AS schoolOriginalName')
-    	->where([['users_subscription.user_id', $user->id], ['users_subscription.id', $subscriptions_id], ['users_subscription.status', 'active'], ['schools.id', $school_id], ['schools_natives.school_id', $school_id], ['schools_natives.status', 'active'], ['schools_natives.lang', $this->langCode]])
-        ->first();
+			$user = Auth::user();
 
-		if ($schoolAccess) {
-    		// Single School
-	    	$schoolNative = School::find($school_id)->schoolDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
-	    	
-	    	$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($school_id) {
-	    		$query->where('school_id', $school_id);
-	    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
-	    	
-	    	if (count($schoolNative) > 0) {
+	        $schoolAccess = DB::table('users_subscription')
+	        ->join('schools', 'users_subscription.school_id', '=', 'schools.id')
+	        ->join('schools_natives', 'schools.id', '=', 'schools_natives.school_id')
+	    	->select('schools_natives.*', 'users_subscription.*', 'schools.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status', 'schools.id AS schoolID', 'schools.name AS schoolOriginalName')
+	    	->where([['users_subscription.user_id', $user->id], ['users_subscription.id', $subscriptions_id], ['users_subscription.status', 'active'], ['schools.id', $school_id], ['schools_natives.school_id', $school_id], ['schools_natives.status', 'active'], ['schools_natives.lang', $this->langCode]])
+	        ->first();
+
+			if ($schoolAccess) {
+	    		// Single School
+		    	$schoolNative = School::find($school_id)->schoolDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
 		    	
-				$title = $schoolNative->name;
-				return view('frontend.school_detail', compact('title', 'schoolNative', 'courseNative'));
+		    	$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($school_id) {
+		    		$query->where('school_id', $school_id);
+		    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+		    	
+		    	if (count($schoolNative) > 0) {
+			    	
+					$title = $schoolNative->name;
+					return view('frontend.school_detail', compact('title', 'schoolNative', 'courseNative'));
 
-	    	} else {
+		    	} else {
+					return redirect(lang_url('schools'));
+		    	}
+			} else {
 				return redirect(lang_url('schools'));
-	    	}
+			}
 		} else {
-			return redirect(lang_url('schools'));
+			Session::put('url.intended', lang_url('schools/'.$school_id.'/'.$subscriptions_id.'/view'));
+			return redirect(lang_url('userlogin'));
 		}
 	}
 
@@ -612,28 +651,25 @@ class IndexController extends Controller
 	// Chapter Detail Page
 	public function chapter_detail($chapter_id)
 	{
-		$user = Auth::user();
+		if (Auth::check()) {
+			$userAgent = $_SERVER['HTTP_USER_AGENT'];
 
-		// $chapterAccess = DB::table('videos')->where('chapter_id', $chapter_id)->orderBy('id', 'ASC')->first();
+			//chapters of single course
 
-    	// ->join('user_access', 'videos.id', '=', 'user_access.object_id')
-    	// ->select('videos.*', 'user_access.*', 'user_access.id AS subscription_id')
-    	// ->where([['videos.chapter_id', $chapter_id], ['user_access.user_id', $user->id], ['user_access.status', 'watched']])
-    	// ->get();
+	    	$chapter = Chapter::find($chapter_id)->chapterDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
 
-		
+	    	if (count($chapter) > 0) {
+		    	
+				$title = $chapter->name;
+				return view('frontend.chapter_detail', compact('title', 'chapter', 'userAgent'));
 
-		// chapters of single course
-
-    	$chapter = Chapter::find($chapter_id)->chapterDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
-
-    	if (count($chapter) > 0) {
-	    	
-			$title = $chapter->name;
-			return view('frontend.chapter_detail', compact('title', 'chapter'));
+	    	} else {
+				return redirect(lang_url('courses'));
+	    	}
 
     	} else {
-			return redirect(lang_url('courses'));
+			Session::put('url.intended', lang_url('profile'));
+			return redirect(lang_url('chapters/'.$chapter_id.'/view'));
     	}
 	}
 
@@ -791,7 +827,7 @@ class IndexController extends Controller
 			$file = Input::file('profile_picture');
 			$folder = 'storage/users/'.$monthFolder;
 			$path = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-			$newPicName = 'users'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+			$newPicName = 'users'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
 			if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif') {
 				return redirect()->back()->with('error', 'Only Image Allowed');
 			}
@@ -860,18 +896,57 @@ class IndexController extends Controller
 		}
 	}
 
-	// View My Subscription Page
+	// View My Training Activities Page
 	public function training_activities()
 	{
 		$title = 'My Training Activities';
+		$langCode = $this->langCode;
 		if (Auth::check()) {
 	        $user = Auth::user();
-			return view('frontend.training_activities', compact('title'));
+
+	        $training_activities = DB::table('course_subscriptions')
+            ->join('courses', 'course_subscriptions.course_id', '=', 'courses.id')
+            ->join('courses_natives', 'courses.id', '=', 'courses_natives.course_id')
+	    	->select('course_subscriptions.*', 'courses.*', 'courses_natives.*', 'course_subscriptions.id AS subscriptionID')
+	    	->where([['course_subscriptions.user_id', Auth::user()->id], ['course_subscriptions.status', 'active'], ['courses_natives.lang', $this->langCode]])
+            ->orderBy('course_subscriptions.id', 'DESC')
+            ->get();
+
+
+			return view('frontend.training_activities', compact('title', 'training_activities', 'langCode'));
 		} else {
 			Session::put('url.intended', lang_url('training_activities'));
 			return redirect(lang_url('userlogin'));
 		}
 	}
+
+	// View My Training Activities Detail Page
+	public function activity_detail($subscription_id)
+	{
+		$title = 'Activity Detail';
+		if (Auth::check()) {
+	        $user = Auth::user();
+
+	     $training_activity = DB::table('course_subscriptions')
+            ->join('courses', 'course_subscriptions.course_id', '=', 'courses.id')
+            ->join('courses_natives', 'courses.id', '=', 'courses_natives.course_id')
+	    	->select('course_subscriptions.*', 'courses.*', 'courses_natives.*', 'course_subscriptions.id AS subscriptionID')
+	    	->where([['course_subscriptions.id', $subscription_id], ['course_subscriptions.user_id', Auth::user()->id], ['course_subscriptions.status', 'active'], ['courses_natives.lang', $this->langCode]])
+            ->first();
+
+            if ($training_activity) {
+				return view('frontend.activity_detail', compact('title', 'training_activity'));
+            } else {
+				return redirect(lang_url('training_activities'));
+            }
+
+
+		} else {
+			Session::put('url.intended', lang_url($subscription_id.'activity_detail'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
 
 	// View Communication Contact Us
 	public function communication()
@@ -890,6 +965,7 @@ class IndexController extends Controller
 	public function communication_contact_us_email(Request $request)
 	{
 		$admin = User::where('role_id', 1)->first();
+		$mobile_Number = $admin->mobile_Number;
 		$adminEmail = $admin->email;
 		$subject = $request->subject;
 		$email = $request->email;
@@ -906,6 +982,7 @@ class IndexController extends Controller
 			    	<p>
 			    		<ul style="list-style: none;">
 			    			<li>Email: '.$email.'</li>
+			    			<li>Mobile Number: '.$mobile_Number.'</li>
 			    			<li>Subject: '.$subject.'</li>
 			    			<li>Message: '.$message.'</li>
 			    		</ul>
@@ -1225,26 +1302,365 @@ class IndexController extends Controller
 	{
 		$user_id = $request->user_id;
 		$object_id = $request->video_id;
-		$object_type = 'video';
-		$status = 'watched';
+		$next_video_id = (int)$request->next_video_id;
+		$total_videos = (int)$request->total_videos;
+		$chapter_id = $request->chapter_id;
+
+
+		$object_typeVideo = 'video';
+		$statusVideo = 'watched';
+		$object_typeChapter = 'chapter';
+		$statusChapter = 'completed';
 
 		$insertAccess = [
 			'user_id' => $user_id,
 			'object_id' => $object_id,
-			'object_type' => $object_type,
-			'status' => $status,
+			'object_type' => $object_typeVideo,
+			'status' => $statusVideo,
 		    'created_at' => Carbon::now()
 		];
-		$alreadyWatched = User_access::where([['user_id', $user_id], ['object_id', $object_id], ['object_type', $object_type]])->first();
+
+		$insertChapterAccess = [
+			'user_id' => $user_id,
+			'object_id' => $chapter_id,
+			'object_type' => $object_typeChapter,
+			'status' => $statusChapter,
+		    'created_at' => Carbon::now()
+		];
+
 		
+		$alreadyWatched = User_access::where([['user_id', $user_id], ['object_id', $object_id], ['object_type', $object_typeVideo]])->first();
 
 		if (count($alreadyWatched) > 0) {
+			// video already watch return 0 (do nothing)
 			return 0;
 		} else {
-			$alreadyWatched = User_access::insert($insertAccess);
-			return 1;
+
+			$videoAccessInserted = User_access::insert($insertAccess);
+
+			if ($videoAccessInserted) {
+				
+				$watchedvideoCount = User_access::where([['user_id', $user_id], ['object_type', $object_typeVideo]])->count();
+
+				// last video of chapter
+				// if (count($watchedvideoCount) == $total_videos) {
+				if ($next_video_id == 0 ) {
+					
+					$chapterAccessInserted = User_access::insert($insertChapterAccess);
+					
+					// return 1 (record inserted in database)
+					return 1;
+
+				} else {
+
+					$videoNative = VideoNative::where([['id', $next_video_id], ['lang', Request::locale()], ['status', 'active']])->first();
+					
+					// return next video
+					$decodedVideo = json_decode($videoNative->video_upload);
+
+					if (count($decodedVideo) > 0) {
+						return '\\public\storage\\'.$decodedVideo[0]->download_link;
+					} else {
+						return 0;
+					}
+
+				}
+			}
 		}
 	}
+
+	// insert comment of video in database 
+	public function submit_comment(Request $request){	
+
+		$parentID = 0;
+
+		if($request->has('parent_id')) {
+			$parentID = $request->parent_id;
+		}
+
+		$newComment = [
+			'comment' => $request->current_user_comment,
+			'video_id' => $request->video_id,
+			'user_id' => $request->user_id,
+			'parent_id' => $parentID,
+			'status' => 'active',
+			'created_at' => Carbon::now()
+		];
+
+		$commentInserted = DB::table('comments')->insertGetId($newComment);
+
+		if ($commentInserted) {
+			if ($parentID == 0) {
+				return $commentInserted;
+			} else {
+				return $parentID;
+			}
+		} else {
+			return NULL;
+		}
+	}
+
+
+	// video resume check
+	public function videoStartsFrom(Request $request)
+	{
+
+		$videonative_id = $request->videonative_id;
+		$user_id = $request->user_id;
+		$haveResume = VideoResume::where([['video_id', $videonative_id], ['user_id', $user_id]])->orderBy('id', 'DESC')->first();
+
+		if ($haveResume) {
+			return $haveResume->time;
+		} else {
+			return NULL;
+		}
+	}
+
+	// after video ended delete record of resume
+	public function deleteVideoTime(Request $request)
+	{
+		$videonative_id = $request->videonative_id;
+		$user_id = $request->user_id;
+		$foundVideo = VideoResume::where([['video_id', $videonative_id], ['user_id', $user_id]])->first();
+		if ($foundVideo) {
+			VideoResume::where([['video_id', $videonative_id], ['user_id', $user_id]])->delete();
+		}
+	}
+
+	// insert video time where to resume in db
+	public function InsertVideoTime(Request $request)
+	{
+		$video_id = $request->videonative_id;
+		$user_id = $request->user_id;
+		$time = $request->ResumeTime;
+		
+		$newTime = [
+			'video_id' => $video_id,
+			'user_id' => $user_id,
+			'time' => $time,
+		    'created_at' => Carbon::now()
+		];
+
+		$foundVideo = VideoResume::where([['video_id', $video_id], ['user_id', $user_id]])->first();
+		if ($foundVideo) {
+			VideoResume::where([['video_id', $video_id], ['user_id', $user_id]])->update($newTime);
+		} else {
+			VideoResume::insert($newTime);
+		}
+	}
+
+	// chapter start after video complete
+	public function chapter_test($chapter_id)
+	{
+		$title = 'Chapter Test';
+		if (Auth::check()) {
+			$chapter_native = ChaptersNative::where('id', $chapter_id)->first();
+			$allVideosWatched = User_access::where([['user_id', Auth::user()->id], ['object_id', $chapter_native->chapter_id], ['object_type', 'chapter'], ['status', 'completed']])->first();
+
+			if ($allVideosWatched) {
+
+		        $user = Auth::user();
+		        $chapter = ChaptersNative::where('id', $chapter_id)->first();
+
+		        $chapterExamQuestions = DB::table('exam')
+	            ->join('test_questions', 'exam.id', '=', 'test_questions.exam_id')
+	            ->join('test_answers', 'test_questions.id', '=', 'test_answers.question_id')
+		    	->select('exam.*', 'test_questions.*', 'test_answers.*', 'test_answers.id AS test_answers_id')
+		    	->where([['exam.chapter_id', $chapter_id], ['exam.status', 'active'], ['test_questions.question_status', 'active']])
+	            ->inRandomOrder()
+	            ->get();
+
+				return view('frontend.chapter_test', compact('title', 'chapter', 'chapterExamQuestions'));
+
+			}
+		} else {
+			Session::put('url.intended', lang_url('chapters/'.$chapter_id.'/test/serve'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	// test answer insert in db with ajax
+	public function test_answer(Request $request)
+	{
+		$user_id = $request->user_id;
+		$exam_id = $request->exam_id;
+		$question_id = $request->question_id;
+		$answer_by_user = $request->answer;
+		$remainingQuestions = (int)$request->remainingQuestions;
+		$initPercentage = $request->initPercentage;
+		$min_passing = $request->min_passing;
+		$chapter_native_id = $request->chapter_native_id;
+		$answer_status = FALSE;
+
+		$ansCheck = TestAnswer::where('question_id', $question_id)->first();
+
+		if ($ansCheck->correct_answer == $answer_by_user) {
+			$answer_status = TRUE;
+		}
+
+		$insertAnswer = [
+			'exam_id' => $exam_id,
+			'user_id' => $user_id,
+			'question_id' => $question_id,
+			'answer_by_user' => $answer_by_user,
+			'answer_status' => $answer_status,
+		    'created_at' => Carbon::now()
+		];
+
+		$answerInserted = UserAnswer::insert($insertAnswer);
+		if ($answerInserted) {
+
+			$percentage = '10';
+
+			if ($answer_status == TRUE) {
+				$initPercentage = (int)$initPercentage + (int)$percentage;
+			} 
+
+			if ((int)$min_passing <= (int)$initPercentage ) {
+			 	$overall_result = 'Passed';
+			} else {
+			 	$overall_result = 'Not Passed';
+			}
+
+			if ($remainingQuestions == 0) {
+
+				$insertResult = [
+					'exam_id' => $exam_id,
+					'user_id' => $user_id,
+					'percentage' => $initPercentage,
+					'result' => $overall_result,
+				    'created_at' => Carbon::now()
+				];
+				$resultInserted = TestResult::insert($insertResult);
+
+				if ($resultInserted) {
+
+					$insertChapterAccess = [
+						'user_id' => $user_id,
+						'object_id' => $chapter_native_id,
+						'object_type' => 'test',
+						'status' => $overall_result,
+					    'created_at' => Carbon::now()
+					];
+
+					$chapterAccessInserted = User_access::insert($insertChapterAccess);
+				}
+				
+			}
+
+			$result = [
+				'percentage' => $initPercentage,
+				'result' => $overall_result,
+
+			];
+
+			return $result;
+		}
+	}
+
+	
+	public function all_tests()
+	{
+		$title = 'All Tests';
+		if (Auth::check()) {
+			$allTests = TestResult::with('exam')->where('user_id', Auth::user()->id)->get();
+			return view('frontend.all_tests', compact('title', 'allTests'));
+		} else {
+			Session::put('url.intended', lang_url('all_tests'));
+			return redirect(lang_url('userlogin'));
+		}
+	}
+
+	public function events()
+	{
+		$title = 'Events';
+
+		$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) {
+    		$query->where('school_id', NULL);
+    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+
+		return view('frontend.all_events', compact('title', 'courseNative'));
+	}
+
+	public function enroll_course(Request $request)
+	{
+		if (Auth::check()) {
+
+			$title = 'Enroll in Course';
+			$courses_native_id = (int)$request->courses_native_id;
+
+			$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) {
+	    		$query->where('school_id', NULL);
+	    	})->where([['id', $courses_native_id], ['lang', $this->langCode], ['status', 'active']])->first();
+
+
+	    	if (count($courseNative) > 0) {
+	    		if ($courseNative->course_enroll_status != 'finish' && $courseNative->course_enroll_status != 'cancelled' && $courseNative->course_enroll_status != 'closed' && $courseNative->course_enroll_status != 'on_hold') {
+					return view('frontend.enroll_in_course', compact('title', 'courseNative'));
+	    		} else {
+
+					return redirect(lang_url('all_events'));
+	    		}
+	    	} else {
+				return redirect(lang_url('all_events'));
+	    	}
+    	} else {
+			Session::put('url.intended', lang_url('events'));
+			return redirect(lang_url('userlogin'));
+		}
+
+	}
+
+	// Enroll in course form
+	public function enroll_form(Request $request)
+	{
+		$user = Auth::user();
+		$course_id = $request->input('course_id');
+		$user_id = $request->input('user_id');
+		$first_name = $request->input('first_name');
+		$last_name = $request->input('last_name');
+		$user_address = $request->input('user_address');
+		$paid = $request->input('paid');
+
+		// Start Payment Process
+		// 
+
+		// 
+		// End Payment Process
+
+		$enrollCourse = [
+			'user_id' => $user->id,
+			'course_id' => $course_id,
+			'paid' => $paid,
+			'enroll_date' => Carbon::now(),
+			'status' => 'active',
+			'created_at' => Carbon::now(),
+		];
+
+		$enrolledCourse = DB::table('course_subscriptions')->insert($enrollCourse);
+
+		if ($enrolledCourse) {
+			return redirect(lang_url('thank_you'));
+		} else {
+			return redirect(lang_url('events'));
+		}
+
+
+	}
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 
 
 	

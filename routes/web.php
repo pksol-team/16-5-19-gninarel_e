@@ -132,6 +132,9 @@ MultiLang::routeGroup(function($router) {
 		// Training Activities
 		Route::get('/training_activities', 'Frontend\IndexController@training_activities');
 
+		// Training Activities Detail Page
+		Route::get('/{subscription_id}/activity_detail', 'Frontend\IndexController@activity_detail');
+
 		// View Communication Contact Us
 		Route::get('/communication', 'Frontend\IndexController@communication');
 
@@ -143,6 +146,39 @@ MultiLang::routeGroup(function($router) {
 
 		// Email Subscribe by visitor or user
 		Route::post('/updatevideowatched', 'Frontend\IndexController@updatevideowatched');
+
+		// comment on Video
+		Route::post('/submit_comment', 'Frontend\IndexController@submit_comment');
+
+		// video starts from
+		Route::post('/videoStartsFrom', 'Frontend\IndexController@videoStartsFrom');
+
+		// Add/Update Video Time
+		Route::post('/InsertVideoTime', 'Frontend\IndexController@InsertVideoTime');
+
+		// Delete Video Time
+		Route::post('/deleteVideoTime', 'Frontend\IndexController@deleteVideoTime');
+
+		// chapter test
+		Route::get('/chapters/{chapter_id}/test/serve', 'Frontend\IndexController@chapter_test');
+
+		// chapter test attempt by user (Answers)
+		Route::post('/test_answer', 'Frontend\IndexController@test_answer');
+
+		// All Given test results by user
+		Route::get('/all_tests', 'Frontend\IndexController@all_tests');
+
+		// All Events
+		Route::get('/events', 'Frontend\IndexController@events');
+
+		// Enroll in Course form page
+		Route::post('/enroll_course', 'Frontend\IndexController@enroll_course');
+
+		// Enroll in Course form page submit
+		Route::post('/enroll_form', 'Frontend\IndexController@enroll_form');
+
+		
+
 
 		
 		

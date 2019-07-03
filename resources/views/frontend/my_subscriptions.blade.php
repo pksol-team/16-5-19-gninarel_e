@@ -49,8 +49,22 @@
                 <?php if ($my_subscriptions): ?>
                   <?php foreach ($my_subscriptions as $key => $subscriptions): ?>
                    <tr>
-                       <td>{{ $subscriptions->package_start_date }}</td>
-                       <td>{{ $subscriptions->package_end_date }}</td>
+                       <td>
+                         <?php 
+
+                           $dt = new DateTime($subscriptions->package_start_date);
+                           echo $dt->format('d-m-Y');
+
+                        ?>
+                       </td>
+                       <td>
+                          <?php 
+
+                            $dt = new DateTime($subscriptions->package_end_date);
+                            echo $dt->format('d-m-Y');
+
+                         ?>
+                       </td>
                        <td>
                         <?php
                           if ($subscriptions->package_name != 'Gold') {

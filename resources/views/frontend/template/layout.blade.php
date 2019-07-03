@@ -32,7 +32,7 @@
       <link rel="stylesheet" type="text/css" href="/frontend/assets/css/custom.css">
    </head>
    <!--Start of Tawk.to Script-->
-   <script type="text/javascript">
+   <!-- <script type="text/javascript">
    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
    (function(){
    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -42,7 +42,7 @@
    s1.setAttribute('crossorigin','*');
    s0.parentNode.insertBefore(s1,s0);
    })();
-   </script>
+   </script> -->
    <!--End of Tawk.to Script-->
    <body class="join-page">
       <div class="body-wrapper">
@@ -66,11 +66,11 @@
                      <span class="menu-text">@t('Plans and Pricing')</span>
                      </a>
                   </li>
-                  <li>
-                     <a href="{{ lang_url('podcasts') }}">
-                     <span class="menu-text">@t('Podcast')</span>
+                  <!-- <li>
+                     <a href="{{ lang_url('events') }}">
+                     <span class="menu-text">@t('Events')</span>
                      </a>
-                  </li>
+                  </li> -->
                   <li>
                      <a href="{{ lang_url('profile') }}">
                      <span class="menu-text">{{ Auth::check() ? Auth::user()->name : t('Customer Gate') }}</span>
@@ -95,7 +95,7 @@
                      <a href="#">
                         <span>@t('Events')</span>
                         <ul class="dropdown-content">
-                           <li><a href="">@t('Online Courses & Events')</a></li>
+                           <li><a href="{{ lang_url('events') }}">@t('Online Courses & Events')</a></li>
                            <li><a href="">@t('Live Training Room')</a></li>
                            <li><a href="">@t('Private Online Sessions')</a></li>
                            <li><a href="">@t('Off Site Courses & Events')</a></li>
@@ -105,14 +105,9 @@
                   <li class="dropdown">
                      <a href="#">
                         <span>@t('Services & Products')</span>
-                        <ul class="dropdown-content">
-                               <ul class="dropdown-content">
-                                  <li><a href="">@t('Online Courses & Events')</a></li>
-                                  <li><a href="">@t('Live Training Room')</a></li>
-                                  <li><a href="">@t('Private Online Sessions')</a></li>
-                                  <li><a href="">@t('Off Site Courses & Events')</a></li>
-                               </ul>   
-                           </a></li>
+                        <ul class="dropdown-content">   
+                           </a>
+                        </li>
                            <li><a href="{{ lang_url('products/book') }}">@t('Books')</a></li>
                            <li><a href="{{ lang_url('products/tool') }}">@t('Tools')</a></li>
                            <li><a href="{{ lang_url('allschools') }}">@t('Schools')</a></li>

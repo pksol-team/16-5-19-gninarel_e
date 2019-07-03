@@ -4,6 +4,9 @@
    use App\CategoryNative;
    use App\VideoNative;
    use App\User_access;
+   use App\TestResult;
+   use App\Exams;
+
 ?>
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop
@@ -77,6 +80,7 @@
                                            <th>Chapters</th>
                                            <th>Hours</th>
                                            <th>Status</th>
+                                           <th>Test Status</th>
                                            <th>&nbsp;</th>
                                        </tr>
                                    </thead>
@@ -97,10 +101,27 @@
                                             <td>
                                               <?php 
                                                 $watched = User_access::where([['user_id', Auth::user()->id], ['object_type', 'chapter'], ['object_id', $chapter->chapters->id], ['status', 'completed']])->first();
+
+                                                $haveExam = Exams::where([['chapter_id', $chapter->id], ['status', 'active']])->first();
+                                                
+                                                $testTaken = User_access::where([['user_id', Auth::user()->id], ['object_type', 'test'], ['object_id', $chapter->id], ['status', 'Passed']])->first();
                                                 if ($watched) {
-                                                  echo 'Watched';
-                                                  $last_watched = 1;
+                                                  if ($haveExam) {
+                                                    if ($testTaken) {
+                                                      echo 'Watched';
+                                                      $last_watched = 1;
+                                                    } else {
+                                                      echo 'In Progress';
+                                                    }
+
+                                                  } else {
+                                                    echo 'Watched';
+                                                    $last_watched = 1;
+                                                  }
+                                                  
+
                                                 } else {
+
                                                   if ($last_watched === 1) {
                                                     echo 'In Progress';
                                                     $last_watched = NULL;
@@ -114,20 +135,73 @@
                                                 }
                                                ?>
                                             </td>
+                                            <td>
+                                              <?php 
+                                                $chapter_native_id = $chapter->id;
+                                                $testTaken = TestResult::with('exam')->whereHas('exam', function ($query) use ($chapter_native_id) {
+                                                  $query->where('chapter_id', $chapter_native_id);
+                                                })->where([['user_id', Auth::user()->id]])->orderBy('percentage', 'DESC')->first();
+
+                                              ?>
+                                              <?php if ($testTaken): ?>
+                                                <span class="{{ $testTaken->result == 'Passed' ? 'text-success': 'text-danger' }}">{{ $testTaken->result }}</span>
+                                              <?php else: ?>
+                                                <span class="text-dark">Not taken</span>
+                                              <?php endif ?>
+                                            </td>
                                             <?php if ($key == 0): ?>
                                               <td><a href="{{ lang_url('chapters/'.$chapter->chapters->id.'/view') }}"><button class="btn btn-default"> View Details</button></a></td>
                                             <?php else: ?>
+
                                               <?php 
                                                 $videoNative = User_access::where([['user_id', Auth::user()->id], ['object_type', 'chapter'], ['object_id', $last_chapter_id], ['status', 'completed']])->first();
                                               ?>
+
                                               <?php if ($videoNative): ?>
-                                                <td><a href="{{ lang_url('chapters/'.$chapter->chapters->id.'/view') }}"><button class="btn btn-default"> View Details</button></a></td>
+
+                                                <?php 
+                                                  //check exam min pass is 0 or not if 0 then next chapter opens without attempting test
+                                                  $checkMinPass = Exams::where([['chapter_id', $last_chapter_Native_id], ['status', 'active']])->first(); ?>
+
+                                                  <?php if ($checkMinPass): ?>
+
+                                                    <?php if ($checkMinPass->min_pass == '0'): ?>
+
+                                                      <td><a href="{{ lang_url('chapters/'.$chapter->chapters->id.'/view') }}"><button class="btn btn-default"> View Details</button></a></td>
+
+                                                    <?php else: ?>
+
+                                                       <?php $userPassed = User_access::where([['user_id', Auth::user()->id], ['object_type', 'test'], ['object_id', $last_chapter_Native_id], ['status', 'Passed']])->first();
+                                                      ?>
+
+                                                      <?php if ($userPassed): ?>
+
+                                                        <td><a href="{{ lang_url('chapters/'.$chapter->chapters->id.'/view') }}"><button class="btn btn-default"> View Details</button></a></td>
+
+                                                      <?php else: ?>
+
+                                                       <td><button class="btn btn-default" disabled> View Details</button></td>
+
+                                                      <?php endif ?>
+
+                                                    <?php endif ?>
+
+                                                  <?php else: ?>
+
+                                                    <td><a href="{{ lang_url('chapters/'.$chapter->chapters->id.'/view') }}"><button class="btn btn-default"> View Details</button></a></td>
+
+                                                  <?php endif ?>
+
                                               <?php else: ?>
+
                                                  <td><button class="btn btn-default" disabled> View Details</button></td>
+
                                               <?php endif ?>
+
                                             <?php endif ?>
                                          </tr>
                                       <?php $last_chapter_id = $chapter->chapter_id; ?>
+                                      <?php $last_chapter_Native_id = $chapter->id; ?>
 
                                        <?php  endforeach ?>
                                     <?php endif ?>

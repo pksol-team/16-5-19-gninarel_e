@@ -230,3 +230,109 @@ div.alert-blue {
 }
 
 /************************************** End Be a Coach ********************************/
+
+
+.comment_reply_button {
+    background: none;
+    color: #3f4bda;
+    padding: 0;
+    margin-bottom: 6px;
+}
+
+.comment_reply_button:hover {
+    text-decoration: underline;
+    color: #0d1898;
+}
+
+.video_comments_box{
+    overflow-y: scroll;
+    height: 265px;
+    background: #e0f1e6;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 18px;
+}
+
+
+
+
+
+
+#altcontainer {
+    background-color: #fff;
+    font-size: 120%;
+    line-height: 1.7em;
+}
+.radiocontainer {
+    background-color: #f1f1f1;
+    display: block;
+    position: relative;
+    padding: 10px 10px 10px 50px;
+    margin-bottom: 1px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    word-wrap: break-word;
+}
+.radiocontainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkmark {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    height: 19px;
+    width: 19px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+.checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+#answerbuttoncontainer {
+    position: relative;
+    padding: 20px 0;
+}
+
+.radiocontainer:hover {
+    background-color: #ddd;
+}
+
+.checkedlabel {
+  background-color:#ddd;
+}
+
+.radiocontainer input:checked ~ .checkmark {
+    background-color: #41a161;
+}
+
+.radiocontainer input:checked ~ .checkmark::after {
+    display: block;
+}
+
+.radiocontainer .checkmark::after {
+    top: 6px;
+    left: 6px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+}
+
+.question_loader_lg {
+    display: none;
+    position: relative;
+    top: 200px;
+    left: 46%;
+}
+
+.test_complete_result {
+    display: none;
+}
