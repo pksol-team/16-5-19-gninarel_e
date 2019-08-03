@@ -1,37 +1,66 @@
+
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop
 @section('content')
-<div class="main-top-resources">
-   <a href="#" class="resp-menu" onclick="openNav()">☰</a>
-   <div class="you_need">
-      <div class="row">
-         <div class="offset-md-4 col-md-4">
-            <div class="our_logo">
-               <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt=""></a>
+  <!-- Start main-content -->
+  <div class="main-content">
+       <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/frontend/_assets/images/breadcrumb-bg.png">
+      <div class="container pt-70 pb-20">
+        <!-- Section Content -->
+        <div class="section-content">
+          <div class="row">
+            <div class="col-md-12">
+                <ol class="breadcrumb text-right text-black mb-0 mt-40">
+                    <li><a href="{{ lang_url('') }}">الصفحة الرئيسية</a></li>
+                    <li class="active text-gray-silver">عن الأتجاه الأفضل</li>
+                    <li class="active text-gray-silver">تعريف</li>
+                </ol>
+                <h2 class="title text-white">عن الأتجاه الأفضل</h2>
             </div>
-         </div>
+          </div>
+        </div>
       </div>
-      <div class="row">
-         <div class="offset-md-2 col-md-8">
-            <h1 class="text-center"><span>{{ $schoolNative->name }}</span></h1>
-            <div class="img-forex">
-               <img src="\public\storage\{{ $schoolNative->image }}" alt="{{ $schoolNative->name }}">
-            </div>
-            <div class="book-detail">
-               <h3 class="mb-2"><strong>School Description:</strong></h3>
-              {!! $schoolNative->description !!}
-            </div>
-            <div>
-               <div class="row mt-3">
-                  <div class="col-12 p-0">
-                     <a class="" href="{{ lang_url('plans_pricing') }}">
-                        <button class="btn btn-success w-100">Enroll in</button>
-                     </a>
-                  </div><!-- /.col-4 -->
-               </div><!-- /.row -->
-            </div>
-         </div>
+    </section>
+    <!-- Divider: about -->
+    <section class="divider">
+      <div class="container">
+        
+
+        <div class="separator separator-rounedd"></div>    
+
+        <div class="main-top-resources">
+           <a href="#" class="resp-menu" onclick="openNav()">☰</a>
+           <div class="you_need">
+              <div class="row">
+                 <div class="offset-md-2 col-md-8">
+                    <h2 class="text-center"><span>{{ $schoolNative->name }}</span></h2>
+                    <div class="img-forex">
+                       <img width="80%" src="\public\storage\{{ $schoolNative->image }}" alt="{{ $schoolNative->name }}">
+                    </div>
+                    <div class="book-detail">
+                       <h3 class="mb-2"><strong>School Description:</strong></h3>
+                      {!! $schoolNative->description !!}
+                    </div>
+                    <div>
+                       <div class="row mt-3">
+                          <div class="col-xs-12 p-0">
+                             <a class="" href="{{ lang_url('plans_pricing') }}">
+                                <button class="btn btn-success w-100">Enroll in</button>
+                             </a>
+                          </div><!-- /.col-4 -->
+                       </div><!-- /.row -->
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>  
+
       </div>
-   </div>
-</div>
-@stop
+
+    </section>
+
+  </div>
+
+  <!-- end main-content -->
+  @stop

@@ -1,0 +1,22 @@
+[22-May-2019 07:33:42 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[30-May-2019 08:55:58 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[30-May-2019 08:57:13 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[30-May-2019 08:57:51 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[03-Jun-2019 08:21:29 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[03-Jul-2019 11:03:07 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[03-Jul-2019 11:03:22 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[06-Jul-2019 08:26:21 UTC] PHP Parse error:  syntax error, unexpected '=' in /home2/clickhos/public_html/elearning/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 380
+[20-Jul-2019 10:37:08 UTC] PHP Fatal error:  Out of memory (allocated 4194304) (tried to allocate 65536 bytes) in /home2/clickhos/public_html/elearning/vendor/composer/ClassLoader.php on line 444
+[20-Jul-2019 10:39:03 UTC] PHP Fatal error:  Out of memory (allocated 2097152) (tried to allocate 4096 bytes) in /home2/clickhos/public_html/elearning/vendor/composer/autoload_static.php on line 4281
+[20-Jul-2019 10:45:43 UTC] PHP Fatal error:  Out of memory (allocated 8388608) (tried to allocate 32768 bytes) in /home2/clickhos/public_html/elearning/app/Http/Controllers/Frontend/IndexController.php on line 1469
+[26-Jul-2019 05:55:00 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 06:14:18 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 06:14:18 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 06:22:01 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home2/clickhos/public_html/elearning/vendor/tcg/voyager/src/Http/Controllers/VoyagerUserController.php on line 4
+[26-Jul-2019 07:44:17 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 07:46:24 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 08:07:13 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 08:11:49 UTC] PHP Fatal error:  Class 'TCG\Voyager\Models\User' not found in /home2/clickhos/public_html/elearning/app/User.php on line 9
+[26-Jul-2019 14:16:49 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home2/clickhos/public_html/elearning/vendor/tcg/voyager/src/Http/Controllers/VoyagerUserController.php on line 4
+[26-Jul-2019 14:17:55 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home2/clickhos/public_html/elearning/vendor/tcg/voyager/src/Http/Controllers/VoyagerBaseController.php on line 3
+[26-Jul-2019 14:18:18 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in /home2/clickhos/public_html/elearning/vendor/tcg/voyager/src/Http/Controllers/Controller.php on line 3

@@ -23,6 +23,9 @@ MultiLang::routeGroup(function($router) {
 		// login user
 		Route::get('/userlogin', 'Frontend\IndexController@login');
 
+		//All listings
+		Route::get('/listings', 'Frontend\IndexController@listings');
+
 		// Login Check
 		Route::post('/login_check', 'Frontend\IndexController@login_check');
 
@@ -38,15 +41,26 @@ MultiLang::routeGroup(function($router) {
 		//forgot Password
 		Route::get('/forgot_password', 'Frontend\IndexController@forgot_password');
 		Route::post('/forgot_send_email', 'Frontend\IndexController@forgot_send_email');
+		Route::get('/enter_new_password/{GUID}', 'Frontend\IndexController@enter_new_password');
+		Route::post('/forgot_reset_password', 'Frontend\IndexController@forgot_reset_password');
 
 		//profile update page
 		Route::get('/profile', 'Frontend\IndexController@profile');
+
+		// Coach Profile view Page
+		Route::get('/coach_profile/{user_id}', 'Frontend\IndexController@coach_profile');
 
 		//profile update request
 		Route::post('/update_my_data', 'Frontend\IndexController@update_my_data');
 
 		//Product Listings
 		Route::get('/products/{type}', 'Frontend\IndexController@products');
+
+		//Tools Product
+		Route::get('/tools', 'Frontend\IndexController@tools');
+
+		// BOoks Product
+		Route::get('/books', 'Frontend\IndexController@books');
 
 		//Product Detail Page
 		Route::get('/product/{product_id}/view', 'Frontend\IndexController@product_detail');
@@ -171,14 +185,37 @@ MultiLang::routeGroup(function($router) {
 		// All Events
 		Route::get('/events', 'Frontend\IndexController@events');
 
+		// Event Detail
+		Route::get('/events/{id}', 'Frontend\IndexController@eventDetail');
+
 		// Enroll in Course form page
-		Route::post('/enroll_course', 'Frontend\IndexController@enroll_course');
+		Route::get('{course_id}/enroll_course', 'Frontend\IndexController@enroll_course');
 
 		// Enroll in Course form page submit
 		Route::post('/enroll_form', 'Frontend\IndexController@enroll_form');
 
-		
+		// payment of course enroll
+		Route::get('/{coursed_id}/payment_course/{subscriptions_id}', 'Frontend\IndexController@payment_course');
 
+		// input coupen check Ajax
+		Route::post('/coupenCheck', 'Frontend\IndexController@coupenCheck');
+
+		// Payment of course 
+		Route::post('/enroll_course_payment', 'Frontend\IndexController@enroll_course_payment');
+
+		// Change language of backend
+		Route::post('/changLangAdminPanel', 'Frontend\IndexController@changLangAdminPanel');
+
+		// dropdown select change ajax
+		Route::post('/dropdownFieldSelect', 'Frontend\IndexController@dropdownFieldSelect');
+
+		// Admin route (Get Notifications)
+		Route::post('/getnotifications', 'Frontend\IndexController@getNotifications');
+
+		// Admin route (Read Notification)
+		Route::post('/read_notification', 'Frontend\IndexController@read_notification');
+
+		
 
 		
 		

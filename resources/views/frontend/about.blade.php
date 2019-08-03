@@ -1,46 +1,191 @@
 @extends('frontend.template.layout')
+
+
+
+
+
+
+
 @section('title') <?= $title; ?> @stop
+
+
+
+
+
+
+
 @section('content')
-<div class="main-top-resources">
-   <a href="#" class="resp-menu" onclick="openNav()">☰</a>
-   <div class="you_need">
-      <div class="row">
-         <div class="offset-md-4 col-md-4">
-            <div class="our_logo">
-               <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt=""></a>
+
+
+
+
+
+
+
+  <!-- Start main-content -->
+
+  <div class="main-content">
+
+       <!-- Section: inner-header -->
+
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/frontend/_assets/images/breadcrumb-bg.png">
+
+      <div class="container pt-70 pb-20">
+
+        <!-- Section Content -->
+
+        <div class="section-content">
+
+          <div class="row">
+
+            <div class="col-md-12">
+
+                <ol class="breadcrumb text-right text-black mb-0 mt-40">
+
+                    <li><a href="{{ lang_url('') }}">الصفحة الرئيسية</a></li>
+
+                    <li class="active text-gray-silver">عن الأتجاه الأفضل</li>
+
+                    <li class="active text-gray-silver">تعريف</li>
+
+                </ol>
+
+                <h2 class="title text-white">عن الأتجاه الأفضل</h2>
+
             </div>
-         </div>
+
+          </div>
+
+        </div>
+
       </div>
-      <div class="row">
-         <div class="offset-md-2 col-md-8">
-            <h1 class="text-center"><span  class="blue_color">ABOUT&nbsp;</span><span>US</span></h1>
-            <img src="/frontend/assets/img/media/img8.jpg" alt="">
-            <p>From the very beginning, the team at ExampleTrading set out to radically change the way we interact with traders. We wanted to make sure that each and everyone of our clients receives the absolute best we have to offer.</p>
-            <p>There are many pieces to the trading puzzle, and for the first time ever, we’re able to deliver everything you need through one incredible platform. </p>
-            <p>Gone are the days of having to purchase multiple training course to make sure you have access to all the information you need. With your TierONE membership you’ll have unfiltered access to every course we deliver through our platform.</p>
-            <p>To date we’ve developed 5 separate training courses so you can start with the absolute basics and then gradually work your way up to more advanced concepts like Fibonacci ratio analysis, trading psychology, money management, and more. Each course has been broken up into modules that contain topic specific lessons, making it easy for you to work at your own pace, track your progress, and focus on the information that is important to you.</p>
-            <p>And if that weren’t enough…our goal is to make sure you’re always equipped with the latest information, therefore, your TierONE membership will also include any and all new content added to the platform. We already have new courses and content in development and these will all be made available to you at no additional cost! </p>
-         </div>
-      </div>
-      <div class="row">
-         <div class="offset-md-4 col-md-4 text-center">
-            <div class="elegant-dual-button">
-               <div class="first-btn">
-                  <a class="btn" href="plans-pricing.html">See Plans &amp; Pricing</a>
-               </div>
-               <div class="middle-or">
-                  <span>OR</span>
-               </div>
+
+    </section>
+
+      
+
+    <!-- Divider: about -->
+
+    <section class="divider">
+
+      <div class="container">
+
+        <div class="row pt-30 rtl">
+
+            <div class="col-md-12">
+
+                <h2 class="mt-0 mb-30 font-30 heading-title-spec">تعريف</h2>
+
+                <p class="mb-30">أملاك العالمية للتمويل العقاري هي الشركة الرائدة والأولى التي منحت الترخيص لمزاولة نشاط التمويل العقاري في المملكة العربية السعودية من مؤسسة النقد العربي السعودي “ساما”.  أملاك العالمية حملت الراية لتوفير حلول التمويل العقارية المبتكرة لقطاعي الأفراد والشركات ، وفق معايير وأحكام الشريعة الإسلامية و تحت إشراف هيئة رقابة شرعية مكونة من مشايخ وعلماء ذوي خبرات و علم في المصرفية الإسلامية  و التمويل الإسلامي. </p>
+
+                
+
+                <p>تأسست شركة أملاك العالمية وبدأت نشاطها كشركة سعودية تتخذ من مدينة الرياض مقراً رئيساً لها، برأس مال مدفوع وقدره 906 مليون ريال سعودي، في شهر اكتوبر من عام 2007م .</p>
+
             </div>
-            <div class="elegant-dual-button">
-               <div class="last-btn">
-                  <a class="btn" href="14-day-trial.html">
-                  <span>Start A 14 Day Trial</span>
-                  </a>
-               </div>
+
+        </div>
+
+        <div class="separator separator-rounedd"></div>    
+
+        <div class="row pt-30 rtl">
+
+            <div class="col-md-12">
+
+                <div class="col-md-2 col-sm-12">
+
+                    <h2 class="mt-0 mb-0 font-30 heading-title-spec pull-right ml-30">رسالتنا</h2>
+
+                </div>
+
+                <div class="col-md-10 col-sm-12">
+
+                    <p class="mt-10 mb-40">أن نكون الخيار الأول في  معرفة التداول</p>
+
+                </div>
+
             </div>
-         </div>
+
+            <div class="col-md-12">
+
+                <div class="col-md-2 col-sm-12">
+
+                    <h2 class="mt-0 mb-0 font-30 heading-title-spec pull-right ml-30">مهمتنا</h2>
+
+                </div>
+
+                <div class="col-md-10 col-sm-12">
+
+                    <ul class="list">
+
+                        <li>تعظيم القيمة المستدامة لاستثمارات مساهمينا بتحقيق التوازن بين العائد الاقتصادي للاستثمار والمخاطر.</li>
+
+                        <li>تمييز موظفينا كموارد ثمينة وتحفيزهم لأطلاق مكامن ابداعهم وتوسيع مدارك المعرفة لديهم.</li>
+
+                        <li>تفعيل المشاركة بشكل بناء لتحقيق طموح التملك العقاري لأفراد مجتمعنا.</li>
+
+                        <li>تعظيم القيمة المستدامة لاستثمارات مساهمينا بتحقيق التوازن بين العائد الاقتصادي للاستثمار والمخاطر.</li>
+
+                        <li>تمييز موظفينا كموارد ثمينة وتحفيزهم لأطلاق مكامن ابداعهم وتوسيع مدارك المعرفة لديهم.</li>
+
+                        <li>تفعيل المشاركة بشكل بناء لتحقيق طموح التملك العقاري لأفراد مجتمعنا.</li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            
+
+            <div class="col-md-12 mt-30">
+
+                <div class="col-md-2 col-sm-12">
+
+                    <h2 class="mt-0 mb-0 font-30 heading-title-spec pull-right ml-30">قيمنا</h2>
+
+                </div>
+
+                <div class="col-md-10 col-sm-12">
+
+                    <ul class="list">
+
+                        <li>الابتكار: السعي دوما الى التميّز والتطور والأبداع لمواكبة كافة المستجدات في قطاع أعمالنا.</li>
+
+                        <li>القيادة: البقاء في الصدارة بأعلى المقاييس في كل أعمالنا لتقديم قيمة مضافة توازي احتياجات عملائنا وأكثر.</li>
+
+                        <li>الثقة: الحفاظ على علاقات قوية ومتينة مع جميع شركائنا أساسها الشفافية والعدالة والأنصاف والتقدير المتبادل.</li>
+
+                        <li>الكفاءة: العمل على تطوير قدراتنا الريادية من خلال التعامل باحترافية وجدارة ونظره شمولية.</li>
+
+                        <li>المسؤولية: الالتزام بتحقيق عوائد مستدامة ونمو متوازن لعملائنا ومساهمينا وموظفينا وكافة أطياف مجتمعنا. </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>  
+
       </div>
-   </div>
-</div>
-@stop
+
+    </section>
+
+    
+
+  </div>
+
+  <!-- end main-content -->
+
+
+
+
+
+
+
+
+
+
+
+  @stop

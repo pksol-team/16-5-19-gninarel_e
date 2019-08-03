@@ -23,6 +23,8 @@ use App\User;
 use App\Product;
 use App\ProductsNative;
 use App\Order;
+use App\Event;
+use App\EventsNative;
 use App\Category;
 use App\CategoryNative;
 use App\Course;
@@ -48,6 +50,11 @@ use App\TestAnswer;
 use App\UserAnswer;
 use App\TestResult;
 use App\UserLoginDetail;
+use App\PromoCode;
+use App\SchoolPlan;
+use App\Notification;
+use App\MediaImage;
+use App\MediaDocument;
 use Mail;
 use Log;
 
@@ -66,7 +73,6 @@ class IndexController extends Controller
 	public function __construct()
     {
         $this->langCode = Request::locale();
-		
     }
 
      /**
@@ -136,10 +142,10 @@ class IndexController extends Controller
 				}
 			}
 			else{
-				return redirect()->back()->withInput()->with('error', 'User password does not match! If you do not have your account <a href="/userrregister">Register here </a>');
+				return redirect()->back()->withInput()->with('error', 'User password does not match! If you do not have your account <a href="'. lang_url('register') .'">Register here </a>');
 			}
 		}else {
-			return redirect()->back()->withInput()->with('error', 'This email address is not registered <a href="/userrregister">Register here </a>');
+			return redirect()->back()->withInput()->with('error', 'This email address is not registered <a href="'. lang_url('register') .'">Register here </a>');
 		}
 	}
 
@@ -155,7 +161,7 @@ class IndexController extends Controller
 	{
 		$title = 'Register';
 		if (Auth::check()) {
-			return redirect(lang_url(''));
+			return redirect(lang_url('/'));
 		} else {
 			return view('frontend.register', compact('title'));
 		}
@@ -174,7 +180,7 @@ class IndexController extends Controller
 		$hashKey = uniqid(time());
 		$user = [
 		    'name' => $name,
-		    'role_id' => 2,
+		    'role_id' => 3,
 		    'email' => $email,
 		    'phone' => $phone,
 		    'password' => bcrypt($password),
@@ -186,33 +192,28 @@ class IndexController extends Controller
 		$getInsertedId = DB::getPdo()->lastInsertId();
 			$role = [
 				'user_id' => $getInsertedId,
-				'role_id' => 2,
+				'role_id' => 3,
 			];
 		DB::table('user_roles')->insert($role);
 
-		// var_dump($insertedUser);
-		// var_dump($getInsertedId);
-		// $baseUrl = url('/');
-		// $msg_template = '
-		// 	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-		// 		<h3>Le damos la bienvenida a registro psicologosVibemar.cl<br></h3>
-		// 		<h4 style="padding: 0 20px 0 0;">
-		// 			<span lang="ES-CL" style="font-size:11.0pt;line-height:107%;color:#3e4247">Gracias
-		// 			por registrarse en. En las próximas 48-72 horas&nbsp;</span>
-		// 			<strong>
-		// 			<span lang="ES-CL" style="font-size:11.5pt;line-height:107%;color:#3e4247; border:none;padding:0">revisaremos
-		// 			los datos de su perfil para asegurarnos de que son válidos.</span>
-		// 			</strong><br>
-		// 		</h4>
-		// 		<button style="cursor: pointer;color: #fff;background-color: #28a745;border-color: #28a745;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;user-select: none;border: 1px solid transparent;padding: .375rem .75rem;font-size: 1rem;line-height: 1.5;border-radius: .25rem;"><a href="'.$baseUrl.'/verify_email/'.$getInsertedId.'/'.$confirm_email.'" style="color:#fff;">Confirme su correo electrónico aquí</a>
-		// 		</button>
-		// 	</div>
-		// ';
-		// $to = $email;
-	 //    $subject = 'Registro de cuenta';
-	 //    $content = $msg_template;
+		$baseUrl = lang_url('');
+		$msg_template = '
+			<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+				<h3>Welcome to Better Trend<br></h3>
+				<h4 style="padding: 0 20px 0 0;">
+					<span style="font-size:11.0pt;line-height:107%;color:#3e4247">
+						Thank You for Register
+					</span>
+				</h4>
+				<button style="cursor: pointer;color: #fff;background-color: #28a745;border-color: #28a745;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;user-select: none;border: 1px solid transparent;padding: .375rem .75rem;font-size: 1rem;line-height: 1.5;border-radius: .25rem;"><a href="'.$baseUrl.'/verify_email/'.$getInsertedId.'/'.$password.'" style="color:#fff;">Confirm your email here</a>
+				</button>
+			</div>
+		';
+		$to = $email;
+	    $subject = 'Account registration';
+	    $content = $msg_template;
 
-		// $data = array( 'email' => $to, 'subject' => $subject, 'message' => $content);
+		$data = array( 'email' => $to, 'subject' => $subject, 'message' => $content);
 		// Mail::send([], $data, function ($m) use($data) {
   //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
   //   	});
@@ -260,28 +261,27 @@ class IndexController extends Controller
 		$email = $request->input('email');
 		$userGet = User::where('email', $email)->first();
 		if ($userGet) {
-	    	// $PasswordKey = ['GUID' => $GUID];
-	     //    $UserUpd = DB::table('users')->where('email', $email)->update($PasswordKey);
+	    	$passwordKey = ['GUID' => $GUID];
+	        $UserUpd = DB::table('users')->where('email', $email)->update($passwordKey);
 
-   //      	$baseUrl = url('/');
-   //      	$msg_template = '
-   //      		<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-			// 	<h3>psicologosVibemar.cl restablecimiento de contraseña: </h3>
-			// 	<h4 style="padding: 0 20px 0 0;">Hola! <span style="color: #52a2f5;">'.$email.'</span>, Haga clic en el enlace de abajo para restablecer su contraseña</h4><h4 style="padding: 0 20px 0 0;"> </h4>
-			// 	<button style="cursor: pointer;color: #fff;background-color: #28a745;border-color: #28a745;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;user-select: none;border: 1px solid transparent;padding: .375rem .75rem;font-size: 1rem;line-height: 1.5;border-radius: .25rem;"><a href="'.$baseUrl.'/enter_new_password/'.$GUID.'" style="color:#fff;">Restablecer la contraseña</a></button>
-			// 	</div>';
+        	$baseUrl = lang_url('/');
+        	$msg_template = '
+        		<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+				<h3>Bettertrend Password reset: </h3>
+				<h4 style="padding: 0 20px 0 0;">Hello! <span style="color: #52a2f5;">'.$email.'</span>, Click on the link below to reset your password</h4><h4 style="padding: 0 20px 0 0;"> </h4>
+				<button style="cursor: pointer;color: #fff;background-color: #28a745;border-color: #28a745;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;user-select: none;border: 1px solid transparent;padding: .375rem .75rem;font-size: 1rem;line-height: 1.5;border-radius: .25rem;"><a href="'.$baseUrl.'/enter_new_password/'.$GUID.'" style="color:#fff;">Reset your password</a></button>
+				</div>';
             
-   //          //Updating Email content [Metakey]
-   //          $content = $msg_template;
-   //          $subject = 'Restablecer la contraseña';
+            $content = $msg_template;
+            $subject = 'Reset your password';
 
-			// $data = array( 'email' => $email, 'subject' => $subject, 'message' => $content);
-			// Mail::send([], $data, function ($m) use($data) {
-	  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-	  //   	});
+			$data = array( 'email' => $email, 'subject' => $subject, 'message' => $content);
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
 			return redirect()->back()->withInput()->with('message', 'Password Reset link send to your email kindly check your email');
 		}else {
-			return redirect()->back()->withInput()->with('error', 'This email address is not registered <a href="/register">Register here </a>');
+			return redirect()->back()->withInput()->with('error', 'This email address is not registered <a href="'. lang_url('register') .'">Register here </a>');
 		}
 		
 	}
@@ -289,9 +289,10 @@ class IndexController extends Controller
 	// enter new password after forgot page
 	public function enter_new_password($GUID)
 	{
+
 		$title = 'Reset your password';
 		if (Auth::check()) {
-			return redirect(lang_url('home'));
+			return redirect(lang_url('/'));
 		} else {
 			$userGet = User::where('GUID', $GUID)->first();
 			if ($userGet != NULL) {
@@ -315,12 +316,12 @@ class IndexController extends Controller
 		    	$Updatepassword = ['password' => bcrypt($confirm_password), 'GUID' => NULL];
 		        $UserUpd = User::where('GUID', $GUID)->update($Updatepassword);
 		        if ($UserUpd == TRUE) {
-					return redirect(lang_url('userlogin'))->with('message', 'Contraseña restablecida con éxito');
+					return redirect(lang_url('userlogin'))->with('message', 'Password reset successfully');
 		        } else {
-					return redirect()->back()->withInput()->with('error', '¡Uy! Algo salió mal..');
+					return redirect()->back()->withInput()->with('error', 'Oops! Something went wrong..');
 		        }
 			} else {
-				return redirect()->back()->with('error', 'Su contraseña y la contraseña de confirmación no coinciden');	
+				return redirect()->back()->with('error', 'Your password and confirmation password do not match');	
 			}
 		}
 	}
@@ -328,7 +329,7 @@ class IndexController extends Controller
 	//view Confirm email page
 	public function confirm_email($hash_key)
 	{
-		$title = 'Confirmar correo electrónico';
+		$title = 'Confirm email';
 		if (Auth::check()) {
 			// return redirect(lang_url('/'));
 			return view('frontend.confirm_email', compact('title'));
@@ -341,7 +342,7 @@ class IndexController extends Controller
 	// Verify Email through email
 	public function verify_email($id, $hashkey)
 	{
-		$title = 'Correo electrónico de verificación';
+		$title = 'Verification email';
         $userFound = DB::table('users')->where([['id', $id], ['confirm_email', $hashkey]])->first();
         if ($userFound) {
 
@@ -351,28 +352,46 @@ class IndexController extends Controller
         	];
         
         	DB::table('users')->where([['id', $id], ['confirm_email', $hashkey]])->update($confirm_email);
-        	$message = 'Gracias por verificar su correo electrónico. Por favor complete su perfil';
+        	$message = 'Thanks for verify your email. Please complete your profile';
 
         } else {
-        	$message = '¡Uy! Enlace caducado o cuenta ya confirmada';
+        	$message = 'Oops! Link expired or account already confirmed';
         }
 		return view('frontend.thankyou_email', compact('title', 'message'));
 	}
 
-	// View all Prducts
-	public function products($type)
+	// View all Tools
+	public function tools()
 	{
-		$title = 'All Products';
+		$title = 'All Tools';
 
-    	$products = ProductsNative::with('productSpec')->whereHas('productSpec', function ($query) use ($type) {
-    		$query->where('type', $type);
-    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
-    	$productsDecode = json_decode($products);
+		$type = 'tool';
 
-		return view('frontend.product', compact('title', 'productsDecode', 'type'));
+		$products = ProductsNative::with('productSpec')->whereHas('productSpec', function ($query) use ($type) {
+			$query->where('type', $type);
+		})->where([['lang', $this->langCode], ['status', 'active']])->get();
+		$productsDecode = json_decode($products);
+
+		return view('frontend.tools', compact('title', 'productsDecode', 'type'));
 	}
 
-	// View all Prducts
+	// View all Books
+	public function books()
+	{
+		$title = 'All Books';
+
+		$type = 'book';
+
+
+		$products = ProductsNative::with('productSpec')->whereHas('productSpec', function ($query) use ($type) {
+			$query->where('type', $type);
+		})->where([['lang', $this->langCode], ['status', 'active']])->get();
+		$productsDecode = json_decode($products);
+
+		return view('frontend.books', compact('title', 'productsDecode', 'type'));
+	}
+
+	// View Product detail
 	public function product_detail($product_id)
 	{
     	$product = ProductsNative::with('productSpec')->where([['lang', $this->langCode], ['product_id', $product_id]])->first();
@@ -394,7 +413,6 @@ class IndexController extends Controller
     	$productNative = ProductsNative::with('productSpec')->where([['lang', $this->langCode], ['id', $product_native_id]])->first();
 		if (Auth::check() && count($productNative) > 0) {
 
-
 	    	if (count($productNative) > 0) {
 		    	
 		    	$productNativeDecode = json_decode($productNative);
@@ -405,6 +423,7 @@ class IndexController extends Controller
 				return redirect('/');
 	    	}
     	} else {
+			Session::put('url.intended', lang_url('buy_product/'.$product_native_id.'/checkout'));
 			return redirect(lang_url('userlogin'));
     	}
 	}
@@ -419,6 +438,11 @@ class IndexController extends Controller
 		$user_name = $request->input('first_name');
 		$user_last_name = $request->input('last_name');
 		$user_address = $request->input('user_address');
+		if ($user) {
+			$user_id = $user->id;
+		} else {
+			$user_id = NULL;
+		}
 
 		// Start Payment Process
 		// 
@@ -430,7 +454,7 @@ class IndexController extends Controller
 			'product_native_id' => $product_native_id,
 			'product_price' => $product_price,
 			'total_price' => $total_price,
-			'user_id' => $user->id,
+			'user_id' => $user_id,
 			'user_name' => $user_name,
 			'user_last_name' => $user_last_name,
 			'user_address' => $user_address,
@@ -455,7 +479,11 @@ class IndexController extends Controller
 	public function plans_pricing()
 	{
 		$title = 'Plans and Pricing';
-		return view('frontend.plans_pricing', compact('title'));
+
+		$allPlans = SchoolPlan::where('status', 'active')->get();
+
+		return view('frontend.plans_pricing', compact('title', 'allPlans'));
+
 	}
 
 	// View Contact Us page
@@ -499,24 +527,24 @@ class IndexController extends Controller
 		    	</div>
 		    	';
 		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-		// Mail::send([], $data, function ($m) use($data) {
-  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-  //   	});
+		Mail::send([], $data, function ($m) use($data) {
+           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    	});
     	$msg_templateUser = '
     	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
 	    	<h3>Contact: </h3>
 	    	<h4 style="padding: 0 20px 0 0;">Hello '.$first_name.' '.$last_name.'! <br><br>
 	    	</h4>
 	    	<br>
-	    	<p>we received your Email and thank you to contact us and we usually response within 48 hours</p>
+	    	<p>Thank you! we have received your Email and we usually response within 48 hours</p>
     	</div>
     	';
         
 		$data = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
 
-		// Mail::send([], $data, function ($m) use($data) {
-  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-  //   	});
+		Mail::send([], $data, function ($m) use($data) {
+           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    	});
 		return redirect()->back()->withInput()->with('message', 'Thank you for contacting us');
 	}
 
@@ -560,7 +588,16 @@ class IndexController extends Controller
 	{
 		$title = 'Media';
     	$youtubeVideos = VideoYoutube::where('status', 'active')->get();
-		return view('frontend.media', compact('title', 'youtubeVideos'));
+    	$videosCategories = VideoYoutube::where('status', 'active')->groupBy('category')->get();
+    	
+    	$mediaImages = MediaImage::where('status', 'active')->get();
+    	$imageCategories = MediaImage::where('status', 'active')->groupBy('category')->get();
+
+    	$mediadocuments = MediaDocument::where('status', 'active')->get();
+    	$documentCategories = MediaDocument::where('status', 'active')->groupBy('category')->get();
+
+    	
+		return view('frontend.media', compact('title', 'youtubeVideos', 'videosCategories', 'mediaImages', 'imageCategories', 'mediadocuments', 'documentCategories'));
 	}
 
 	// View Schools of users
@@ -722,9 +759,25 @@ class IndexController extends Controller
 	public function coaches()
 	{
 		$title = 'All Coaches';
-		$allUsers = User::where([['role_id', '!=',  1], ['status', 'active']])->get();
 
-		return view('frontend.coaches', compact('title', 'allUsers'));
+		$requestStatus = NULL;
+		if (Auth::check()) {
+	        $user = Auth::user();
+	        $foundRequest = AppliedCoach::where('user_id', $user->id)->orderBy('id', 'DESC')->first();
+	        if ($foundRequest) {
+	        	if ($foundRequest->status == 'approve') {
+					$requestStatus = NULL;
+	        	} else {
+		        	$requestStatus = $foundRequest->status;
+	        	}
+	        }
+		}
+
+		$allUsers = AppliedCoach::with('users')->whereHas('users', function ($query) {
+    		$query->where('role_id', '2')->where('status', 'active');
+    	})->where('status', 'approve')->get();
+		
+		return view('frontend.coaches', compact('title', 'allUsers', 'requestStatus'));
 	}
 
 	// View Plan FOrm Page
@@ -734,12 +787,10 @@ class IndexController extends Controller
 		$price = $request->price;
 		$no = $request->no;
 		$plan_name = $request->plan_name;
+		$duration = $request->duration;
     	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
-		if (($request->no != '1' && $request->no != '2' && $request->no != '3' && $request->no != '4') OR ($request->price != '100' && $request->price != '200' && $request->price != '500' && $request->price != '999'))
-		{
-			return redirect(lang_url('plans_pricing'));
-		}
-		return view('frontend.plan_purchase', compact('title', 'schoolNative', 'no', 'price', 'plan_name'));
+		
+		return view('frontend.plan_purchase', compact('title', 'schoolNative', 'no', 'price', 'plan_name', 'duration'));
 	}
 
 	// View About Page
@@ -751,23 +802,14 @@ class IndexController extends Controller
 		$price = $request->price;
 		$package_start_date = $request->package_start_date;
 		$package_end_date = $request->package_end_date;
-		if ($no == '1') {
-			$package_end_date = NULL;
-		}
 		$school = $request->school;
 		$status = 'active';
-		if (($request->no != '1' && $request->no != '2' && $request->no != '3' && $request->no != '4') OR ($request->price != '100' && $request->price != '200' && $request->price != '500' && $request->price != '999'))
-		{
-			return redirect(lang_url('plans_pricing'));
-		}
 
 		// Start Payment Process
 		// 
 
 		// 
 		// End Payment Process
-
-
 
 		$userData = [
 			'user_id' => $user_id,
@@ -801,6 +843,24 @@ class IndexController extends Controller
 			Session::put('url.intended', lang_url('profile'));
 			return redirect(lang_url('userlogin'));
 		}
+	}
+
+	
+	public function coach_profile($user_id)
+	{
+		$title = 'Coach Profile';
+
+		$allCoaches = AppliedCoach::with('users')->whereHas('users', function ($query) use ($user_id) {
+    		$query->where('id', $user_id)->where('role_id', '2')->where('status', 'active');
+    	})->where('status', 'approve')->first();
+
+    	if ($allCoaches) {
+			return view('frontend.coach_profile', compact('title', 'allCoaches'));
+    	} else {
+			return redirect(lang_url(''));
+    	}
+
+
 	}
 
 	// Update  Profile
@@ -905,10 +965,10 @@ class IndexController extends Controller
 	        $user = Auth::user();
 
 	        $training_activities = DB::table('course_subscriptions')
-            ->join('courses', 'course_subscriptions.course_id', '=', 'courses.id')
-            ->join('courses_natives', 'courses.id', '=', 'courses_natives.course_id')
-	    	->select('course_subscriptions.*', 'courses.*', 'courses_natives.*', 'course_subscriptions.id AS subscriptionID')
-	    	->where([['course_subscriptions.user_id', Auth::user()->id], ['course_subscriptions.status', 'active'], ['courses_natives.lang', $this->langCode]])
+            ->join('events', 'course_subscriptions.event_id', '=', 'events.id')
+            ->join('events_natives', 'events_natives.event_id', '=', 'events.id')
+	    	->select('course_subscriptions.*', 'events.*', 'events_natives.*', 'course_subscriptions.id AS subscriptionID')
+	    	->where([['course_subscriptions.user_id', Auth::user()->id], ['course_subscriptions.status', 'active'], ['events_natives.lang', $this->langCode]])
             ->orderBy('course_subscriptions.id', 'DESC')
             ->get();
 
@@ -928,10 +988,10 @@ class IndexController extends Controller
 	        $user = Auth::user();
 
 	     $training_activity = DB::table('course_subscriptions')
-            ->join('courses', 'course_subscriptions.course_id', '=', 'courses.id')
-            ->join('courses_natives', 'courses.id', '=', 'courses_natives.course_id')
-	    	->select('course_subscriptions.*', 'courses.*', 'courses_natives.*', 'course_subscriptions.id AS subscriptionID')
-	    	->where([['course_subscriptions.id', $subscription_id], ['course_subscriptions.user_id', Auth::user()->id], ['course_subscriptions.status', 'active'], ['courses_natives.lang', $this->langCode]])
+            ->join('events', 'course_subscriptions.event_id', '=', 'events.id')
+            ->join('events_natives', 'events_natives.event_id', '=', 'events.id')
+	    	->select('course_subscriptions.*', 'events.*', 'events_natives.*', 'course_subscriptions.id AS subscriptionID')
+	    	->where([['course_subscriptions.id', $subscription_id], ['course_subscriptions.user_id', Auth::user()->id], ['course_subscriptions.status', 'active'], ['events_natives.lang', $this->langCode]])
             ->first();
 
             if ($training_activity) {
@@ -1040,28 +1100,28 @@ class IndexController extends Controller
 	
 
 	// Apply to be a coach form
-	public function be_a_coach()
-	{
-		$title = 'Apply to be a coach';
-        $requestStatus = NULL;
-		if (Auth::check()) {
-	        $user = Auth::user();
-	        $foundRequest = AppliedCoach::where('user_id', $user->id)->first();
-	        if ($foundRequest) {
-	        	$requestStatus = $foundRequest->status;
-	        	if ($requestStatus != 'approve') {
-					return view('frontend.be_a_coach', compact('title', 'requestStatus'));
-	        	} else {
-					return redirect(lang_url('profile'));	
-	        	}
-	        } else {
-				return view('frontend.be_a_coach', compact('title', 'requestStatus'));
-	        }
-		} else {
-			Session::put('url.intended', lang_url('be_a_coach'));
-			return redirect(lang_url('userlogin'));
-		}
-	}
+	// public function be_a_coach()
+	// {
+	// 	$title = 'Apply to be a coach';
+ //        $requestStatus = NULL;
+	// 	if (Auth::check()) {
+	//         $user = Auth::user();
+	//         $foundRequest = AppliedCoach::where('user_id', $user->id)->first();
+	//         if ($foundRequest) {
+	//         	$requestStatus = $foundRequest->status;
+	//         	if ($requestStatus != 'approve') {
+	// 				return view('frontend.be_a_coach', compact('title', 'requestStatus'));
+	//         	} else {
+	// 				return redirect(lang_url('profile'));	
+	//         	}
+	//         } else {
+	// 			return view('frontend.be_a_coach', compact('title', 'requestStatus'));
+	//         }
+	// 	} else {
+	// 		Session::put('url.intended', lang_url('be_a_coach'));
+	// 		return redirect(lang_url('userlogin'));
+	// 	}
+	// }
 
 	// be a coach request submit
 	public function be_a_coach_submit(Request $request)
@@ -1073,226 +1133,273 @@ class IndexController extends Controller
 		$edu_attc = [];
 		$lic_attch = [];
 
-		if (Auth::check()) {
+		if(Input::hasFile('exp_attch')) {
+			$expfiles = Input::file('exp_attch');
+			foreach ($expfiles as $key => $expfile) {
 
-			if(Input::hasFile('exp_attch')) {
-				$expfiles = Input::file('exp_attch');
-				foreach ($expfiles as $key => $expfile) {
+				$originalName = $expfile->getClientOriginalName();
 
-					$originalName = $expfile->getClientOriginalName();
-
-					$folder = 'storage/applied-coach/'.$monthFolder;
-					$path = pathinfo($expfile->getClientOriginalName(), PATHINFO_EXTENSION);
-					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
-					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
-					}
-
-					if ($expfile->getSize() > 11140000) {
-						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
-					}
-
-					$upload_success = $expfile->move($folder, $newPicName);
-					if (count($upload_success) === 1) {
-						$newUpload = [
-							'download_link' => $newPicName,
-							'original_name' => $originalName
-						];
-						array_push($exp_attch, json_encode($newUpload));
-					}
+				$folder = 'storage/applied-coach/'.$monthFolder;
+				$path = pathinfo($expfile->getClientOriginalName(), PATHINFO_EXTENSION);
+				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
 				}
-				$exp_attch = '['.implode(",",$exp_attch).']';
-			} else {
-				$exp_attch = '[]';
-			}
 
-			if(Input::hasFile('cert_attch')) {
-				$certfiles = Input::file('cert_attch');
-				foreach ($certfiles as $key => $certfile) {
-
-					$originalName = $certfile->getClientOriginalName();
-
-					$folder = 'storage/applied-coach/'.$monthFolder;
-					$path = pathinfo($certfile->getClientOriginalName(), PATHINFO_EXTENSION);
-					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
-					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
-					}
-
-					if ($certfile->getSize() > 11140000) {
-						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
-					}
-
-					$upload_success = $certfile->move($folder, $newPicName);
-					if (count($upload_success) === 1) {
-						$newUpload = [
-							'download_link' => $newPicName,
-							'original_name' => $originalName
-						];
-						array_push($cert_attch, json_encode($newUpload));
-					}
+				if ($expfile->getSize() > 11140000) {
+					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
 				}
-				$cert_attch = '['.implode(",",$cert_attch).']';
-			} else {
-				$cert_attch = '[]';
-			}
 
-			if(Input::hasFile('edu_attc')) {
-				$edufiles = Input::file('edu_attc');
-				foreach ($edufiles as $key => $edufile) {
-
-					$originalName = $edufile->getClientOriginalName();
-
-					$folder = 'storage/applied-coach/'.$monthFolder;
-					$path = pathinfo($edufile->getClientOriginalName(), PATHINFO_EXTENSION);
-					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
-					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
-					}
-
-					if ($edufile->getSize() > 11140000) {
-						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
-					}
-
-					$upload_success = $edufile->move($folder, $newPicName);
-					if (count($upload_success) === 1) {
-						$newUpload = [
-							'download_link' => $newPicName,
-							'original_name' => $originalName
-						];
-						array_push($edu_attc, json_encode($newUpload));
-					}
+				$upload_success = $expfile->move($folder, $newPicName);
+				if (count($upload_success) === 1) {
+					$newUpload = [
+						'download_link' => $newPicName,
+						'original_name' => $originalName
+					];
+					array_push($exp_attch, json_encode($newUpload));
 				}
-				$edu_attc = '['.implode(",",$edu_attc).']';
-			} else {
-				$edu_attc = '[]';
 			}
-
-			if(Input::hasFile('lic_attch')) {
-				$licfiles = Input::file('lic_attch');
-				foreach ($licfiles as $key => $licfiles) {
-
-					$originalName = $licfiles->getClientOriginalName();
-
-					$folder = 'storage/applied-coach/'.$monthFolder;
-					$path = pathinfo($licfiles->getClientOriginalName(), PATHINFO_EXTENSION);
-					$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
-					if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-						return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
-					}
-
-					if ($licfiles->getSize() > 11140000) {
-						return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
-					}
-
-					$upload_success = $licfiles->move($folder, $newPicName);
-					if (count($upload_success) === 1) {
-						$newUpload = [
-							'download_link' => $newPicName,
-							'original_name' => $originalName
-						];
-						array_push($lic_attch, json_encode($newUpload));
-					}
-				}
-				$lic_attch = '['.implode(",",$lic_attch).']';
-			} else {
-				$lic_attch = '[]';
-			}
-
-			$admin = User::where('role_id', 1)->first();
-			$adminEmail = $admin->email;
-
-	        $user_id = Auth::user()->id;
-	        $name = $request->name;
-	        $phone = $request->phone;
-	        $email = $request->email;
-	        $experience = $request->experience;
-	        $certificates = $request->certificates;
-	        $education = $request->education;
-	        $training_license = $request->training_license;
-	        $about_coach = $request->about_coach;
-	        $status = 'pending';
-
-	        $updateRequestedCoach = [
-	        	'user_id' => $user_id,
-	        	'name' => $name,
-	        	'phone' => $phone,
-	        	'email' => $email,
-	        	'experience' => $experience,
-	        	'exp_attch' => $exp_attch,
-	        	'certificates' => $certificates,
-	        	'cert_attch' => $cert_attch,
-	        	'education' => $education,
-	        	'edu_attc' => $edu_attc,
-	        	'training_license' => $training_license,
-	        	'lic_attch' => $lic_attch,
-	        	'about_coach' => $about_coach,
-	        	'status' => $status,
-				'created_at' => Carbon::now()
-	        ];
-
-    		$subject = 'Request to be a Coach - Better Trend';
-
-	        $foundRequest = AppliedCoach::where('user_id', $user_id)->first();
-	        if ($foundRequest) {
-	        	if ($foundRequest->status == 'cancel') {
-	        		$updated = AppliedCoach::where('id', $foundRequest->id)->update($updateRequestedCoach);
-	        		
-    		    	$msg_templateAdmin = '
-    				    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-    					    	<h3>Contact: </h3>
-    					    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
-    					    		'.$name.' ('.$email.') again sent a request to be a coach.
-    					    		the details are below
-    					    	</h4>
-    					    	<p>
-    					    		<ul style="list-style: none;">
-    					    			<li>Name: '.$name.'</li>
-    					    			<li>Mobile Number: '.$phone.'</li>
-    					    			<li>Email: '.$email.'</li>
-    					    			<li>About user: '.$about_coach.'</li>
-    					    		</ul>
-    					    	</p>
-    				    	</div>
-    				    	';
-    				$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-    				// Mail::send([], $data, function ($m) use($data) {
-    		  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    		  //   	});
-
-					return redirect(lang_url('profile'))->with('message', 'Your request has been sent again successfully');
-	        	} else {
-					return redirect()->back();
-	        	}
-	        } else {
-	        		$inserted = AppliedCoach::insert($updateRequestedCoach);
-
-    		    	$msg_templateAdmin = '
-    				    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-    					    	<h3>Contact: </h3>
-    					    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
-    					    		'.$name.' ('.$email.') have sent a request to be a coach.
-    					    		the details are below
-    					    	</h4>
-    					    	<p>
-    					    		<ul style="list-style: none;">
-    					    			<li>Name: '.$name.'</li>
-    					    			<li>Mobile Number: '.$phone.'</li>
-    					    			<li>Email: '.$email.'</li>
-    					    			<li>About user: '.$about_coach.'</li>
-    					    		</ul>
-    					    	</p>
-    				    	</div>
-    				    	';
-    				$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-    				// Mail::send([], $data, function ($m) use($data) {
-    		  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    		  //   	});
-					return redirect(lang_url('profile'))->with('message', 'Thank you for your interest to be a coach. Your request has been sent successfully!');
-	        }
+			$exp_attch = '['.implode(",",$exp_attch).']';
 		} else {
-			Session::put('url.intended', lang_url('be_a_coach'));
-			return redirect(lang_url('userlogin'));
+			$exp_attch = '[]';
+		}
+
+		if(Input::hasFile('cert_attch')) {
+			$certfiles = Input::file('cert_attch');
+			foreach ($certfiles as $key => $certfile) {
+
+				$originalName = $certfile->getClientOriginalName();
+
+				$folder = 'storage/applied-coach/'.$monthFolder;
+				$path = pathinfo($certfile->getClientOriginalName(), PATHINFO_EXTENSION);
+				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+				}
+
+				if ($certfile->getSize() > 11140000) {
+					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+				}
+
+				$upload_success = $certfile->move($folder, $newPicName);
+				if (count($upload_success) === 1) {
+					$newUpload = [
+						'download_link' => $newPicName,
+						'original_name' => $originalName
+					];
+					array_push($cert_attch, json_encode($newUpload));
+				}
+			}
+			$cert_attch = '['.implode(",",$cert_attch).']';
+		} else {
+			$cert_attch = '[]';
+		}
+
+		if(Input::hasFile('edu_attc')) {
+			$edufiles = Input::file('edu_attc');
+			foreach ($edufiles as $key => $edufile) {
+
+				$originalName = $edufile->getClientOriginalName();
+
+				$folder = 'storage/applied-coach/'.$monthFolder;
+				$path = pathinfo($edufile->getClientOriginalName(), PATHINFO_EXTENSION);
+				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+				}
+
+				if ($edufile->getSize() > 11140000) {
+					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+				}
+
+				$upload_success = $edufile->move($folder, $newPicName);
+				if (count($upload_success) === 1) {
+					$newUpload = [
+						'download_link' => $newPicName,
+						'original_name' => $originalName
+					];
+					array_push($edu_attc, json_encode($newUpload));
+				}
+			}
+			$edu_attc = '['.implode(",",$edu_attc).']';
+		} else {
+			$edu_attc = '[]';
+		}
+
+		if(Input::hasFile('lic_attch')) {
+			$licfiles = Input::file('lic_attch');
+			foreach ($licfiles as $key => $licfiles) {
+
+				$originalName = $licfiles->getClientOriginalName();
+
+				$folder = 'storage/applied-coach/'.$monthFolder;
+				$path = pathinfo($licfiles->getClientOriginalName(), PATHINFO_EXTENSION);
+				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
+				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
+					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+				}
+
+				if ($licfiles->getSize() > 11140000) {
+					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+				}
+
+				$upload_success = $licfiles->move($folder, $newPicName);
+				if (count($upload_success) === 1) {
+					$newUpload = [
+						'download_link' => $newPicName,
+						'original_name' => $originalName
+					];
+					array_push($lic_attch, json_encode($newUpload));
+				}
+			}
+			$lic_attch = '['.implode(",",$lic_attch).']';
+		} else {
+			$lic_attch = '[]';
+		}
+
+		$admin = User::where('role_id', '1')->first();
+		$adminEmail = $admin->email;
+
+		$role_id = NULL;
+		$getInsertedId = NULL;
+
+		if (Auth::check()) {
+			$role_id = Auth::user()->role_id;
+			if ($role_id == '1') {
+				return redirect()->back()->with('error', 'You don\'t have acces to be a coach');
+			} elseif ($role_id == '2') {
+				return redirect()->back()->with('error', 'You are already coach');
+			} else {
+				$getInsertedId = Auth::user()->id;
+		        $foundRequest = AppliedCoach::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+		        if ($foundRequest->status == 'pending') {
+					return redirect()->back()->with('error', 'You have already sent request');
+		        }
+			}
+		} else {
+
+			$name = $request->input('name');
+			$email = $request->input('email');
+			$phone = $request->input('phone');
+			$password = uniqid();
+
+		    $haveUser = User::WHERE('email', $email)->first();
+		    if ($haveUser) {
+				$getInsertedId = $haveUser->id;
+
+				if ($haveUser->role_id == '1') {
+					return redirect()->back()->with('error', 'You don\'t have acces to be a coach');
+				} elseif ($haveUser->role_id == '2') {
+					return redirect()->back()->with('error', 'You are already coach');
+				} else {
+					$getInsertedId = $haveUser->id;
+			        $foundRequest = AppliedCoach::where('user_id', $haveUser->id)->orderBy('id', 'DESC')->first();
+			        if ($foundRequest->status == 'pending') {
+						return redirect()->back()->with('error', 'You have already sent request');
+			        }
+				}
+
+		    }
+
+			$authenticateResult = $this->register_authenticate($email);
+			if ($authenticateResult === true) {
+				$hashKey = uniqid(time());
+				$user = [
+				    'name' => $name,
+				    'role_id' => 3,
+				    'email' => $email,
+				    'phone' => $phone,
+				    'password' => bcrypt($password),
+				    'status' => 'active',
+				    'type' => 'user',
+				    'settings' => '{"locale":"en"}',
+				    'created_at' => Carbon::now()
+				];
+				$insertedUser = User::insert($user);
+				$getInsertedId = DB::getPdo()->lastInsertId();
+					$role = [
+						'user_id' => $getInsertedId,
+						'role_id' => 3,
+					];
+				DB::table('user_roles')->insert($role);
+			}
+			//  else {
+			// 	$foundRequest = AppliedCoach::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+		 //        if ($foundRequest->status == 'pending') {
+			// 		return redirect()->back()->with('error', 'You have already sent request');
+		 //        }
+			// }
+		}
+
+        $user_id = $getInsertedId;
+        $name = $request->name;
+        $phone = $request->phone;
+        $email = $request->email;
+        $experience = $request->experience;
+        $certificates = $request->certificates;
+        $education = $request->education;
+        $training_license = $request->training_license;
+        $about_coach = $request->about_coach;
+        $status = 'pending';
+
+        $updateRequestedCoach = [
+        	'user_id' => $user_id,
+        	'name' => $name,
+        	'phone' => $phone,
+        	'email' => $email,
+        	'experience' => $experience,
+        	'exp_attch' => $exp_attch,
+        	'certificates' => $certificates,
+        	'cert_attch' => $cert_attch,
+        	'education' => $education,
+        	'edu_attc' => $edu_attc,
+        	'training_license' => $training_license,
+        	'lic_attch' => $lic_attch,
+        	'about_coach' => $about_coach,
+        	'status' => $status,
+			'created_at' => Carbon::now()
+        ];
+
+		$subject = 'Request to be a Coach - Better Trend';
+
+        $requestAdded = AppliedCoach::insert($updateRequestedCoach);
+		$last_id = DB::getPdo()->lastInsertId();
+		if (count($last_id) > 0) {
+	    	$msg_templateAdmin = '
+			    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+				    	<h3>Contact: </h3>
+				    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
+				    		'.$name.' ('.$email.') sent a request to be a coach.
+				    		the details are below
+				    	</h4>
+				    	<p>
+				    		<ul style="list-style: none;">
+				    			<li>Name: '.$name.'</li>
+				    			<li>Mobile Number: '.$phone.'</li>
+				    			<li>Email: '.$email.'</li>
+				    			<li>About user: '.$about_coach.'</li>
+				    		</ul>
+				    	</p>
+			    	</div>
+			    	';
+			$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+			// Mail::send([], $data, function ($m) use($data) {
+	  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	  //   	});
+
+			$newNotification = [
+				'table_ID' => $last_id,
+				'slug' => 'applied-coach',
+				'title' => 'Coach request',
+				'short_desc' => $name.' has applied to be a coach',
+				'url' => 'admin/applied-coach/'.$last_id.'/edit',
+				'status' => 'pending',
+			    'created_at' => Carbon::now()
+			];
+
+			Notification::insert($newNotification);
+
+			return redirect()->back()->with('message', 'Thank you for your interest to be a coach. Your request has been sent successfully!');
 		}
 	}
 
@@ -1379,9 +1486,9 @@ class IndexController extends Controller
 		}
 
 		$newComment = [
-			'comment' => $request->current_user_comment,
-			'video_id' => $request->video_id,
-			'user_id' => $request->user_id,
+			'comment' => $request->input('current_user_comment'),
+			'video_id' => $request->input('video_id'),
+			'user_id' => $request->input('user_id'),
 			'parent_id' => $parentID,
 			'status' => 'active',
 			'created_at' => Carbon::now()
@@ -1405,8 +1512,8 @@ class IndexController extends Controller
 	public function videoStartsFrom(Request $request)
 	{
 
-		$videonative_id = $request->videonative_id;
-		$user_id = $request->user_id;
+		$videonative_id = $request->input('videonative_id');
+		$user_id = $request->input('user_id');
 		$haveResume = VideoResume::where([['video_id', $videonative_id], ['user_id', $user_id]])->orderBy('id', 'DESC')->first();
 
 		if ($haveResume) {
@@ -1419,8 +1526,8 @@ class IndexController extends Controller
 	// after video ended delete record of resume
 	public function deleteVideoTime(Request $request)
 	{
-		$videonative_id = $request->videonative_id;
-		$user_id = $request->user_id;
+		$videonative_id = $request->input('videonative_id');
+		$user_id = $request->input('user_id');
 		$foundVideo = VideoResume::where([['video_id', $videonative_id], ['user_id', $user_id]])->first();
 		if ($foundVideo) {
 			VideoResume::where([['video_id', $videonative_id], ['user_id', $user_id]])->delete();
@@ -1430,9 +1537,9 @@ class IndexController extends Controller
 	// insert video time where to resume in db
 	public function InsertVideoTime(Request $request)
 	{
-		$video_id = $request->videonative_id;
-		$user_id = $request->user_id;
-		$time = $request->ResumeTime;
+		$video_id = $request->input('videonative_id');
+		$user_id = $request->input('user_id');
+		$time = $request->input('ResumeTime');
 		
 		$newTime = [
 			'video_id' => $video_id,
@@ -1482,14 +1589,14 @@ class IndexController extends Controller
 	// test answer insert in db with ajax
 	public function test_answer(Request $request)
 	{
-		$user_id = $request->user_id;
-		$exam_id = $request->exam_id;
-		$question_id = $request->question_id;
-		$answer_by_user = $request->answer;
-		$remainingQuestions = (int)$request->remainingQuestions;
-		$initPercentage = $request->initPercentage;
-		$min_passing = $request->min_passing;
-		$chapter_native_id = $request->chapter_native_id;
+		$user_id = $request->input('user_id');
+		$exam_id = $request->input('exam_id');
+		$question_id = $request->input('question_id');
+		$answer_by_user = $request->input('answer');
+		$remainingQuestions = (int)$request->input('remainingQuestions');
+		$initPercentage = $request->input('initPercentage');
+		$min_passing = $request->input('min_passing');
+		$chapter_native_id = $request->input('chapter_native_id');
 		$answer_status = FALSE;
 
 		$ansCheck = TestAnswer::where('question_id', $question_id)->first();
@@ -1571,76 +1678,93 @@ class IndexController extends Controller
 		}
 	}
 
+	// all events page
 	public function events()
 	{
 		$title = 'Events';
 
-		$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) {
-    		$query->where('school_id', NULL);
-    	})->where([['lang', $this->langCode], ['status', 'active']])->get();
+		$eventNative = EventsNative::with('events')->where([['lang', $this->langCode], ['status', 'active']])->get();
 
-		return view('frontend.all_events', compact('title', 'courseNative'));
+		return view('frontend.all_events', compact('title', 'eventNative'));
 	}
 
-	public function enroll_course(Request $request)
+	//event detail page
+	public function eventDetail($event_id)
 	{
-		if (Auth::check()) {
+		$title = 'Event Detail';
+		$eventNative = EventsNative::with('events')->where([['event_id', $event_id], ['lang', $this->langCode], ['status', 'active']])->first();
 
-			$title = 'Enroll in Course';
-			$courses_native_id = (int)$request->courses_native_id;
-
-			$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) {
-	    		$query->where('school_id', NULL);
-	    	})->where([['id', $courses_native_id], ['lang', $this->langCode], ['status', 'active']])->first();
-
-
-	    	if (count($courseNative) > 0) {
-	    		if ($courseNative->course_enroll_status != 'finish' && $courseNative->course_enroll_status != 'cancelled' && $courseNative->course_enroll_status != 'closed' && $courseNative->course_enroll_status != 'on_hold') {
-					return view('frontend.enroll_in_course', compact('title', 'courseNative'));
-	    		} else {
-
-					return redirect(lang_url('all_events'));
-	    		}
-	    	} else {
-				return redirect(lang_url('all_events'));
-	    	}
-    	} else {
-			Session::put('url.intended', lang_url('events'));
-			return redirect(lang_url('userlogin'));
+		if ($eventNative) {
+			return view('frontend.event_detail', compact('title', 'eventNative'));
+		} else {
+			return redirect(lang_url(''));
 		}
+	}
+
+	//enroll in an event
+	public function enroll_course($course_id)
+	{
+		if (!Auth::check()) {
+			Session::put('url.intended', lang_url($course_id.'/enroll_course'));
+		}
+
+		$title = 'Enroll in Course';
+
+		$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($course_id) {
+    		$query->where([['school_id', NULL], ['id', $course_id]]);
+    	})->where([['lang', $this->langCode], ['status', 'active']])->first();
+
+    	if (count($courseNative) > 0) {
+    		if ($courseNative->course_enroll_status != 'finish' && $courseNative->course_enroll_status != 'cancelled' && $courseNative->course_enroll_status != 'closed' && $courseNative->course_enroll_status != 'on_hold') {
+				return view('frontend.enroll_in_course', compact('title', 'courseNative'));
+    		} else {
+				return redirect(lang_url('events'));
+    		}
+    	} else {
+			return redirect(lang_url('events'));
+    	}
+    	
 
 	}
 
 	// Enroll in course form
 	public function enroll_form(Request $request)
 	{
-		$user = Auth::user();
+		$user_id =  NULL;
 		$course_id = $request->input('course_id');
-		$user_id = $request->input('user_id');
 		$first_name = $request->input('first_name');
 		$last_name = $request->input('last_name');
-		$user_address = $request->input('user_address');
-		$paid = $request->input('paid');
+		$mobile_number = $request->input('mobile_number');
+		$email = $request->input('email');
 
-		// Start Payment Process
-		// 
-
-		// 
-		// End Payment Process
+		if (Auth::check()) {
+			$user_id = Auth::user()->id;
+			$first_name = Auth::user()->name;
+			$last_name = Auth::user()->last_name;
+			$mobile_number = Auth::user()->phone;
+			$email = Auth::user()->email;
+		}
 
 		$enrollCourse = [
-			'user_id' => $user->id,
+			'user_id' => $user_id,
 			'course_id' => $course_id,
-			'paid' => $paid,
+			'first_name' => $first_name,
+			'last_name' => $last_name,
+			'mobile_number' => $mobile_number,
+			'email' => $email,
+			'payment_status' => 'Not Paid',
+			'paid' => '0',
 			'enroll_date' => Carbon::now(),
+			'instalment_no' => '0',
 			'status' => 'active',
 			'created_at' => Carbon::now(),
 		];
 
 		$enrolledCourse = DB::table('course_subscriptions')->insert($enrollCourse);
+		$getInsertedId = DB::getPdo()->lastInsertId();
 
 		if ($enrolledCourse) {
-			return redirect(lang_url('thank_you'));
+			return redirect(lang_url($course_id.'/payment_course/'.$getInsertedId));
 		} else {
 			return redirect(lang_url('events'));
 		}
@@ -1648,6 +1772,288 @@ class IndexController extends Controller
 
 	}
 
+	public function payment_course($course_id, $subscriptions_id)
+	{
+		if (!Auth::check()) {
+			Session::put('url.intended', lang_url($course_id.'/payment_course/'.$subscriptions_id));
+		}
+
+		$title = 'Course Enroll Payment';
+
+		$subscription = DB::table('course_subscriptions')->where('id', $subscriptions_id)->first();
+
+		$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($course_id) {
+    		$query->where([['school_id', NULL], ['id', $course_id]]);
+    	})->where([['lang', $this->langCode], ['status', 'active']])->first();
+
+    	if (count($courseNative) > 0 && count($subscription) > 0) {
+
+    		if ($subscription->payment_status == 'Not Paid' || $subscription->payment_status == 'Partially Paid') {
+				return view('frontend.course_payment', compact('title', 'courseNative', 'subscription'));
+    		} else {
+				return redirect(lang_url('events'));
+    		}
+
+    	} else {
+			return redirect(lang_url('events'));
+    	}
+
+	}
+
+	public function enroll_course_payment(Request $request)
+	{
+		$subscription_id = $request->input('subscription_id');
+		$payment_type = $request->input('payment_type');
+		$payment_options = $request->input('payment_options');
+		$cardNumber = $request->input('cardNumber');
+		$cardExpiry = $request->input('cardExpiry');
+		$cardCVC = $request->input('cardCVC');
+		$couponCode = $request->input('couponCode');
+		$course_price = $request->input('course_price');
+		$coupen_status = $request->input('coupen_status');
+		$discount_perc = $request->input('discount_perc');
+		$instalments = $request->input('instalments');
+
+		$paid = '0';
+		$instalment_no = '0';
+
+		$alreadyEnrolled = DB::table('course_subscriptions')->where('id', $subscription_id)->first();
+
+		if ($alreadyEnrolled->payment_status == 'Partially Paid') {
+			$paid = $alreadyEnrolled->paid;
+		}
+
+		if ($coupen_status == '0') {
+			$couponCode = NULL;
+			$discount_perc = NULL;
+		}
+
+		if ($payment_type == 'offsite') {
+
+			$payment_status = 'Pending';
+
+		} else {
+
+			if ($payment_options == 'one_payment') {
+
+				$payment_status = 'Fully Paid';
+				$paid = $course_price;
+
+			} elseif ($payment_options == 'multiple_payment') {
+
+				$instalment_no = (int)$alreadyEnrolled->instalment_no +1;
+
+				if ($alreadyEnrolled->payment_status == 'Partially Paid') {
+
+					$payment_status = 'Partially Paid';
+					$paid = floatval($paid) + (floatval($course_price) / floatval($instalments));
+
+					if ($paid == $course_price) {
+						$payment_status = 'Fully paid';
+					}
+
+				} else {
+
+					$payment_status = 'Partially Paid';
+					$paid = floatval($course_price) / floatval($instalments);
+					
+				}
+
+
+			}
+		}
+
+
+
+		// Start Payment Process
+		// 
+
+		// 
+		// End Payment Process
+
+		$enrollCoursePayment = [
+			'paid' => $paid,
+			'payment_status' => $payment_status,
+			'promo_code' => $couponCode,
+			'discount' => $discount_perc,
+			'instalment_no' => $instalment_no,
+		];
+
+		$enrolledCourse = DB::table('course_subscriptions')->where('id', $subscription_id)->update($enrollCoursePayment);
+
+		return redirect(lang_url('thank_you'));
+	}
+	
+	// check coupen valid or not with ajax
+	public function coupenCheck(Request $request)
+	{
+		$user_id = $request->input('user_id');
+		$coupenCode = $request->input('coupenCode');
+		$object_id = $request->input('object_id');
+		$object_type = $request->input('object_type');
+
+
+		$foundCode = PromoCode::where([['code', $coupenCode], ['object_id', $object_id], ['object_type', $object_type], ['status', 'active']])->whereDate('expiry_date', '>', date('Y-m-d'))->first();
+
+		if (!$foundCode) {
+
+			return 0;
+
+		} else {
+
+			if ($object_type == 'course') {
+
+				$course_ = Course::where('id', $object_id)->first();
+				if ($course_) {
+					$discountedPrice = floatval($course_->price) - ((floatval($course_->price)*(int)$foundCode->discount)/100);
+
+					$result = [
+						'discountedPrice' => $discountedPrice,
+						'discount' => $foundCode->discount,
+
+					];
+
+					return $result;
+				} else {
+
+					return 0;
+
+				}
+
+			}
+
+		}
+
+	}
+
+	// ajax request for dropdown fields
+
+	public function dropdownFieldSelect(Request $request)
+	{
+		$objectType = $request->input('objectType');
+		$allData = DB::table($objectType)->get();
+
+		if ($allData) {
+			return $allData;
+		} else {
+			return null;
+		}
+
+	}
+
+	// Change language of backend
+	public function changLangAdminPanel(Request $request)
+	{
+
+		
+
+		$locale = '{"locale":"'.$request->input('locale').'"}';
+		$user_id = Auth::user()->id;
+
+		$langUpdate = [
+			'settings' => $locale
+		];
+
+
+		User::where('id', $user_id)->update($langUpdate);
+		return 1;
+	}
+
+
+	// Get new notifications in ever 5 sec with ajax
+	public function getNotifications(Request $request)
+	{
+	    $oldId = $request->input('notification_id');
+
+
+	    $html = '';
+
+	    $newNotifications = Notification::where('id', '>', $oldId)->orderBy('id', 'DESC')->get();
+
+	    $notificationCount = count($newNotifications);
+
+	    if($notificationCount > 0) {
+	        
+
+	        foreach($newNotifications as $notification) {  
+
+                $date = \Carbon\Carbon::parse($notification->created_at); 
+                
+                $duration = $date->diffForHumans(\Carbon\Carbon::now());
+
+                if ($notification->slug == 'applied-coach') {
+                  $title_class = '';
+                } else {
+                  $title_class = '';
+                }
+
+                $html .= '
+				<a href="'.lang_url($notification->url).'" class="unread_notification" data-notif_id="'.$notification->id.'">
+				  <div class="media">
+				    <div class="media-left align-self-center"><i class="ft-plus-square icon-bg-circle bg-cyan"></i></div>
+				    <div class="media-body">
+				      <input type="hidden" class="notification_id" value="'.$notification->id.'" />
+				      <h6 class="media-heading '. $title_class.'">'. $notification->title.'</h6>
+				      <p class="notification-text font-small-3 text-muted">'.$notification->short_desc.'</p><small>
+				        <time class="media-meta text-muted">'.$duration.'</time></small>
+				    </div>
+				  </div>
+				</a>
+                ';
+
+	        }
+	    }
+
+	    $data = json_encode([
+	                'htmlContent' => $html,
+	                'count' => $notificationCount ,
+	            ]);
+	   
+	    echo $data;
+	    
+	}
+
+	// Admin route (Read Notification)
+	public function read_notification(Request $request)
+	{
+	    $notif_id = $request->input('notification_id');
+
+	    $statusRead = [
+	    	'status' => 1
+	    ];
+	    $newNotifications = Notification::where('id', $notif_id)->update($statusRead);
+
+	}
+
+	public function listings()
+	{
+		$title = 'Plans and Pricing';
+		$type = 'tool';
+		//$type1 = 'book';
+		$allPlans = SchoolPlan::where('status', 'active')->get();
+		$products = ProductsNative::with('productSpec')->whereHas('productSpec', function ($query) use ($type) {
+			$query->where('type', $type);
+		})->where([['lang', $this->langCode], ['status', 'active']])->get();
+		$productsDecode = json_decode($products);
+
+
+		$products1 = ProductsNative::with('productSpec')->whereHas('productSpec', function ($query) use ($type) {
+			$query->where('type', 'book');
+		})->where([['lang', $this->langCode], ['status', 'active']])->get();
+		$productsDecode1 = json_decode($products1);
+
+
+		$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
+		//return view('frontend.all_schools', compact('title', 'schoolNative'));
+
+		//return view('frontend.books', compact('title', 'productsDecode', 'type'));
+		$eventNative = EventsNative::with('events')->where([['lang', $this->langCode], ['status', 'active']])->get();
+		
+
+		return view('frontend.all_listings', compact('title', 'allPlans', 'productsDecode',  'productsDecode1','type', 'schoolNative','eventNative'));
+
+	}
+
 	
 
 	
@@ -1657,29 +2063,6 @@ class IndexController extends Controller
 	
 
 	
-
-	
-
-	
-
-
-	
-
-
-	
-
-
-	
-
-	
-
-	
-
-	
-
-
-
-
 
 
 

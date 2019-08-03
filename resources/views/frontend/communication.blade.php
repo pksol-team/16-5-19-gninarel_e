@@ -1,90 +1,202 @@
 @extends('frontend.template.layout')
+
 @section('title') <?= $title; ?> @stop
+
 @section('content')
-<div class="main-heading-overview">
-   <a href="#" class="resp-menu" onclick="openNav()">☰</a>
-   <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-9">
-         <div class="elegant-special-heading-wrapper">
-            <h1 class="special-heading-title">Training Activities</h1>
-         </div>
-      </div>
-   </div>
-</div>
-<div class="podcast-detail pt-5 pb-5">
-   <div class="row">
-      <div class="col-4 podcasting-img-desc user_prof_listing">
-         <div class="">
-           <ul class="list-unstyled mt-3">
-             <li class=""><a class="d-block" href="{{ lang_url('profile') }}"><i class="fa fa-user-o mr-1 ml-1"></i> Profile</a></li>
-             <li class=""><a class="d-block" href="{{ lang_url('all_purchases') }}"><i class="fa fa-shopping-cart mr-1 ml-1"></i> Purchases</a></li>
-             <li class=""><a class="d-block" href="{{ lang_url('all_subscriptions') }}"><i class="fa fa-check mr-1 ml-1"></i> Subscription</a></li>
-             <li class=""><a class="d-block" href="{{ lang_url('schools') }}"><i class="fa fa-graduation-cap mr-1 ml-1"></i> Electronic School</a></li>
-             <li class=""><a class="d-block" href="{{ lang_url('training_activities') }}"><i class="fa fa-tasks mr-1 ml-1"></i> Training Activities</a></li>
-             <li class="active"><a class="d-block" href="{{ lang_url('communication') }}"><i class="fa fa-address-book-o mr-1 ml-1"></i> Communication</a></li>
-             <li class=""><a class="d-block" href="{{ lang_url('logout_frontend') }}"><i class="fa fa-sign-out mr-1 ml-1"></i> Logout</a></li>
-           </ul>
-         </div>
-      </div>
-      <div class="col-8">
-        <div class="tab-content">
-         <form action="{{ lang_url('communication_contact_us_email') }}" method="post">
-          @csrf
-          @if(session()->has('error'))
-          <div class="alert alert-red">
-             <ul class="list-unstyled mb-0">
-                <li class="text-white">{!! session()->get('error') !!}</li>
-             </ul>
-          </div>
-          @endif
-          @if(session()->has('message'))
-          <div class="alert alert-green">
-             <ul class="list-unstyled mb-0">
-                <li class="text-white">{!! session()->get('message') !!}</li>
-             </ul>
-          </div>
-          @endif
-            <div class="row contact-form">
-               <!-- <div class="form-group col-md-6 col-lg-6">
-                  <label for="first_name">First Name <span>*</span></label>
-                  <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter First Name" value="{{ Auth::user()->name }}" required>
-               </div>
-               <div class="form-group col-md-6 col-lg-6">
-                  <label for="last_name">Last Name <span>*</span></label>
-                  <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Enter Last Name" value="{{ Auth::user()->last_name }}" required>
-               </div> -->
-               <div class="form-group col-lg-12 col-md-12">
-                  <label for="email">Mobile Number <span>*</span></label>
-                  <input type="text" class="form-control" id="mobile_Number" value="{{ Auth::user()->phone }}" name="mobile_Number" placeholder="Enter mobile number" required>
-               </div>
-               <div class="form-group col-lg-12 col-md-12">
-                  <label for="subject">Subject <span>*</span></label>
-                  <select class="form-control" name="subject" id="subject" required>
-                    <option value="" hidden>Subject</option>
-                    <option value="Technical support">Technical support</option>
-                    <option value="Sales">Sales</option>
-                    <option value="Complaint">Complaint</option>
-                    <option value="Suggestions">Suggestions</option>
-                    <option value="Special">Special</option>
-                    <option value="request">request</option>
-                    <option value="others">others</option>
-                  </select>
-               </div>
-               <div class="form-group col-lg-12 col-md-12">
-                  <label for="email">Email address <span>*</span></label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ Auth::user()->email }}" required>
+
+<!-- Start main-content -->
+
+<div class="main-content">
+
+   <!-- Section: inner-header -->
+
+   <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/frontend/_assets/images/breadcrumb-bg.png">
+
+      <div class="container pt-70 pb-20">
+
+         <!-- Section Content -->
+
+         <div class="section-content">
+
+            <div class="row">
+
+               <div class="col-md-12">
+
+                  <ol class="breadcrumb text-right text-black mb-0 mt-40">
+
+                     <li><a href="index.html">الصفحة الرئيسية</a></li>
+
+                     <li class="active text-gray-silver">الملف الشخصي</li>
+
+                  </ol>
+
+                  <h2 class="title text-white">الملف الشخصي</h2>
+
                </div>
 
-               <div class="form-group col-lg-12 col-md-12">
-                  <label for="message">Message <span>*</span></label>
-                  <textarea class="form-control" rows="5" id="message" name="message" required></textarea>
-               </div>
-               <button type="submit" class="btn btn-success">Submit</button>
             </div>
-         </form>
-        </div>
+
+         </div>
+
       </div>
-   </div>
+
+   </section>
+
+   <section class="divider bg-white">
+
+      <div class="container pt-150">
+
+         <div class="row">
+
+            <div class="col-md-3 col-sm-3 col-xs-12">
+
+               <div class="vertical-tab">
+
+                  <ul class="nav nav-tabs">
+
+                     <li><a class="d-block" href="{{ lang_url('profile') }}" ><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/> الملف الشخصي </a></li>
+
+                     <li><a class="d-block" href="{{ lang_url('all_purchases') }}" ><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/> مشترياتي</a></li>
+
+                     <li class="d-block"><a class="d-block" href="{{ lang_url('all_subscriptions') }}" ><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/> باقاتي</a></li>
+
+                     <li class="d-block"><a href="{{ lang_url('schools') }}" ><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/> المدرسة  الالكترونية</a></li>
+
+                     <li class="d-block"><a href="{{ lang_url('training_activities') }}" ><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/> الانشطة التدريبة</a></li>
+
+                     <li  class="active"><a href="#tab6" ><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/> التواصل </a></li>
+
+                     <li><a class="d-block" href="{{ lang_url('logout_frontend') }}"><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/> خروج</a></li>
+
+                  </ul>
+
+               </div>
+
+            </div>
+
+            <div class="col-md-9 col-sm-9 col-xs-12">
+
+               <div class="tab-content">
+
+                <div class="tab-pane fade in active" id="tab6">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <!-- contact Form -->
+
+                              <form id="contact" name="contact" class="form-inline" action="{{ lang_url('communication_contact_us_email') }}" method="post">
+                                @csrf
+                                @if(session()->has('error'))
+                                <div class="alert alert-red">
+                                   <ul class="list-unstyled mb-0">
+                                      <li class="text-white">{!! session()->get('error') !!}</li>
+                                   </ul>
+                                </div>
+                                @endif
+                                @if(session()->has('message'))
+                                <div class="alert alert-green">
+                                   <ul class="list-unstyled mb-0">
+                                      <li class="text-white">{!! session()->get('message') !!}</li>
+                                   </ul>
+                                </div>
+                                @endif
+                                <div class="row">
+
+                                    <div class="col-md-12 col-sm-12">
+
+                                          <div class="col-sm-12 p-0">
+
+                                            <div class="form-group mb-30">
+
+                                              <label for="mobile_Number">رقم الهاتف المحمول  </label>
+
+                                              <input class="form-control" type="text" placeholder="عرقم الهاتف المحمول  " id="mobile_Number" value="{{ Auth::user()->phone }}" name="mobile_Number" required>
+
+                                            </div>
+
+                                          </div>
+
+                                          <div class="col-sm-12 p-0">
+
+                                            <div class="form-group mb-30">
+
+                                              <label for="subject">نموضوع </label>
+
+                                              <select class="form-control" id="msg_type"> 
+
+                                                <option value="" hidden>Subject</option>
+                                                <option value="Technical support">Technical support</option>
+                                                <option value="Sales">Sales</option>
+                                                <option value="Complaint">Complaint</option>
+                                                <option value="Suggestions">Suggestions</option>
+                                                <option value="Special">Special</option>
+                                                <option value="request">request</option>
+                                                <option value="others">others</option>
+
+                                                </select>
+
+                                            </div>
+
+                                          </div>
+
+                                          <div class="col-sm-12 p-0">
+
+                                            <div class="form-group mb-30">
+
+                                              <label for="email">عنوان بريد الكتروني </label>
+
+                                              <input class="form-control" placeholder="ععنوان بريد الكتروني " type="email" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" required>
+
+                                            </div>
+
+                                          </div>
+
+                                          <div class="col-sm-12 p-0">
+
+                                            <div class="form-group mb-30">
+
+                                              <label for="more_details">معلومات اضافية</label>
+
+                                              <textarea id="summernote" name="editordata" class="form-control"  name="message" required></textarea>
+
+                                            </div>
+
+                                          </div>
+
+                                          <div class="form-group form-group-center text-center mb-30 mt-20">
+
+                                              <input name="form_botcheck" class="form-control" type="hidden" value="">
+
+                                              <button type="submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">أرسال</button>
+
+                                          </div>
+
+                                    </div>
+
+                                </div>
+
+                              </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+               </div>
+
+            </div>
+
+         </div>
+
+      </div>
+
+   </section>
+
 </div>
+
+<!-- end main-content -->
+
 @stop

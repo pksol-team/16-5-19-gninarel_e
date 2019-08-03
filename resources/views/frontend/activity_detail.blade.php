@@ -14,7 +14,7 @@
 </div>
 <div class="podcast-detail pt-5 pb-5">
    <div class="row">
-     <div class="col-md-12">
+     <div class="col-md-12" style="overflow-x: scroll;">
        <table class="activity-detail">
         <thead>
           
@@ -30,8 +30,12 @@
            <th>Price (SAR)</th>
            <th>Paid (SAR)</th>
            <th>Balance (SAR)</th>
+           <th>Payment Status</th>
            <th>Number of students</th>
            <th>Status</th> 
+           <?php if ($training_activity->payment_status == 'Partially Paid'): ?>
+             <th>Pay Remaining</th>
+           <?php endif ?>
          </tr>
 
         </thead>
@@ -63,9 +67,9 @@
               <?php 
 
                   $coperativeActivity = DB::table('course_subscriptions')
-                  ->join('courses', 'course_subscriptions.course_id', '=', 'courses.id')
-                  ->select('course_subscriptions.*', 'courses.*')
-                  ->where([['courses.type', $training_activity->type], ['course_subscriptions.status', 'active']])
+                  ->join('events', 'course_subscriptions.event_id', '=', 'events.id')
+                  ->select('course_subscriptions.*', 'events.*')
+                  ->where([['events.type', $training_activity->type], ['course_subscriptions.status', 'active']])
                   ->groupBy('course_subscriptions.user_id')
                   ->get();
 
@@ -90,8 +94,14 @@
               <?php endif ?>
 
             </td>
+            <td>{{ $training_activity->payment_status }}</td>
             <td>{{ count($coperativeActivity) }}</td>
             <td>{{ ucwords(str_replace('_', ' ', $training_activity->course_enroll_status)) }}</td>
+            <?php if ($training_activity->payment_status == 'Partially Paid'): ?>
+              <td>
+                 <a href="{{ lang_url($training_activity->course_id.'/payment_course/'.$training_activity->subscriptionID ) }}"><button class="btn btn-default">Pay</button></a>
+             </td>
+           <?php endif ?>
 
           </tr>
           

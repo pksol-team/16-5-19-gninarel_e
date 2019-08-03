@@ -57,5 +57,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app['config']->get('multilang');
 
         Schema::defaultStringLength(191);
+        
+        // \URL::forceScheme('https');
     }
 }

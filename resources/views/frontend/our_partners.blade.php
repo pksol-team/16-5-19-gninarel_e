@@ -1,63 +1,175 @@
 @extends('frontend.template.layout')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section('title') <?= $title; ?> @stop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section('content')
-<div class="main-top-logo">
-   <a href="#" class="resp-menu" onclick="openNav()">☰</a>
-   <div class="row">
-      <div class="col-md-12">
-         <div class="our_logo text-center">
-            <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt="Logo" class="logo_black"></a>
-            <h1 class="text-center"><span>PARTNERS</span></h1>
-         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Start main-content -->
+
+  <div class="main-content">
+
+       <!-- Section: inner-header -->
+
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/frontend/_assets/images/breadcrumb-bg.png">
+
+      <div class="container pt-70 pb-20">
+
+        <!-- Section Content -->
+
+        <div class="section-content">
+
+          <div class="row">
+
+            <div class="col-md-12">
+
+                <ol class="breadcrumb text-right text-black mb-0 mt-40">
+
+                    <li><a href="index.html">الصفحة الرئيسية</a></li>
+
+                    <li class="active text-gray-silver">الشركاء</li>
+
+                </ol>
+
+                <h2 class="title text-white">الشركاء</h2>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
-   </div>
-</div>
-<div class="blogs light-grey-gradient">
-   <div class="row partners">
-      <div class="col-md-4">
-         <div class="main-forex">
-            <div class="img-forex"> 
-               <img src="/frontend/assets/img/partners/corporate.png" class="img-responsive" alt="">
+
+    </section>
+
+      
+
+    <!-- Divider: Parteners --> 
+
+    <section class="divider">
+
+        <div class="container">
+
+            <div class="section-content">
+
+                <div class="row Parteners">
+
+                    <div class="col-md-3 col-sm-6 col-xs-6 mb-10 pr-5 pl-5">
+
+                        <div class="parteners-white-block">
+
+                            <img src="/frontend/_assets/images/part-1.png">
+
+                        </div> 
+
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-6 mb-10 pr-5 pl-5">
+
+                        <div class="parteners-white-block">
+
+                            <img src="/frontend/_assets/images/part-2.png">
+
+                        </div> 
+
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-6 mb-10 pr-5 pl-5">
+
+                        <div class="parteners-white-block">
+
+                            <img src="/frontend/_assets/images/part-3.png">
+
+                        </div> 
+
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-6 mb-10 pr-5 pl-5">
+
+                        <div class="parteners-white-block">
+
+                            <img src="/frontend/_assets/images/part-4.png">
+
+                        </div> 
+
+                    </div>
+
+                </div>
+
             </div>
-            <div class="inner-post-detail">
-               <h2 class="text-center blue_color">The Cornerstone</h2>
-               <p>Every trader has to start out somewhere and The Cornerstone Course will set you on the right path from the very beginning. In this course you’ll the learn basic concepts of Forex trading and you’ll develop a solid foundation that can sustain years of future success.</p>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="main-forex">
-            <div class="img-forex">
-               <img src="/frontend/assets/img/partners/gctc.png" class="img-responsive" alt="">
-            </div>
-            <div class="inner-post-detail">
-               <h2 class="text-center blue_color">The Cornerstone</h2>
-               <p>Every trader has to start out somewhere and The Cornerstone Course will set you on the right path from the very beginning. In this course you’ll the learn basic concepts of Forex trading and you’ll develop a solid foundation that can sustain years of future success.</p>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="main-forex">
-            <div class="img-forex">
-               <img src="/frontend/assets/img/partners/maroof.png" alt="">
-            </div>
-            <div class="inner-post-detail">
-               <h2 class="text-center blue_color">The Cornerstone</h2>
-               <p>Every trader has to start out somewhere and The Cornerstone Course will set you on the right path from the very beginning. In this course you’ll the learn basic concepts of Forex trading and you’ll develop a solid foundation that can sustain years of future success.</p>
-            </div>
-         </div>
-      </div>
-      <div class="col-md-4">
-         <div class="main-forex">
-            <div class="img-forex">
-               <img src="/frontend/assets/img/partners/oxygen.png" alt="">
-            </div>
-            <div class="inner-post-detail">
-               <h2 class="text-center blue_color">The Cornerstone</h2>
-               <p>Every trader has to start out somewhere and The Cornerstone Course will set you on the right path from the very beginning. In this course you’ll the learn basic concepts of Forex trading and you’ll develop a solid foundation that can sustain years of future success.</p>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-@stop
+
+        </div>
+
+      </section>
+
+      
+
+  </div>
+
+  <!-- end main-content -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @stop

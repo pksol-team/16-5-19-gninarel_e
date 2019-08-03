@@ -1,114 +1,249 @@
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop
 @section('content')
-<div class="main-heading-overview">
-   <a href="#" class="resp-menu" onclick="openNav()">☰</a>
-   <div class="row">
-      <div class="col-md-12">
-         <div class="our_logo text-center">
-            <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo_trans.png" alt="Logo" class="logo_black"></a>
-            <h1 class="text-center"><span>Chapter Test</span></h1>
-         </div>
-      </div>
-   </div>
-   <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-9">
-      </div>
-   </div>
-</div>
-<?php if (count($chapterExamQuestions) > 0): ?>
-<div class="podcast-detail all_questions_show row pt-3 pb-3">
-   <div class="col-12">
-    <div class="row question_title_with_time">
-      <div class="col-9">
-        <h4>{{ $chapter->name  }} Test</h4>
-        <h6>Question <span class="question_no">1</span> Out of 10</h6>
-      </div><!-- /.col-8 -->
-      <div class="col-3">
-        <p class="text-dark">Time Remaining: <span class="time_remaining" id="time_remaining"></span></p>
-      </div><!-- /.col-3 -->
-    </div><!-- /.row -->
-<img class="question_loader_lg" src="\public\loading-lg.gif">
-<input type="hidden" class="percentageCalculate" value="0" />
-<input type="hidden" class="min_pass" value="{{ $chapterExamQuestions[0]->min_pass }}" />
-  <?php foreach ($chapterExamQuestions as $key => $chapterExamQuestion): ?>
-    
-  <div class="questionwithoptions {{ $key != 0 ? 'd-none' : NULL }}">
-    <input type="hidden" class="questionTimeRemaining" value="{{ $chapterExamQuestion->question_time }}" />
-    <div class="row mb-3">
-      <?php if ($chapterExamQuestion->question_type == 'image'): ?>
-        
-        <div class="col-12 text-center">
-          <img class="img img-responsive" src="\public\storage\{{ $chapterExamQuestion->question_image }}" />
-        </div><!-- /.col-12 -->
 
-      <?php endif ?>
 
-      <?php if ($chapterExamQuestion->question_type == 'text'): ?>
-        
-        <div class="col-12">
-          <div class="ques_title"> {{ $chapterExamQuestion->question_title }}</div>
-        </div><!-- /.col-12 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Start main-content -->
+
+
+
+  <div class="main-content">
+
+
+
+       <!-- Section: inner-header -->
+
+
+
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/frontend/_assets/images/breadcrumb-bg.png">
+
+
+
+      <div class="container pt-70 pb-20">
+
+
+
+        <!-- Section Content -->
+
+
+
+        <div class="section-content">
+
+
+
+          <div class="row">
+
+
+
+            <div class="col-md-12">
+
+
+
+                <ol class="breadcrumb text-right text-black mb-0 mt-40">
+
+
+
+                    <li><a href="{{ lang_url('') }}">الصفحة الرئيسية</a></li>
+
+
+
+                    <li class="active text-gray-silver">عن الأتجاه الأفضل</li>
+
+
+
+                    <li class="active text-gray-silver">تعريف</li>
+
+
+
+                </ol>
+
+
+
+                <h2 class="title text-white">Chapter Test</h2>
+
+
+
+            </div>
+
+
+
+          </div>
+
+
+
+        </div>
+
+
+
+      </div>
+
+
+
+    </section>
+
+
+
       
-      <?php endif ?>
 
-    </div><!-- /.row -->
-    <?php $options = json_decode($chapterExamQuestion->answers); ?>
 
-    <div id="altcontainer">
-      <?php if ($options): ?>
-        <?php foreach ($options as $key => $option): ?>
+
+    <!-- Divider: about -->
+
+
+
+<?php if (count($chapterExamQuestions) > 0): ?>
+    <section class="divider">
+
+
+
+      <div class="container">
+
+
+
+        <div class="row pt-30 rtl">
+
+
+
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+
+              <h4>{{ $chapter->name  }} Test</h4>
+
+              <h6>Question <span class="question_no">1</span> Out of 10</h6>
+
+            </div><!-- /.col-8 -->
+
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 time_remaining_div">
+
+              <p class="text-dark">Time Remaining: <span class="time_remaining" id="time_remaining"></span></p>
+
+            </div><!-- /.col-3 -->
+
+
+
+        </div>
+
+        <img class="question_loader_lg" src="/public/loading-lg.gif">
+
+        <input type="hidden" class="percentageCalculate" value="0" />
+
+        <input type="hidden" class="min_pass" value="{{ $chapterExamQuestions[0]->min_pass }}" />
+  <?php foreach ($chapterExamQuestions as $key => $chapterExamQuestion): ?>
+    <div class="questionwithoptions {{ $key != 0 ? 'hide' : NULL }}">
+      <input type="hidden" class="questionTimeRemaining" value="{{ $chapterExamQuestion->question_time }}" />
+      <div class="row mb-3">
+        <?php 
+         if ($chapterExamQuestion->question_type == 'image'): ?>
           
-         <label class="radiocontainer"> 
-         {{ $option->option }}
-         <input type="radio" name="quiz" value="{{ $option->id }}" data-chapter_native_id="{{  $chapter->id }}"  data-question_id="{{ $chapterExamQuestion->question_id }}" data-exam_id="{{  $chapterExamQuestion->exam_id }}">
-         <span class="checkmark"></span>
-         </label>
+          <div class="col-12 text-center">
+            <img class="img img-responsive" src="\public\storage\{{ $chapterExamQuestion->question_image }}" />
+          </div><!-- /.col-12 -->
 
-        <?php endforeach ?>
-      <?php endif ?>
+        <?php endif ?>
+
+        <?php if ($chapterExamQuestion->question_type == 'text'): ?>
+          
+          <div class="col-12">
+            <div class="ques_title"> {{ $chapterExamQuestion->question_title }}</div>
+          </div><!-- /.col-12 -->
+        
+        <?php endif ?>
+
+      </div><!-- /.row -->
+      <?php $options = json_decode($chapterExamQuestion->answers); ?>
+
+      <div id="altcontainer">
+        <?php if ($options): ?>
+          <?php foreach ($options as $key => $option): ?>
+            
+           <label class="radiocontainer"> 
+           {{ $option->option }}
+           <input type="radio" name="quiz" value="{{ $option->id }}" data-chapter_native_id="{{  $chapter->id }}"  data-question_id="{{ $chapterExamQuestion->question_id }}" data-exam_id="{{  $chapterExamQuestion->exam_id }}">
+           <span class="checkmark"></span>
+           </label>
+
+          <?php endforeach ?>
+        <?php endif ?>
+      </div>
+
+      <button class="answerbutton btn btn-success mt-4 mb-2">Continue ❯</button>
+
+    </div><!-- /.questionwithoptions -->
+
+      <?php endforeach ?>
+    <?php else: ?>
+      <div class="podcast-detail all_questions_show row pt-3 pb-3">
+        Test not added yet
+      </div>
+
+    <?php endif ?>
+
+    <div class="podcast-detail test_complete_result row pt-3 pb-3">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-9">
+            <h4>Your Score</h4>
+            <h6>Congratulations! You've Completed the {{ $chapter->name  }} Test</h6>
+          </div><!-- /.col-xs-9 -->
+        </div><!-- /.row -->
+      </div>
+      <div class="col-xs-12">
+        <div class="row border p-3">
+          <div class="col-xs-7">
+            <p class="text-secondary m-0">Score</p>
+            <p class="text-secondary m-0"><span class="test_percentage text-dark"></span>% out of 100%</p>
+          </div><!-- /.col-xs-6 -->
+          <div class="col-xs-5">
+            <p class="text-secondary m-0">Rating</p>
+            <p><span class="test_result text-dark m-0"></span></p>
+          </div><!-- /.col-xs-6 -->
+        </div><!-- /.row -->
+        <div class="row m-3 text-left">
+          <a href="{{ lang_url('all_tests') }}"><button class="btn btn-lg btn-success">Done</button></a>
+        </div><!-- /.row -->
+      </div><!-- /.col-xs-12 -->
     </div>
+        <div class="separator separator-rounedd"></div>    
 
-    <button class="answerbutton btn btn-success mt-4 mb-2">Continue ❯</button>
 
-  </div><!-- /.questionwithoptions -->
+  
 
-  <?php endforeach ?>
-<?php else: ?>
-  <div class="podcast-detail all_questions_show row pt-3 pb-3">
-    Test not added yet
+
+
+      </div>
+
+
+
+    </section>
+
+
+
+    
+
+
+
   </div>
 
-<?php endif ?>
-<div class="podcast-detail test_complete_result row pt-3 pb-3">
-  <div class="col-12">
-    <div class="row">
-      <div class="col-9">
-        <h4>Your Score</h4>
-        <h6>Congratulations! You've Completed the {{ $chapter->name  }} Test</h6>
-      </div><!-- /.col-9 -->
-    </div><!-- /.row -->
-  </div>
-  <div class="col-12">
-    <div class="row border p-3">
-      <div class="col-7">
-        <p class="text-secondary m-0">Score</p>
-        <p class="text-secondary m-0"><span class="test_percentage text-dark"></span>% out of 100%</p>
-      </div><!-- /.col-6 -->
-      <div class="col-5">
-        <p class="text-secondary m-0">Rating</p>
-        <p><span class="test_result text-dark m-0"></span></p>
-      </div><!-- /.col-6 -->
-    </div><!-- /.row -->
-    <div class="row m-3">
-      <a href="{{ lang_url('all_tests') }}"><button class="btn btn-lg btn-success">Done</button></a>
-    </div><!-- /.row -->
-  </div><!-- /.col-12 -->
-</div>
 
-   </div>
-</div>
+
+  <!-- end main-content -->
+
+
+
+
+
 
 <?php if (count($chapterExamQuestions) > 0): ?>
 @push('scripts')
@@ -135,7 +270,7 @@
 
         clearTimeout(timerStart);
 
-        var $this = $(document).find('.questionwithoptions:not(.d-none) button.answerbutton'),
+        var $this = $(document).find('.questionwithoptions:not(.hide) button.answerbutton'),
             answerparent = $this.parent().find('.radiocontainer').first(),
             answerElem = answerparent.find('input[name="quiz"]');
             answer = 0,
@@ -165,7 +300,7 @@
                   if (nextQuestion.length > 0) {
                    
                     nextQuestion.fadeIn("slow", function() {
-                        $(this).removeClass("d-none");
+                        $(this).removeClass("hide");
                         $('#time_remaining').html(nextQuestion.find('.questionTimeRemaining').val());
                         setTimeout(startTimer, 1000);
                         $('.question_no').html(parseInt($('.question_no').html()) +1);
@@ -174,7 +309,7 @@
                     $('.question_loader_lg').hide();
 
                   } else {
-                    $('.all_questions_show .question_title_with_time').remove();
+                    $('.time_remaining_div').remove();
                     $('.test_complete_result .test_percentage').html($('.percentageCalculate').val());
                     $('.test_complete_result').fadeIn();
                     $('.question_loader_lg').hide();
@@ -195,14 +330,12 @@
 
 
 
-
-    
-    $(document).on('click', '.questionwithoptions:not(.d-none) .radiocontainer', function(e) {
+    $(document).on('click', '.questionwithoptions:not(.hide) .radiocontainer', function(e) {
       var $this = $(this);
       $this.addClass('checkedlabel').siblings('label').removeClass('checkedlabel');
     });
 
-    $(document).on('click', '.questionwithoptions:not(.d-none) button.answerbutton', function(e) {
+    $(document).on('click', '.questionwithoptions:not(.hide) button.answerbutton', function(e) {
       clearTimeout(timerStart);
       $('.question_loader_lg').show();
       var $this = $(this),
@@ -236,7 +369,7 @@
               if (nextQuestion.length > 0) {
                
                 nextQuestion.fadeIn("slow", function() {
-                    $(this).removeClass("d-none");
+                    $(this).removeClass("hide");
                     $('#time_remaining').html(nextQuestion.find('.questionTimeRemaining').val());
                     setTimeout(startTimer, 1000);
                     $('.question_no').html(parseInt($('.question_no').html()) +1);
@@ -245,10 +378,10 @@
                 $('.question_loader_lg').hide();
 
               } else {
-                $('.all_questions_show .question_title_with_time').remove();
+                $('.time_remaining_div').remove();
+                $('.question_loader_lg').hide();
                 $('.test_complete_result .test_percentage').html($('.percentageCalculate').val());
                 $('.test_complete_result').fadeIn();
-                $('.question_loader_lg').hide();
               }
 
             });
@@ -262,4 +395,20 @@
 @endpush
 <?php endif ?>
 
-@stop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  @stop
