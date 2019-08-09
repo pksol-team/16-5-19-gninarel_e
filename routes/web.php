@@ -215,9 +215,7 @@ MultiLang::routeGroup(function($router) {
 		// Admin route (Read Notification)
 		Route::post('/read_notification', 'Frontend\IndexController@read_notification');
 
-		
 
-		
 		
 	});
 
@@ -226,6 +224,10 @@ MultiLang::routeGroup(function($router) {
 
 Route::group(['prefix' => '/'.Request::segment(1).'/admin'], function () {
 	Voyager::routes();
+
+		// view comments in backend
+    $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
+	Route::get('{comment_id}/comments_reply', $namespacePrefix.'VoyagerBaseController@comments_reply_backend');
 });
 
 

@@ -81,6 +81,12 @@
                                                 &nbsp;
                                             </th>
                                         @endcan
+
+                                        <?php $loggedUser = Auth::user(); ?>
+                                        <?php if ($loggedUser->role_id != '1'): ?>
+                                            <?php $dataTypeContent = $dataTypeContent->where('coach_id', Auth::user()->id); ?>
+                                        <?php endif ?>
+
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)

@@ -57,6 +57,7 @@ use App\MediaImage;
 use App\MediaDocument;
 use Mail;
 use Log;
+use TCG\Voyager\Facades\Voyager;
 
 
 
@@ -1489,6 +1490,7 @@ class IndexController extends Controller
 			'comment' => $request->input('current_user_comment'),
 			'video_id' => $request->input('video_id'),
 			'user_id' => $request->input('user_id'),
+			'coach_id' => $request->input('coach_id'),
 			'parent_id' => $parentID,
 			'status' => 'active',
 			'created_at' => Carbon::now()
@@ -1506,6 +1508,29 @@ class IndexController extends Controller
 			return NULL;
 		}
 	}
+
+	// // view comments reply in backend
+	// public function comments_reply_backend($comment_id)
+	// {
+ //        $dataType = Voyager::model('DataType')->where('slug', '=', 'comments')->first();
+ //        $model = app($dataType->model_name);
+
+ //        // Check if BREAD is Translatable
+ //        if (($isModelTranslatable = is_bread_translatable($model))) {
+ //            $dataTypeContent->load('translations');
+ //        }
+	// 	$usesSoftDeletes = true;
+	// 	$showSoftDeleted = true;
+ //        $isServerSide = isset($dataType->server_side) && $dataType->server_side;
+		
+ //        // GET THE DataType based on the slug
+
+	// 	$dataTypeContent = DB::table('comments')->where('parent_id', $comment_id)->get();
+	// 	$commentsReply = DB::table('comments')->where('id', $comment_id)->first();
+
+
+ //    	return Voyager::view('vendor.voyager.comments.comments')->with(compact('dataTypeContent', 'commentsReply', 'dataType', 'usesSoftDeletes', 'showSoftDeleted', 'isServerSide', 'isModelTranslatable'));
+	// }
 
 
 	// video resume check
@@ -1931,7 +1956,11 @@ class IndexController extends Controller
 	public function dropdownFieldSelect(Request $request)
 	{
 		$objectType = $request->input('objectType');
-		$allData = DB::table($objectType)->get();
+		if ($objectType == 'events') {
+			$allData = DB::table($objectType)->where('coach_id', Auth::user()->id)->get();
+		} else {
+			$allData = DB::table($objectType)->where('user_id', Auth::user()->id)->get();
+		}
 
 		if ($allData) {
 			return $allData;

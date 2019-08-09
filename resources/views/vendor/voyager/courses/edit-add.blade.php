@@ -85,8 +85,6 @@
                                             @include('voyager::formfields.relationship', ['options' => $row->details])
                                         @endif
 
-
-
                                     @else
                                         {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                     @endif

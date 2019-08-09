@@ -56,7 +56,6 @@
                             @endphp
 
                             @foreach($dataTypeRows as $row)
-
                                 <!-- GET THE DISPLAY OPTIONS -->
                                 @php
                                     $display_options = $row->details->display ?? NULL;
@@ -67,23 +66,22 @@
                                 @if (isset($row->details->legend) && isset($row->details->legend->text))
                                     <legend class="text-{{ $row->details->legend->align ?? 'center' }}" style="background-color: {{ $row->details->legend->bgcolor ?? '#f0f0f0' }};padding: 5px;">{{ $row->details->legend->text }}</legend>
                                 @endif
-                                <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                <div class="form-group @if($row->type == 'relationship' && $row->display_name == 'User') hidden @endif @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                     {{ $row->slugify }}
 
                                     <label class="control-label" for="name">{{ $row->display_name }}</label>
-
 
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     @if (isset($row->details->view))
                                         @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add')])
                                     @elseif ($row->type == 'relationship')
 
-                                    @if($row->display_name == 'User')
-                                    
-                                    @endif
-
-
+                                    <?php if ($row->display_name == 'User'): ?>
+                                        <input type="hidden" name="user_id" value="{{ $dataTypeContent->{$row->field} ?? old($row->field) ?? $options->default ?? Auth::user()->id }}" />
+                                    <?php else: ?>
                                         @include('voyager::formfields.relationship', ['options' => $row->details])
+                                    <?php endif ?>
+
                                     @else
                                         {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                     @endif
@@ -97,8 +95,8 @@
                                         @endforeach
                                     @endif
                                 </div>
+<!-- <?php// var_dump($dataTypeRows) ?> -->
                             @endforeach
-
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
@@ -166,8 +164,8 @@
             $('#confirm_delete_modal').modal('show');
           };
         }
-
         $('document').ready(function () {
+
             $('.toggleswitch').bootstrapToggle();
 
             //Init datepicker for date fields if data-datepicker attribute defined
@@ -210,8 +208,6 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
 
-            
-
             $initObject = $objectType = $('select[name=object_type] option:selected').val();
 
             if ($objectType == '1') {
@@ -223,7 +219,7 @@
                 $objectType = 'events';
             }
 
-            dropdownSelect($objectType, $initObject);
+           // dropdownSelect($objectType, $initObject);
 
 
             function dropdownSelect($objectType, $initObject) {
@@ -246,16 +242,16 @@
                             };
 
                             $selected = false;   
-                            if ('{{ $dataTypeContent->{$dataTypeRows[0]->field} }}' != '') {
+                            // if ('{{-- $dataTypeContent->{$dataTypeRows[0]->field} --}}' != '') {
 
-                                if ('{{ $dataTypeContent->{$dataTypeRows[2]->field} }}' == $initObject) {
-                                    if (val.id == '{{ $dataTypeContent->{$dataTypeRows[3]->field} }}') {
-                                        $selected = true;
+                            //     if ('{{-- $dataTypeContent->{$dataTypeRows[2]->field} --}}' == $initObject) {
+                            //         if (val.id == '{{-- $dataTypeContent->{$dataTypeRows[3]->field} --}}') {
+                            //             $selected = true;
 
-                                    }
+                            //         }
 
-                                } 
-                            }
+                            //     } 
+                            // }
 
                             var newOption = new Option(data.text, data.id, $selected, $selected);
                             $('select[name=object_id]').append(newOption).trigger('change');
@@ -276,7 +272,7 @@
                 } else {
                     $objectType = 'events';
                 }
-                dropdownSelect($objectType, $initObject);
+               // dropdownSelect($objectType, $initObject);
             });
 
 

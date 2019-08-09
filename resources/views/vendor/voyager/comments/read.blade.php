@@ -12,7 +12,7 @@
                 {{ __('voyager::generic.edit') }}
             </a>
         @endcan
-        @can('delete', $dataTypeContent)
+       <!--  @can('delete', $dataTypeContent)
             @if($isSoftDeleted)
                 <a href="{{ route('voyager.'.$dataType->slug.'.restore', $dataTypeContent->getKey()) }}" title="{{ __('voyager::generic.restore') }}" class="btn btn-default restore" data-id="{{ $dataTypeContent->getKey() }}" id="restore-{{ $dataTypeContent->getKey() }}">
                     <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.restore') }}</span>
@@ -22,7 +22,7 @@
                     <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span>
                 </a>
             @endif
-        @endcan
+        @endcan -->
 
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;

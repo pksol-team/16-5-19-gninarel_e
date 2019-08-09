@@ -210,132 +210,133 @@
                         </div> -->
                      <div class="col-md-12 col-sm-12 col-xs-12">
                         <?php if (count($videoNative) > 0): ?>
-                            <?php foreach ($videoNative as $key => $video): ?>
-                            <div class="row main_comment_{{ $video->id }} mainVideosDiv" data-videonative-id="{{ $video->id }}" id="video_list_{{ $video->id }}">
-                               <?php 
-                                  $videoWatchedSingle = User_access::where([['user_id', Auth::user()->id], ['object_type', 'video'], ['object_id', $video->video_id], ['status', 'watched']])->first();
-                                  
-                                  ?>
-                               <h4 class="color-dark-green">{{ $video->name }} <span style="font-size: 1.2em;"><i class="fa fa-check-circle" style="color:{{ $videoWatchedSingle ? '#3c763d' : '#000' }};" aria-hidden="true"></i></h4>
-                               <p class="color-dark-green">{{ $video->description }}</p>
-                               <?php $decodedVideo = json_decode($video->video_upload); ?>
-                               <?php if (count($decodedVideo) > 0): ?>
-                               <div class="fluid-video-wrapper">
-                                  <?php if ($key == 0): ?>
-                                  <video data-user-id="{{ Auth::user()->id }}" data-video-id="{{ $video->videos->id }}" data-videonative-id="{{ $video->id }}" class="plyr_Player" width="100%" height="530" ata-plyr-config='{ "title": "{{ $video->name }}" }' playsinline controls disablePictureInPicture controlsList="nodownload">
-                                     <source src="\public\storage\{{ $decodedVideo[0]->download_link }}" type="video/mp4" />
-                                     <source src="\public\storage\{{ $decodedVideo[0]->download_link }}" type="video/webm" />
-                                  </video>
-                                  <?php else: ?>
-                                  <?php $videoWatched = User_access::where([['user_id', Auth::user()->id], ['object_type', 'video'], ['object_id', $last_video_id], ['status', 'watched']])->first(); 
-                                     ?>
-                                  <video data-user-id="{{ Auth::user()->id }}" data-video-id="{{ $video->videos->id }}" data-videonative-id="{{ $video->id }}" class="{{ $videoWatched ? NULL : 'hide' }} plyr_Player" width="100%" height="530" ata-plyr-config='{ "title": "{{ $video->name }}" }' playsinline controls>
-                                     <source src="{{ $videoWatched ? '\\public\storage\\'.$decodedVideo[0]->download_link : NULL }}" type="video/mp4" />
-                                     <source src="{{ $videoWatched ? '\\public\storage\\'.$decodedVideo[0]->download_link : NULL }}" type="video/webm" />
-                                  </video>
-                                  <?php endif ?>
-                               </div>
+                        <?php foreach ($videoNative as $key => $video): ?>
+                        <div class="row main_comment_{{ $video->id }} mainVideosDiv" data-videonative-id="{{ $video->id }}" id="video_list_{{ $video->id }}">
+                           <?php 
+                              $videoWatchedSingle = User_access::where([['user_id', Auth::user()->id], ['object_type', 'video'], ['object_id', $video->video_id], ['status', 'watched']])->first();
+                              
+                              ?>
+                           <h4 class="color-dark-green">{{ $video->name }} <span style="font-size: 1.2em;"><i class="fa fa-check-circle" style="color:{{ $videoWatchedSingle ? '#3c763d' : '#000' }};" aria-hidden="true"></i></h4>
+                           <p class="color-dark-green">{{ $video->description }}</p>
+                           <?php $decodedVideo = json_decode($video->video_upload); ?>
+                           <?php if (count($decodedVideo) > 0): ?>
+                           <div class="fluid-video-wrapper">
+                              <?php if ($key == 0): ?>
+                              <video data-user-id="{{ Auth::user()->id }}" data-video-id="{{ $video->videos->id }}" data-videonative-id="{{ $video->id }}" class="plyr_Player" width="100%" height="530" ata-plyr-config='{ "title": "{{ $video->name }}" }' playsinline controls disablePictureInPicture controlsList="nodownload">
+                                 <source src="\public\storage\{{ $decodedVideo[0]->download_link }}" type="video/mp4" />
+                                 <source src="\public\storage\{{ $decodedVideo[0]->download_link }}" type="video/webm" />
+                              </video>
+                              <?php else: ?>
+                              <?php $videoWatched = User_access::where([['user_id', Auth::user()->id], ['object_type', 'video'], ['object_id', $last_video_id], ['status', 'watched']])->first(); 
+                                 ?>
+                              <video data-user-id="{{ Auth::user()->id }}" data-video-id="{{ $video->videos->id }}" data-videonative-id="{{ $video->id }}" class="{{ $videoWatched ? NULL : 'hide' }} plyr_Player" width="100%" height="530" ata-plyr-config='{ "title": "{{ $video->name }}" }' playsinline controls>
+                                 <source src="{{ $videoWatched ? '\\public\storage\\'.$decodedVideo[0]->download_link : NULL }}" type="video/mp4" />
+                                 <source src="{{ $videoWatched ? '\\public\storage\\'.$decodedVideo[0]->download_link : NULL }}" type="video/webm" />
+                              </video>
                               <?php endif ?>
-                               <div class="separator separator-rounedd"></div>
-                               <h4 class="color-dark-green">المرفقات</h4>
-                               <?php if ($key == 0): ?>
-                               <div class="m-0">
-                                  <?php $allAttachments = json_decode($video->attachments); ?>
-                                  <?php if (count($allAttachments) > 0): ?>
-                                      <?php foreach ($allAttachments as $key => $attch): ?>
-                                        <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">الملف الاول <span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
-                                      <?php endforeach ?>
-                                  <?php else: ?>
-                                      <div class="m-0">
-                                         <p>No Attachment Found!</p>
-                                      </div>
-                                  <?php endif ?>
-                               </div>
-                               <?php else: ?>
-                               <div class="m-0 attachmentsOfVideo {{ $videoWatched ? NULL : 'hide' }}">
-                                  <?php $allAttachments = json_decode($video->attachments); ?>
-                                  <?php if (count($allAttachments) > 0): ?>
-                                      <?php foreach ($allAttachments as $key => $attch): ?>
-                                        <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">الملف الاول <span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
-                                      <?php endforeach ?>
-                                  <?php else: ?>
-                                      <div class="m-0">
-                                         <p>No Attachment Found!</p>
-                                      </div>
-                                  <?php endif ?>
-                               </div>
-                               <?php endif ?>
-                               <div class="separator separator-rounedd"></div>
-                               <div class="comments-area">
-                                  <h5 class="comments-title color-dark-green">التعليقات الخاصة</h5>
-                                  <ul class="comment-list">
-                                     <?php $allComments = Comment::where([['status', 'active'], ['parent_id', 0], ['video_id', $video->id]])->orderBy('id', 'ASC')->get(); ?>
-                                     <?php if (count($allComments) > 0): ?>
-                                         <?php foreach ($allComments as $key => $comment): ?>
-                                         <?php $user = User::find($comment->user_id)->first(); ?>
-                                         <li>
-                                            <div class="media comment-author">
-                                               <div class="col-xs-2 text-center">
-                                                  <img class="img-circle" src="\public\storage\{{ $user->avatar }}">
-                                                  <h5 class="media-heading comment-heading">{{ $user->name }}</h5>
-                                                  <div class="comment-date color-dark-green">{{ $comment->created_at }}</div>
-                                               </div>
-                                               <div class="col-xs-10 media-body bg-lighter p-10">
-                                                  <div class="comment-section">
-                                                     <p>{{ $comment->comment }}</p>
-                                                     <button class="rep-btn comment_reply_button rep-btn pull-right m-0" data-video_id="{{ $video->id }}" data-parent_id="{{ $comment->id }}">Reply</button>
-                                                     <?php $allCommentsReply = Comment::where([['status', 'active'], ['parent_id', $comment->id], ['video_id', $video->id]])->orderBy('id', 'DESC')->get(); ?>
-                                                     <?php if (count($allCommentsReply) > 0): ?>
-                                                         <?php foreach ($allCommentsReply as $key => $commentReply): ?>
-                                                         <?php $userReplied = User::find($commentReply->user_id)->first(); ?>
-                                                         <div class="row replied-comment post-author-{{ $commentReply->id }}">
-                                                            <div class="replied-comment-img col-lg-2 col-md-2 col-sm-2 col-xs-2">
-                                                               <img src="\public\storage\{{ $userReplied->avatar }}" class="img-circle">
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-                                                               <label>{{ $userReplied->name }}</label>
-                                                               <p class="comment-done">{{ $commentReply->comment }}</p>
-                                                            </div>
-                                                         </div>
-                                                         <?php endforeach ?>
-                                                     <?php endif ?>
-                                                  </div>
-                                               </div>
-                                            </div>
-                                         </li>
-                                         <?php endforeach ?>
-                                     <?php else: ?>
-                                         <li>
-                                            <div>No Feedback Given</div>
-                                         </li>
-                                     <?php endif ?>
-                                  </ul>
-                                  <div class="comment-box mt-30">
-                                     <div class="row">
-                                        <div class="col-sm-12">
-                                           <h5>إرسال تعليق للمدرب خاص </h5>
-                                           <div class="row">
-                                              <form class="comment_form" method="POST" id="form_comment_{{ $video->id }}" action="{{ lang_url('submit_comment') }}">
-                                                 @csrf
-                                                 <div class="col-sm-12">
-                                                    <div class="form-group">
-                                                       <textarea class="form-control user_cmnt" required name="current_user_comment"  placeholder="Enter Message" rows="5"></textarea>
-                                                       <input type="hidden" name="video_id" value="{{ $video->id }}">
-                                                       <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                                    </div>
-                                                    <div class="form-group">
-                                                       <button type="submit" class="btn btn-theme-green btn-flat pull-left  m-0" data-loading-text="Please wait...">أرسال</button>
-                                                    </div>
-                                                 </div>
-                                              </form>
-                                           </div>
-                                        </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                            <?php $last_video_id = $video->video_id;?>
-                            <?php endforeach ?>
+                           </div>
+                           <?php endif ?>
+                           <div class="separator separator-rounedd"></div>
+                           <h4 class="color-dark-green">المرفقات</h4>
+                           <?php if ($key == 0): ?>
+                           <div class="m-0">
+                              <?php $allAttachments = json_decode($video->attachments); ?>
+                              <?php if (count($allAttachments) > 0): ?>
+                              <?php foreach ($allAttachments as $key => $attch): ?>
+                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">الملف الاول <span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
+                              <?php endforeach ?>
+                              <?php else: ?>
+                              <div class="m-0">
+                                 <p>No Attachment Found!</p>
+                              </div>
+                              <?php endif ?>
+                           </div>
+                           <?php else: ?>
+                           <div class="m-0 attachmentsOfVideo {{ $videoWatched ? NULL : 'hide' }}">
+                              <?php $allAttachments = json_decode($video->attachments); ?>
+                              <?php if (count($allAttachments) > 0): ?>
+                              <?php foreach ($allAttachments as $key => $attch): ?>
+                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">الملف الاول <span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
+                              <?php endforeach ?>
+                              <?php else: ?>
+                              <div class="m-0">
+                                 <p>No Attachment Found!</p>
+                              </div>
+                              <?php endif ?>
+                           </div>
+                           <?php endif ?>
+                           <div class="separator separator-rounedd"></div>
+                           <div class="comments-area">
+                              <h5 class="comments-title color-dark-green">التعليقات الخاصة</h5>
+                              <ul class="comment-list">
+                                 <?php $allComments = Comment::where([['status', 'active'], ['parent_id', 0], ['video_id', $video->id]])->orderBy('id', 'ASC')->get(); ?>
+                                 <?php if (count($allComments) > 0): ?>
+                                 <?php foreach ($allComments as $key => $comment): ?>
+                                 <?php $user = User::find($comment->user_id)->first(); ?>
+                                 <li>
+                                    <div class="media comment-author">
+                                       <div class="col-xs-2 text-center">
+                                          <img class="img-circle" src="\public\storage\{{ $user->avatar }}">
+                                          <h5 class="media-heading comment-heading">{{ $user->name }}</h5>
+                                          <div class="comment-date color-dark-green">{{ $comment->created_at }}</div>
+                                       </div>
+                                       <div class="col-xs-10 media-body bg-lighter p-10">
+                                          <div class="comment-section">
+                                             <p>{{ $comment->comment }}</p>
+                                             <button class="rep-btn comment_reply_button rep-btn pull-right m-0" data-coach_id="{{ $video->user_id }}" data-video_id="{{ $video->id }}" data-parent_id="{{ $comment->id }}">Reply</button>
+                                             <?php $allCommentsReply = Comment::where([['status', 'active'], ['parent_id', $comment->id], ['video_id', $video->id]])->orderBy('id', 'DESC')->get(); ?>
+                                             <?php if (count($allCommentsReply) > 0): ?>
+                                             <?php foreach ($allCommentsReply as $key => $commentReply): ?>
+                                             <?php $userReplied = User::find($commentReply->user_id)->first(); ?>
+                                             <div class="row replied-comment post-author-{{ $commentReply->id }}">
+                                                <div class="replied-comment-img col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                                                   <img src="\public\storage\{{ $userReplied->avatar }}" class="img-circle">
+                                                </div>
+                                                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                                   <label>{{ $userReplied->name }}</label>
+                                                   <p class="comment-done">{{ $commentReply->comment }}</p>
+                                                </div>
+                                             </div>
+                                             <?php endforeach ?>
+                                             <?php endif ?>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </li>
+                                 <?php endforeach ?>
+                                 <?php else: ?>
+                                 <li>
+                                    <div>No Feedback Given</div>
+                                 </li>
+                                 <?php endif ?>
+                              </ul>
+                              <div class="comment-box mt-30">
+                                 <div class="row">
+                                    <div class="col-sm-12">
+                                       <h5>إرسال تعليق للمدرب خاص </h5>
+                                       <div class="row">
+                                          <form class="comment_form" method="POST" id="form_comment_{{ $video->id }}" action="{{ lang_url('submit_comment') }}">
+                                             @csrf
+                                             <div class="col-sm-12">
+                                                <div class="form-group">
+                                                   <textarea class="form-control user_cmnt" required name="current_user_comment"  placeholder="Enter Message" rows="5"></textarea>
+                                                   <input type="hidden" name="video_id" value="{{ $video->id }}">
+                                                   <input type="hidden" name="coach_id" value="{{ $video->user_id }}">
+                                                   <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                                </div>
+                                                <div class="form-group">
+                                                   <button type="submit" class="btn btn-theme-green btn-flat pull-left  m-0" data-loading-text="Please wait...">أرسال</button>
+                                                </div>
+                                             </div>
+                                          </form>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <?php $last_video_id = $video->video_id;?>
+                        <?php endforeach ?>
                         <?php endif ?>
                      </div>
                   </div>
@@ -357,6 +358,7 @@
            var $this = $(this),
                replyBox = $this.parent().children('.rep-btn-section').length,
                video_id = $this.attr('data-video_id'),
+               coach_id = $this.attr('data-coach_id'),
                parent_id = $this.attr('data-parent_id'),
                replyForm = `<div class="rep-btn-section float-left col-11">
                                         <form method="POST" id="form_comment_` + video_id + `" class="comment_form" action="{{ lang_url('submit_comment') }}">
@@ -365,6 +367,7 @@
                                             <img src="\\public\\storage\\{{ Auth::user()->avatar }}" class="img-circle" alt="image description"">
                                             <textarea name="current_user_comment" class="user_cmnt w-100 form-control" placeholder="Write your reply here" style="resize: none;"></textarea>
                                              <input type="hidden" name="video_id" value="` + video_id + `">
+                                             <input type="hidden" name="coach_id" value="` + coach_id + `">
                                              <input type="hidden" name="parent_id" value="` + parent_id + `">
                                              <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                <button type="submit" class="btn btn-success comment">Comment</button>
@@ -394,8 +397,11 @@
                formData = $this.serialize(),
    
                current_user_comment = $this.find('textarea[name=current_user_comment]'),
+               coach_id = $this.find('input[name=coach_id]'),
    
                commentForAppend = current_user_comment.val(),
+
+               coach_idAppend = coach_id.val(),
    
                parent = $this.find('input[name=parent_id]').val(),
    
@@ -446,7 +452,7 @@
                                                          <div class="col-xs-10 media-body bg-lighter p-10">
                                                            <div class="comment-section">
                                                              <p>` + commentForAppend + `</p>
-                                                             <button class="rep-btn comment_reply_button rep-btn pull-right m-0" data-video_id="` + video_id + `" data-parent_id="` + response + `">Reply</button>
+                                                             <button class="rep-btn comment_reply_button rep-btn pull-right m-0" data-coach_id="`+coach_idAppend+`" data-video_id="` + video_id + `" data-parent_id="` + response + `">Reply</button>
                                                            </div>
                                                          </div>
                                                      </div>
@@ -703,13 +709,13 @@
                                          <a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white"><button type="button" class="btn btn-primary">Start Test</button> </a>
    
                                            <?php
-                                              if ($skipTest < 1) {
-                                              
-                                                echo '<button type="button" class="btn btn-secondary">Skip Test</button>';
-                                              
-                                              }
-                                              
-                                              ?>
+      if ($skipTest < 1) {
+      
+        echo '<button type="button" class="btn btn-secondary">Skip Test</button>';
+      
+      }
+      
+      ?>
    
                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
    

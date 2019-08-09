@@ -96,6 +96,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $dataTypeContent = $dataTypeContent->where('parent_id', '0'); ?>
+
                                     @foreach($dataTypeContent as $data)
                                     <tr>
                                         @can('delete',app($dataType->model_name))
@@ -249,6 +251,9 @@
                                                     @include('voyager::bread.partials.actions', ['action' => $action])
                                                 @endif
                                             @endforeach
+                                            <a style="margin-right: 5px;" href="{{ lang_url('admin/'.$data->id.'/comments_reply') }}" title="View" class="btn btn-sm btn-success pull-right view">
+                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">View replies</span>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach

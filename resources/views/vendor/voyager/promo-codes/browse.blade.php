@@ -109,6 +109,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $loggedUser = Auth::user(); ?>
+                                    <?php if ($loggedUser->role_id != '1'): ?>
+                                        <?php $dataTypeContent = $dataTypeContent->where('user_id', Auth::user()->id); ?>
+                                    <?php endif ?>
+                                    
                                     @foreach($dataTypeContent as $data)
                                     <tr>
                                         @can('delete',app($dataType->model_name))
