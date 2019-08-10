@@ -1,3 +1,4 @@
+<?php use App\Chapter; ?>
 @extends('voyager::master')
 
 @section('page_title', __('voyager::generic.viewing').' '.$dataType->display_name_plural)
@@ -170,6 +171,10 @@
 
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
+                                                 @elseif(($row->type == 'select_dropdown') && property_exists($row->details, 'relationship'))
+
+                                                    <?php $get = Chapter::find((int)$data->{$row->field}); echo $get->name; ?>
+
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
@@ -263,6 +268,10 @@
                                                     @include('voyager::bread.partials.actions', ['action' => $action])
                                                 @endif
                                             @endforeach
+
+                                            <a style="margin-right: 5px;" href="{{ lang_url('admin/exams/'.$data->id.'/records') }}" title="View" class="btn btn-sm btn-success pull-right view">
+                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">View Records</span>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach

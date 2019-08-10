@@ -219,7 +219,7 @@
                 $objectType = 'events';
             }
 
-           // dropdownSelect($objectType, $initObject);
+           dropdownSelect($objectType, $initObject);
 
 
             function dropdownSelect($objectType, $initObject) {
@@ -235,6 +235,8 @@
                         $('select[name=object_id] option').remove();
                         $('select[name=object_id]').select2('data', null);
 
+                        console.log('{{ $dataTypeContent->{$dataTypeRows[3]->field} }}');
+
                         $.each(response, function(index, val) {
                             var data = {
                                 id: val.id,
@@ -242,16 +244,13 @@
                             };
 
                             $selected = false;   
-                            // if ('{{-- $dataTypeContent->{$dataTypeRows[0]->field} --}}' != '') {
-
-                            //     if ('{{-- $dataTypeContent->{$dataTypeRows[2]->field} --}}' == $initObject) {
-                            //         if (val.id == '{{-- $dataTypeContent->{$dataTypeRows[3]->field} --}}') {
-                            //             $selected = true;
-
-                            //         }
-
-                            //     } 
-                            // }
+                            if ('{{ $dataTypeContent->{$dataTypeRows[3]->field} }}' != '') {
+                                if ('{{ $dataTypeContent->{$dataTypeRows[3]->field} }}' == $initObject) {
+                                    if (val.id == '{{ $dataTypeContent->{$dataTypeRows[4]->field} }}') {
+                                        $selected = true;
+                                    }
+                                } 
+                            }
 
                             var newOption = new Option(data.text, data.id, $selected, $selected);
                             $('select[name=object_id]').append(newOption).trigger('change');
@@ -272,7 +271,7 @@
                 } else {
                     $objectType = 'events';
                 }
-               // dropdownSelect($objectType, $initObject);
+               dropdownSelect($objectType, $initObject);
             });
 
 

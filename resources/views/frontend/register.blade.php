@@ -152,7 +152,7 @@
 
                 <div class="form-container">
 
-                    <form id="register" class="form-inline" name="regform" action="{{ lang_url('register_check') }}" method="post">
+                    <form id="register" class="form-inline" method="post" name="regform" action="{{ lang_url('register_check') }}">
                      @csrf
                      @if(session()->has('error'))
                      <div class="alert alert-red">

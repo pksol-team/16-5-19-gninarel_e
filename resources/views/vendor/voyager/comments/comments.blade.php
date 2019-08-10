@@ -28,8 +28,11 @@
             @endif
         @endforeach
         @include('voyager::multilingual.language-selector')
-        <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success btn-add-new">
+        <a href="{{ lang_url('admin/'.$dataType->slug.'/'.$comment->id.'/reply') }}" class="btn btn-success btn-add-new">
             <i class="voyager-forward"></i> <span>Reply</span>
+        </a>
+        <a href="{{ lang_url('admin/'.$dataType->slug) }}" class="btn btn-dark btn-add-new">
+            <i class="voyager-angle-left"></i> <span>Back to all comments</span>
         </a>
     </div>
 @stop

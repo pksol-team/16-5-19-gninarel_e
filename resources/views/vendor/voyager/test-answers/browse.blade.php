@@ -1,3 +1,4 @@
+<?php use App\TestQuestion; ?>
 @extends('voyager::master')
 
 @section('page_title', __('voyager::generic.viewing').' '.$dataType->display_name_plural)
@@ -167,6 +168,10 @@
                                                 @elseif(($row->type == 'select_dropdown' || $row->type == 'radio_btn') && property_exists($row->details, 'options'))
 
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
+
+                                                @elseif(($row->type == 'select_dropdown') && property_exists($row->details, 'relationship'))
+
+                                                <?php $get = TestQuestion::find((int)$data->{$row->field}); echo $get->question_title; ?>
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}

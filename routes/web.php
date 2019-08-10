@@ -32,7 +32,7 @@ MultiLang::routeGroup(function($router) {
 		// user logout
 		Route::get('/logout_frontend', 'Frontend\IndexController@logout_frontend');
 
-		// Register
+		// Register View
 		Route::get('/register', 'Frontend\IndexController@register');
 
 		// register post request
@@ -215,6 +215,20 @@ MultiLang::routeGroup(function($router) {
 		// Admin route (Read Notification)
 		Route::post('/read_notification', 'Frontend\IndexController@read_notification');
 
+		// view comments in backend
+		Route::get('/admin/{comment_id}/comments_reply', 'Voyager\VoyagerCommentsController@comments_reply_backend');
+
+		// Reply of comment
+		Route::get('/admin/comments/{comment_id}/reply', 'Voyager\VoyagerCommentsController@reply');
+
+		// Users enrolled in school
+		Route::get('/admin/schools/{school_id}/students', 'Voyager\VoyagerSchoolController@enrolledStudents');
+
+		// User overall performance
+		Route::get('/admin/schools/{school_id}/student/overall/{student_id}', 'Voyager\VoyagerSchoolController@overallStudent');
+
+		// Exam records
+		Route::get('/admin/exams/{exam_id}/records', 'Voyager\VoyagerExamController@records');
 
 		
 	});
@@ -224,10 +238,6 @@ MultiLang::routeGroup(function($router) {
 
 Route::group(['prefix' => '/'.Request::segment(1).'/admin'], function () {
 	Voyager::routes();
-
-		// view comments in backend
-    $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
-	Route::get('{comment_id}/comments_reply', $namespacePrefix.'VoyagerBaseController@comments_reply_backend');
 });
 
 

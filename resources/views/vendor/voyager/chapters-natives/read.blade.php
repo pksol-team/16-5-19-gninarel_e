@@ -1,4 +1,4 @@
-
+<?php use App\Chapter; ?>
 @extends('voyager::master')
 
 @section('page_title', __('voyager::generic.view').' '.$dataType->display_name_singular)
@@ -72,6 +72,9 @@
                                     !empty($row->details->options->{$dataTypeContent->{$row->field}})
                             )
                                 <?php echo $row->details->options->{$dataTypeContent->{$row->field}};?>
+                            @elseif(($row->type == 'select_dropdown') && property_exists($row->details, 'relationship'))
+
+                            <?php $get = Chapter::find((int)$dataTypeContent->{$row->field}); echo $get->name; ?>
                             @elseif($row->type == 'select_multiple')
                                 @if(property_exists($row->details, 'relationship'))
 

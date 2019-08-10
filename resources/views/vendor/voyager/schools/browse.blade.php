@@ -263,6 +263,9 @@
                                                     @include('voyager::bread.partials.actions', ['action' => $action])
                                                 @endif
                                             @endforeach
+                                            <a style="margin-right: 5px;" href="{{ lang_url('admin/schools/'.$data->id.'/students') }}" title="View" class="btn btn-sm btn-success pull-right view">
+                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">View Students</span>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach
