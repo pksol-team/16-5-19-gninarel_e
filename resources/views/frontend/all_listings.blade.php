@@ -12,10 +12,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
-                     <li class="active text-gray-silver">@t('Services and products')</li>
+                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
+                     <li class="active text-gray-silver">@t('الخدمات والمنتجات')</li>
                   </ol>
-                  <h2 class="title text-white">@t('Services and products')</h2>
+                  <h2 class="title text-white">@t('الخدمات والمنتجات')</h2>
                </div>
             </div>
          </div>
@@ -26,8 +26,8 @@
       <div class="container">
          <div class="row rtl">
             <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-               <h2 class="mt-0 font-30 heading-title-spec">@t('Definition of')</h2>
-               <p class="mb-30">@t('Package Description Here Package Description Here Package Description Here Package Description Package Description Here Package Description Package Here Description Package Here')</p>
+               <h2 class="mt-0 font-30 heading-title-spec">@t('تعريف')</h2>
+               <p class="mb-30">@t('وصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هنا')</p>
             </div>
          </div>
          <div class="row rtl">
@@ -39,7 +39,7 @@
                <div class=" bg-white border-1px p-30 pt-20 pb-20" style="min-height: 55%;">
                   <h3 class="package-type font-24 m-0 mb-20 color-theme-green text-center">{{ $plans->title }}</h3>
                   <p>{{ $plans->description }}</p>
-                  <h4 class="color-theme-green ">@t('Advantages')</h4>
+                  <h4 class="color-theme-green ">@t('المزايا')</h4>
                   <?php 
                      $advantages = explode(',', $plans->advantages);
                      ?>
@@ -57,7 +57,7 @@
                   <input type="hidden" name="no" value="2" />
                   <input type="hidden" name="duration" value="{{ $plans->duration }}" />
                   <input type="hidden" name="price" value="{{ $plans->price }}" />
-                  <button class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat" type="submit">@t('Participation( :planPrice SR per month)', ['planPrice' => $plans->price])</button>
+                  <button class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat" type="submit">@t('إشتراك ( :planPrice ريال شهريا )', ['planPrice' => $plans->price])</button>
                </form>
             </div>
             <?php endforeach ?>
@@ -77,8 +77,8 @@
    <div class="container">
       <div class="row rtl">
          <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-            <h2 class="mt-0 font-30 heading-title-spec">@t('Utilities')</h2>
-            <p class="mb-30">@t('Package Description Here Package Description Here Package Description Here Package Description Package Description Here Package Description Package Here Description Package Here')</p>
+            <h2 class="mt-0 font-30 heading-title-spec">@t('الادوات المساعدة ')</h2>
+            <p class="mb-30">@t('وصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هنا')</p>
          </div>
       </div>
       <div class="row rtl">
@@ -92,7 +92,7 @@
                <img src="\public\storage\{{ $product->thumbnail }}" alt="{{ $product->name }}">  
                <p>{{ $product->short_description }}</p>
             </div>
-            <a href="{{ lang_url('product/'.$product->product_id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('File details')</a>
+            <a href="{{ lang_url('product/'.$product->product_id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('تفاصيل الملف ')</a>
          </div>
          <?php endforeach ?>
          <?php else: ?>
@@ -108,8 +108,8 @@
    <div class="container">
       <div class="row rtl">
          <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-            <h2 class="mt-0 font-30 heading-title-spec">@t('Books')</h2>
-            <p class="mb-30">@t('Package description here Package description here Package description here Package description here Package description here Package description Package description here Package description')</p>
+            <h2 class="mt-0 font-30 heading-title-spec">@t('الكتب')</h2>
+            <p class="mb-30">@t('وصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هنا')</p>
          </div>
       </div>
       <div class="row rtl">
@@ -121,7 +121,7 @@
                <img height="340" src="\public\storage\{{ $product->thumbnail }}" alt="{{ $product->name }}">  
                <p>{{ $product->short_description }}</p>
             </div>
-            <a href="{{ lang_url('product/'.$product->product_id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('File details')</a>
+            <a href="{{ lang_url('product/'.$product->product_id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('تفاصيل الملف ')</a>
          </div>
          <?php endforeach ?>
          <?php else: ?>
@@ -137,8 +137,8 @@
    <div class="container">
       <div class="row rtl">
          <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-            <h2 class="mt-0 font-30 heading-title-spec">@t('Training activities')</h2>
-            <p class="mb-30">@t('Package description here Package description here Package description here Package description here Package description here Package description Package description here Package description')</p>
+            <h2 class="mt-0 font-30 heading-title-spec">@t('الانشطة التدريبة')</h2>
+            <p class="mb-30">@t('وصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هنا')</p>
          </div>
       </div>
       <div class="row rtl">
@@ -152,7 +152,7 @@
                <img src="\public\storage\{{ $school->image }}" alt="{{ $school->name }}">  
                <p>{{ $school->description }}</p>
             </div>
-            <a href="{{ lang_url('school/'.$school->schools->id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('the details') </a>
+            <a href="{{ lang_url('school/'.$school->schools->id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('التفاصيل') </a>
          </div>
          <?php endforeach ?>
          <?php else: ?>
@@ -173,8 +173,8 @@
    <div class="container">
       <div class="row rtl">
          <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-            <h2 class="mt-0 font-30 heading-title-spec">@t('Training activities')</h2>
-            <p class="mb-30">@t('Package description here Package description here Package description here Package description here Package description here Package description Package description here Package description')</p>
+            <h2 class="mt-0 font-30 heading-title-spec">@t('الانشطة التدريبة')</h2>
+            <p class="mb-30">@t('وصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هنا')</p>
          </div>
       </div>
       <div class="row rtl">
@@ -196,20 +196,20 @@
                </h3>
                <img src="\public\storage\{{ $events->image }}" alt="{{ $events->name }}"> 
                <?php $dt = new DateTime($events->start_date); ?> 
-               <p class="color-dark-green font-weight-600 font-16 course-divider">@t('History')<span class="color-theme-green course-span">{{ $dt->format('d-m-Y') }}</span></p>
-               <p class="color-dark-green font-weight-600 font-16 course-divider">@t('Type')<span class="color-theme-green course-span">{{ ucwords(str_replace('_', ' ', $events->events->type)) }} </span></p>
-               <p class="color-dark-green font-weight-600 font-16 course-divider">@t('Fees')<span class="color-theme-green course-span">{{ $events->events->price }} </span></p>
+               <p class="color-dark-green font-weight-600 font-16 course-divider">@t('التاريخ')<span class="color-theme-green course-span">{{ $dt->format('d-m-Y') }}</span></p>
+               <p class="color-dark-green font-weight-600 font-16 course-divider">@t('النوع')<span class="color-theme-green course-span">{{ ucwords(str_replace('_', ' ', $events->events->type)) }} </span></p>
+               <p class="color-dark-green font-weight-600 font-16 course-divider">@t('الرسوم')<span class="color-theme-green course-span">{{ $events->events->price }} </span></p>
             </div>
             <?php if ($events->course_enroll_status != 'finish' && $events->course_enroll_status != 'cancelled' && $events->course_enroll_status != 'closed' && $events->course_enroll_status != 'on_hold'): ?>
             <?php if (Auth::check()): ?>
             <?php $enrolledCourse = DB::table('course_subscriptions')->where([['event_id', $events->events->id], ['user_id', Auth::user()->id]])->first(); ?>
             <?php if (!$enrolledCourse): ?>
-            <a href="{{ lang_url('events/'.$events->events->id) }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('Course details') </a>
+            <a href="{{ lang_url('events/'.$events->events->id) }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('تفاصيل الدورة') </a>
             <?php else: ?>
             <span>@t('Note:') <b>@t('You are already Enrolled in this course')</b></span>
             <?php endif ?>
             <?php else: ?>
-            <a href="{{ lang_url('events/'.$events->events->id) }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('Course details') </a>
+            <a href="{{ lang_url('events/'.$events->events->id) }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('تفاصيل الدورة') </a>
             <?php endif ?>
             <?php endif ?>
          </div>
