@@ -96,7 +96,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php $loggedUser = Auth::user(); ?>
                                     <?php $dataTypeContent = $dataTypeContent->where('parent_id', '0'); ?>
+                                    <?php if ($loggedUser->role_id != '1'): ?>
+                                        <?php $dataTypeContent = $dataTypeContent->where('user_id', Auth::user()->id); ?>
+                                    <?php endif ?>
 
                                     @foreach($dataTypeContent as $data)
                                     <tr>

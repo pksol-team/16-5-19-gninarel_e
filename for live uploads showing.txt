@@ -1,0 +1,25 @@
+0
+
+i found the solution ! the promblem was in the symlink(storage symbolic link). in the localhost we can easily create the symlink from voyager adminpannel or in terminal php artisan storage:link in that case in shared hosting we cannot do that .see below what i do.
+
+1.log in to the cpannel
+
+2.go the project folder then go public->storage folder then rename it to storage old or somthing.
+
+3.come back to the cpannel main menu and select the cron job
+
+4.in common settings --> select *once per 5 minutes
+
+5.in the command field add this ln -s /home/cpanel_username/project_name/storage/app/public /home/cpanel_sername/project_name/public/storage
+
+(my site was in subdomain) example-ln -s /home/your_cpannel_user name/public_html/subdomain_foldername/storage/app/public /home/cpanel_username/public_html/subdomain_foldername/public/storage
+
+syntax-->ln -s target_path link_path
+
+6.type your email in the cron email and update email(when the job was done email notification wiil come to your inbox check the spam folder)
+
+6.create new cronjob
+
+7.wait few minutes you almost done.! after the execution delete the cronjob
+
+8.log and check upload path working correctly!

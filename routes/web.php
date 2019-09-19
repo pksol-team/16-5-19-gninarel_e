@@ -98,9 +98,6 @@ MultiLang::routeGroup(function($router) {
 		//View Partners Page
 		Route::get('/our_partners', 'Frontend\IndexController@our_partners');
 
-		//View podcasts Page
-		Route::get('/podcasts', 'Frontend\IndexController@podcasts');
-
 		//View Media Page
 		Route::get('/media', 'Frontend\IndexController@media');
 
@@ -158,6 +155,9 @@ MultiLang::routeGroup(function($router) {
 		// Email Subscribe by visitor or user
 		Route::post('/email_subscribe_user', 'Frontend\IndexController@email_subscribe_user');
 
+		// Email Unsubscribe by visitor or user
+		Route::get('/email_unsubscribed/{email}', 'Frontend\IndexController@email_unsubscribed');
+
 		// Email Subscribe by visitor or user
 		Route::post('/updatevideowatched', 'Frontend\IndexController@updatevideowatched');
 
@@ -195,7 +195,7 @@ MultiLang::routeGroup(function($router) {
 		Route::post('/enroll_form', 'Frontend\IndexController@enroll_form');
 
 		// payment of course enroll
-		Route::get('/{coursed_id}/payment_course/{subscriptions_id}', 'Frontend\IndexController@payment_course');
+		Route::get('/{event_id}/payment_course/{subscriptions_id}', 'Frontend\IndexController@payment_course');
 
 		// input coupen check Ajax
 		Route::post('/coupenCheck', 'Frontend\IndexController@coupenCheck');
@@ -215,6 +215,9 @@ MultiLang::routeGroup(function($router) {
 		// Admin route (Read Notification)
 		Route::post('/read_notification', 'Frontend\IndexController@read_notification');
 
+		// mark all as read notification
+		Route::get('/mark_as_read', 'Frontend\IndexController@mark_as_read');
+
 		// view comments in backend
 		Route::get('/admin/{comment_id}/comments_reply', 'Voyager\VoyagerCommentsController@comments_reply_backend');
 
@@ -229,6 +232,10 @@ MultiLang::routeGroup(function($router) {
 
 		// Exam records
 		Route::get('/admin/exams/{exam_id}/records', 'Voyager\VoyagerExamController@records');
+
+		// test for mailing
+		Route::get('/test', 'Frontend\IndexController@test');
+
 
 		
 	});

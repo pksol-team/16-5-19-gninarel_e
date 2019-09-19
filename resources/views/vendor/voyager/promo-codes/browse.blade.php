@@ -1,7 +1,7 @@
 <?php 
     use App\Event;
     use App\ProductsNative;
-    use App\School;
+    use App\SchoolPlan;
 ?>
 
 @extends('voyager::master')
@@ -109,10 +109,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $loggedUser = Auth::user(); ?>
-                                    <?php if ($loggedUser->role_id != '1'): ?>
-                                        <?php $dataTypeContent = $dataTypeContent->where('user_id', Auth::user()->id); ?>
-                                    <?php endif ?>
                                     
                                     @foreach($dataTypeContent as $data)
                                     <tr>
@@ -172,27 +168,29 @@
 
                                                 @elseif(($row->type == 'select_dropdown' || $row->type == 'radio_btn') && property_exists($row->details, 'options'))
 
-                                                @if($row->field == 'object_type')
-                                                    {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
+                                                    @if($row->field == 'object_type')
+                                                        {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
-                                                @elseif($row->field == 'object_id')
-                                                    @if($data->object_type == '1')
-                                                        @php
-                                                            $product = ProductsNative::find($data->object_id);
-                                                            echo($product->name);
-                                                        @endphp
-                                                    @elseif($data->object_type == '2')
-                                                        @php
-                                                            $school = School::find($data->object_id);
-                                                            echo($school->name);
-                                                        @endphp
+                                                    @elseif($row->field == 'object_id')
+                                                        @if($data->object_type == '1')
+                                                            @php
+                                                                $product = ProductsNative::find($data->object_id);
+                                                                echo($product->name);
+                                                            @endphp
+                                                        @elseif($data->object_type == '2')
+                                                            @php
+                                                                $schoolPlan = SchoolPlan::find($data->object_id);
+                                                                echo($schoolPlan->title);
+                                                            @endphp
+                                                        @else
+                                                            @php
+                                                                $event = Event::find($data->object_id);
+                                                                echo($event->name);
+                                                            @endphp
+                                                        @endif
                                                     @else
-                                                        @php
-                                                            $event = Event::find($data->object_id);
-                                                            echo($event->name);
-                                                        @endphp
+                                                        {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
                                                     @endif
-                                                @endif
 
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')

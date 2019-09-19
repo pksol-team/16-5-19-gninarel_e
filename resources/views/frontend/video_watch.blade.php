@@ -7,14 +7,14 @@
       <div class="row">
          <div class="offset-md-4 col-md-4">
             <div class="our_logo">
-               <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt="Logo"></a>
+               <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png"></a>
             </div>
          </div>
       </div>
       <div class="row">
         <div class="elegant-dual-button">
            <div class="first-btn">
-              <a class="btn" href="{{ lang_url('courses/'.$course_id.'/view') }}"><i class="fa fa-arrow-right float-left"> &nbsp;</i> Back to Course </a>
+              <a class="btn" href="{{ lang_url('courses/'.$course_id.'/view') }}"><i class="fa fa-arrow-right float-left"> &nbsp;</i>@t(' Back to Course ')</a>
            </div>
         </div>
       </div><!-- /.row -->

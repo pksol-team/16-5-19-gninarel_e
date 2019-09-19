@@ -16,9 +16,9 @@
           <div class="row">
             <div class="col-md-12">
                 <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                    <li><a href="{{ lang_url('') }}">الصفحة الرئيسية</a></li>
-                    <li><a href="{{ lang_url('events') }}">تقويم الأحداث </a></li>
-                    <li class="active text-gray-silver">تفاصيل الحدث</li>
+                    <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
+                    <li><a href="{{ lang_url('events') }}">@t('تقويم الأحداث ')</a></li>
+                    <li class="active text-gray-silver">@t('تفاصيل الحدث')</li>
                 </ol>
                 <h2 class="title text-white">{{ $eventNative->name }}</h2>
             </div>
@@ -37,7 +37,7 @@
             <!-- Final Countdown Timer Script -->
             <script type="text/javascript">
               $(document).ready(function() {
-                $('#basic-coupon-clock').countdown('2020/10/10', function(event) {
+                $('#basic-coupon-clock').countdown('{{ $eventNative->events->start_date }}', function(event) {
                   $(this).html(event.strftime('%D days %H:%M:%S'));
                 });
               });
@@ -53,33 +53,37 @@
           <div class="col-md-4">
             <ul>
               <li>
-                <h5>Title:</h5>
+                <h5>@t('Title:')</h5>
                 <p>{{ $eventNative->name }}</p>
               </li>
               <li>
-                <h5>Classification:</h5>
+                <h5>@t('Classification:')</h5>
                 <p>{{ $eventNative->events->classification }}.</p>
               </li>
               <li>
-                <h5>Location:</h5>
-                <p>{{ $eventNative->events->description }}</p>
+                <h5>@t('Location:')</h5>
+                <p>{{ $eventNative->events->location }}</p>
               </li>
               <li>
-                <h5>Start Date:</h5>
+                <h5>@t('Start Date:')</h5>
                 <p>{{ $eventNative->events->start_date }}</p>
               </li>
-              <!-- <li>
-                <h5>End Date:</h5>
-                <p>February 10, 2016</p>
-              </li> -->
-              <!-- <li>
-                <h5>Website:</h5>
-                <p>kodesolution.com</p>
-              </li> -->
               <li>
-                <h5>Share:</h5>
+                <h5>@t('End Date:')</h5>
+                <p>{{ $eventNative->events->end_date }}</p>
+              </li>
+              <li>
+                <h5>@t('Total hours:')</h5>
+                <p>{{ $eventNative->events->hours }}</p>
+              </li>
+              <li>
+                <h5>@t('Website:')</h5>
+                <p>{{ $eventNative->events->zoom_link }}</p>
+              </li>
+              <li>
+                <h5>@t('Share:')</h5>
                 <div class="styled-icons icon-sm icon-gray icon-circled">
-                  <a target="_blank" href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                  <a href="https://www.facebook.com/sharer/sharer.php?u=#url" target="_blank"><i class="fa fa-facebook"></i></a>
                   <a target="_blank" href="https://www.twiter.com"><i class="fa fa-twitter"></i></a>
                   <a target="_blank" href="https://www.instagram.com"><i class="fa fa-instagram"></i></a>
                   <a target="_blank" href="https://www.google.com"><i class="fa fa-google-plus"></i></a>
@@ -88,158 +92,84 @@
             </ul>
           </div>
           <div class="col-md-8">
-            <!-- <div class="owl-carousel-1col" data-nav="true"> -->
               <div class="item"><img src="\storage\{{ $eventNative->image }}" alt=""></div>
-              <!-- <div class="item"><img src="https://placehold.it/755x480" alt=""></div> -->
-              <!-- <div class="item"><img src="https://placehold.it/755x480" alt=""></div>
-              <div class="item"><img src="https://placehold.it/755x480" alt=""></div>
-              <div class="item"><img src="https://placehold.it/755x480" alt=""></div> -->
-            <!-- </div> -->
           </div>
         </div>
         <div class="row mt-60">
           <div class="col-md-12">
-            <h4 class="mt-0">Event Description</h4>
+            <h4 class="mt-0">@t('Event Description')</h4>
             <p>{{ $eventNative->description }}</p>
           </div>
         </div>
-        <!-- <div class="row mt-40">
-          <div class="col-md-12">
-            <h4 class="mb-20">Keynote Speakers</h4>
-            <div class="owl-carousel-6col" data-nav="true">
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Lawyer</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Businessman</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Student</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Lawyer</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Businessman</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Student</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Student</h6>
-                  </div>
-                </div>
-              </div>
-              <div class="item">
-                <div class="attorney">
-                  <div class="thumb"><img src="images/user-img.png" alt=""></div>
-                  <div class="content text-center">
-                    <h5 class="author mb-0"><a class="text-theme-colored" href="#">Alex Jacobson</a></h5>
-                    <h6 class="title text-gray font-12 mt-0 mb-0">Lawyer</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </section>
 
+
+<?php if ($eventNative->events->course_enroll_status != 'finish' && $eventNative->events->course_enroll_status != 'cancelled' && $eventNative->events->course_enroll_status != 'closed' && $eventNative->events->course_enroll_status != 'on_hold'): ?>
+  <?php 
+    $date = new DateTime($eventNative->events->end_date);
+    $now = new DateTime();
+  ?>
+  <?php if ($date > $now): ?>    
     <!-- Section: Registration Form -->
     <section class="divider parallax bg-lighter">
       <div class="container-fluid">
         <div class="section-title">
           <div class="row">
             <div class="col-md-6 col-md-offset-3 text-center">
-              <h3 class="title text-theme-colored">Registration Form</h3>
+              <h3 class="title text-theme-colored">@t('Registration Form')</h3>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
-            <form id="booking-form" name="booking-form" action="includes/event-register.php" method="post" enctype="multipart/form-data">
+          <?php if (Auth::check()): ?>
+
+            <?php $enrolledCourse = DB::table('course_subscriptions')->where([['status', 'active'], ['event_id', $eventNative->events->id], ['user_id', Auth::user()->id]])->first(); ?>
+            <?php if (!$enrolledCourse): ?>
+              <form name="checkoutForm" id="checkoutForm" method="POST" action="{{ lang_url('') }}/enroll_form" class="checkoutForm">
+            <?php endif ?>
+          <?php else: ?>
+            <form name="checkoutForm" id="checkoutForm" method="POST" action="{{ lang_url('') }}/enroll_form" class="checkoutForm">
+          <?php endif ?>
+            @csrf
+            <input type="hidden" class="user_id" name="user_id" value="{{ Auth::check() ? Auth::user()->id : '' }}" />
+            <input type="hidden" name="event_id" value="{{ $eventNative->events->id }}" />
+
               <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" placeholder="Enter Name" name="register_name" required="" class="form-control">
+                    <input type="text" class="form-control" value="{{ Auth::check() ? Auth::user()->name : '' }}" id="first_name" name="first_name" placeholder="@t('First name')" required>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" placeholder="Enter Email" name="register_email" class="form-control" required="">
+                    <input type="text" class="form-control" value="{{ Auth::check() ? Auth::user()->last_name : '' }}" id="last_name" name="last_name" placeholder="@t('Last name')" required>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" placeholder="Enter Phone" name="register_phone" class="form-control" required="">
+                    <input type="email" class="form-control" value="{{ Auth::check() ? Auth::user()->email : '' }}" id="email" name="email" placeholder="example@example.com" required>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <label>Ticket types</label>
-                    <select name="ticket_type" class="form-control">
-                      <option>One Person</option>
-                      <option>Two Person</option>
-                      <option>Family Pack</option>
-                      <option>Premium</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label>Event types</label>
-                    <select name="event_type" class="form-control">
-                      <option>Event 1</option>
-                      <option>Event 2</option>
-                      <option>Event 3</option>
-                      <option>All package</option>
-                    </select>
+                      <input type="text" class="form-control" value="{{ Auth::check() ? Auth::user()->phone : '' }}" id="mobile_number" name="mobile_number" placeholder="@t('+123-342')" required>
                   </div>
                 </div>
                 <div class="col-sm-12">
                   <div class="form-group text-center">
-                    <input name="form_botcheck" class="form-control" type="hidden" value="" />
-                    <button data-loading-text="Please wait..." class="btn btn-dark btn-theme-colored btn-sm btn-block mt-20 pt-10 pb-10" type="submit">Register now</button>
+                    <?php if (Auth::check()): ?>
+
+                      <?php $enrolledCourse = DB::table('course_subscriptions')->where([['status', 'active'], ['event_id', $eventNative->events->id], ['user_id', Auth::user()->id]])->first(); ?>
+                      <?php if (!$enrolledCourse): ?>
+                        <button data-loading-text="Please wait..." class="btn btn-dark btn-theme-colored btn-sm btn-block mt-20 pt-10 pb-10" type="submit">@t('Register now')</button>
+                      <?php else: ?>
+                        <span>@t('Note:') <b>@t('You are already Enrolled in this event')</b></span>
+                      <?php endif ?>
+                    <?php else: ?>
+                      <button data-loading-text="Please wait..." class="btn btn-dark btn-theme-colored btn-sm btn-block mt-20 pt-10 pb-10" type="submit">@t('Register now')</button>
+                    <?php endif ?>
                   </div>
                 </div>
               </div>
@@ -248,6 +178,8 @@
         </div>
       </div>
     </section>
+  <?php endif ?>
+  <?php endif ?>
   </div>
   <!-- end main-content -->
   @stop

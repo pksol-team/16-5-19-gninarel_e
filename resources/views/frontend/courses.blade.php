@@ -7,7 +7,7 @@
       <div class="col-md-3"></div>
       <div class="col-md-9">
          <div class="elegant-special-heading-wrapper">
-            <h1 class="special-heading-title">ALL COURSES</h1>
+            <h1 class="special-heading-title">@t('ALL COURSES')</h1>
             <!-- <p class="special-heading-description">By Akil Stokes: Trading - Investing - Entrepreneurship - Motivation</p> -->
          </div>
       </div>
@@ -20,7 +20,7 @@
             <ul class="nav nav-tabs">
                <li>
                   <a data-toggle="tab" href="#episodes" class="active show">
-                  <i class="fa fa-graduation-cap"></i> Courses
+                  <i class="fa fa-graduation-cap"></i>@t('Courses')
                   </a>
                </li>
             </ul>
@@ -54,7 +54,7 @@
                                  </div>
                               </div>
                               <div class="col-md-12 text-right">
-                                 <a class="readmore" href="{{ lang_url('courses/'. $course->courses->id.'/view') }}">Read More</a>
+                                 <a class="readmore" href="{{ lang_url('courses/'. $course->courses->id.'/view') }}">@t('Read More')</a>
                               </div>
                            </li>
                         <?php endforeach ?>

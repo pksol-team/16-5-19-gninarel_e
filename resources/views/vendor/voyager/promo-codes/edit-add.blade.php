@@ -66,7 +66,7 @@
                                 @if (isset($row->details->legend) && isset($row->details->legend->text))
                                     <legend class="text-{{ $row->details->legend->align ?? 'center' }}" style="background-color: {{ $row->details->legend->bgcolor ?? '#f0f0f0' }};padding: 5px;">{{ $row->details->legend->text }}</legend>
                                 @endif
-                                <div class="form-group @if($row->type == 'relationship' && $row->display_name == 'User') hidden @endif @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                     {{ $row->slugify }}
 
                                     <label class="control-label" for="name">{{ $row->display_name }}</label>
@@ -75,13 +75,7 @@
                                     @if (isset($row->details->view))
                                         @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add')])
                                     @elseif ($row->type == 'relationship')
-
-                                    <?php if ($row->display_name == 'User'): ?>
-                                        <input type="hidden" name="user_id" value="{{ $dataTypeContent->{$row->field} ?? old($row->field) ?? $options->default ?? Auth::user()->id }}" />
-                                    <?php else: ?>
                                         @include('voyager::formfields.relationship', ['options' => $row->details])
-                                    <?php endif ?>
-
                                     @else
                                         {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                     @endif
@@ -95,7 +89,6 @@
                                         @endforeach
                                     @endif
                                 </div>
-<!-- <?php// var_dump($dataTypeRows) ?> -->
                             @endforeach
                         </div><!-- panel-body -->
 
@@ -213,7 +206,7 @@
             if ($objectType == '1') {
                 $objectType = 'products_natives';
             } else if($objectType == '2') {
-                $objectType = 'schools';
+                $objectType = 'school_plans';
 
             } else {
                 $objectType = 'events';
@@ -234,8 +227,6 @@
 
                         $('select[name=object_id] option').remove();
                         $('select[name=object_id]').select2('data', null);
-
-                        console.log('{{ $dataTypeContent->{$dataTypeRows[3]->field} }}');
 
                         $.each(response, function(index, val) {
                             var data = {
@@ -266,7 +257,7 @@
                 if ($objectType == '1') {
                     $objectType = 'products_natives';
                 } else if($objectType == '2') {
-                    $objectType = 'schools';
+                    $objectType = 'school_plans';
 
                 } else {
                     $objectType = 'events';

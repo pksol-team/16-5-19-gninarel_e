@@ -1,19 +1,14 @@
-<?php use Carbon\Carbon;
+<?php 
+   use Carbon\Carbon;
    use App\VideoNative;
-   
    use App\User_access;
-   
    use App\User;
-   
    use App\Comment;
-   
    use App\Exams;
-   
    use App\UserLoginDetail;
-   
    use App\UserLoginNotify;
-   
-   ?>
+   use App\Notification;
+?>
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop
 @section('content')
@@ -21,8 +16,6 @@
    $userLoginDetail = UserLoginDetail::where([['email', Auth::user()->email], ['user_agent', $userAgent]])->first();
    
    if (count($userLoginDetail) > 0) {
-   
-   
    
      if ($userLoginDetail->status != 'saved') {
    
@@ -36,19 +29,25 @@
    
          'created_at' => Carbon::now(),
    
-   
-   
        ];
    
        UserLoginNotify::insert($userNotify);
+
+       $newNotification = [
+         'table_ID' => Auth::user()->id,
+         'slug' => 'users',
+         'title' => 'Unknown device login',
+         'short_desc' => Auth::user()->email.' has logged in from other device',
+         'url' => 'admin/users/'.Auth::user()->id.'/edit',
+         'status' => 0,
+           'created_at' => Carbon::now()
+       ];
+
+       Notification::insert($newNotification);
    
      }
    
-     
-   
    }
-   
-   
    
    $testSkipCheck = Exams::where('chapter_id', '=',  $chapter->id)->whereBetween('min_pass', [1, 100])->get();
    
@@ -65,10 +64,10 @@
          <div class="row">
             <div class="col-md-12">
                <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                  <li><a href="index.html">الصفحة الرئيسية</a></li>
-                  <li class="active text-gray-silver">الأنشطة التدريبية</li>
+                  <li><a href="index.html">@t('الصفحة الرئيسية')</a></li>
+                  <li class="active text-gray-silver">@t('الأنشطة التدريبية')</li>
                </ol>
-               <h2 class="title text-white">احتراف التداول 1</h2>
+               <h2 class="title text-white">@t('احتراف التداول 1')</h2>
             </div>
          </div>
       </div>
@@ -80,13 +79,13 @@
          <div class="col-md-3 col-sm-3 col-xs-12">
             <div class="vertical-tab">
                <ul class="nav nav-tabs">
-                  <li class=""><a href="{{ lang_url('profile') }}"><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/> الملف الشخصي </a></li>
-                  <li><a href="{{ lang_url('all_purchases') }}"><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/> مشترياتي</a></li>
-                  <li><a href="{{ lang_url('all_subscriptions') }}"><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/> باقاتي</a></li>
-                  <li><a href="{{ lang_url('schools') }}"><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/> المدرسة  الالكترونية</a></li>
-                  <li class="active"><a href="{{ lang_url('training_activities') }}"><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/> الانشطة التدريبة</a></li>
-                  <li><a href="{{ lang_url('communication') }}"><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/> التواصل </a></li>
-                  <li><a href="{{ lang_url('logout_frontend') }}" ><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/> خروج</a></li>
+                  <li class=""><a href="{{ lang_url('profile') }}"><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t('الملف الشخصي ')</a></li>
+                  <li><a href="{{ lang_url('all_purchases') }}"><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('مشترياتي')</a></li>
+                  <li><a href="{{ lang_url('all_subscriptions') }}"><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('باقاتي')</a></li>
+                  <li><a href="{{ lang_url('schools') }}"><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t(' المدرسة  الالكترونية')</a></li>
+                  <li class="active"><a href="{{ lang_url('training_activities') }}"><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('الانشطة التدريبة')</a></li>
+                  <li><a href="{{ lang_url('communication') }}"><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('التواصل ')</a></li>
+                  <li><a href="{{ lang_url('logout_frontend') }}" ><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/>@t('خروج')</a></li>
                </ul>
             </div>
          </div>
@@ -119,39 +118,39 @@
                            </button>
                         </div>
                         <div class="modal-body">
-                           <p><small>You have watched all video of this chapter <br />Give test of this chapter for being a part of next chapter</small></p>
+                           <p><small>@t('You have watched all video of this chapter') <br />@t('Give test of this chapter for being a part of next chapter')</small></p>
                         </div>
                         <div class="modal-footer">
                            <a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white">
-                           <button type="button" class="btn btn-primary">Start Test</button>
+                           <button type="button" class="btn btn-primary">@t('Start Test')</button>
                            </a>
                            <?php if ($skipTest < 1): ?>
-                           <button type="button" class="btn btn-secondary">Skip Test</button>
+                           <button type="button" class="btn btn-secondary">@t('Skip Test')</button>
                            <?php endif ?>
-                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">@t('Close')</button>
                         </div>
                      </div>
                   </div>
                </div>
                <!-- Model Box For Test -->
                <?php endif ?>
-               <h5>Attempt test for next chapter</h5>
+               <h5>@t('Attempt test for next chapter')</h5>
                <div class="row" style="margin-bottom:10px;">
                   <div class="col-xs-2">
-                     <div>Questions:</div>
-                     <div>Time:</div>
-                     <div>Difficulty:</div>
+                     <div>@t('Questions:')</div>
+                     <div>@t('Time:')</div>
+                     <div>@t('Difficulty:')</div>
                   </div>
                   <!-- /.col-3 -->
                   <div class="col-xs-10">
-                     <div>From 10 up to 10 Questions</div>
-                     <div>About 10 Minutes</div>
-                     <div>The test will provide a variety of question from easy to hard ones</div>
+                     <div>@t('From 10 up to 10 Questions')</div>
+                     <div>@t('About 10 Minutes')</div>
+                     <div>@t('The test will provide a variety of question from easy to hard ones')</div>
                   </div>
                   <!-- /.col-3 -->
                </div>
                <!-- /.row -->
-               <button class="btn btn-success"><a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white"> Start Test</a></button>
+               <button class="btn btn-success"><a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white"> @t('Start Test')</a></button>
             </div>
             <?php endif ?>
             <?php endif ?>
@@ -163,7 +162,7 @@
                <div class="tab-pane fade in active" id="tab5">
                   <div class="row mb-30">
                      <div class="col-md-12">
-                        <h2 class="text-right color-theme-green">التفاصيل</h2>
+                        <h2 class="text-right color-theme-green">@t('التفاصيل')</h2>
                      </div>
                   </div>
                   <div class="row">
@@ -172,24 +171,12 @@
                            <table class="table sub-table border-white">
                               <tbody>
                                  <tr>
-                                    <td class="bg-lighter">عنوان النشاط </td>
-                                    <td>احتراف التداول 1</td>
-                                    <!-- <td class="bg-lighter">تاريخ النشاط</td>
-                                       <td>22/1/2019</td>
-                                       <td class="bg-lighter">الحالة </td>
-                                       <td>انتهت  </td>
-                                       <td class="bg-lighter">المكان   </td>
-                                       <td>اونلاين   </td> -->
+                                    <td class="bg-lighter">@t('عنوان النشاط ')</td>
+                                    <td>@t('احتراف التداول 1')</td>
                                  </tr>
                                  <tr>
                                     <td class="bg-lighter">{{ $chapter->name }} </td>
                                     <td>{{ $chapter->description }}</td>
-                                    <!-- <td class="bg-lighter">نوع النشاط</td>
-                                       <td>دورة </td>
-                                       <td class="bg-lighter">المدة </td>
-                                       <td>88  </td>
-                                       <td class="bg-lighter">العدد   </td>
-                                       <td>1200   </td> -->
                                  </tr>
                               </tbody>
                            </table>
@@ -197,17 +184,6 @@
                      </div>
                   </div>
                   <div class="row mt-30">
-                     <!-- <div class="col-md-3 col-sm-3 col-xs-12">
-                        <div class="vertical-tab sub-tabs">
-                          <ul class="nav nav-tabs">
-                            <li class="active"><a href="#lesson1" data-toggle="tab"> الدرس الاول</a></li>
-                            <li class=""><a href="#lesson2" data-toggle="tab"> الدرس الثاني</a></li>
-                            <li class=""><a href="#lesson3" data-toggle="tab"> الدرس الثالث</a></li>
-                            <li class=""><a href="#lesson4" data-toggle="tab"> الدرس الرابع</a></li>
-                            <li class=""><a href="#lesson5" data-toggle="tab"> الدرس الخامص</a></li>
-                          </ul>
-                        </div>
-                        </div> -->
                      <div class="col-md-12 col-sm-12 col-xs-12">
                         <?php if (count($videoNative) > 0): ?>
                         <?php foreach ($videoNative as $key => $video): ?>
@@ -215,7 +191,7 @@
                            <?php 
                               $videoWatchedSingle = User_access::where([['user_id', Auth::user()->id], ['object_type', 'video'], ['object_id', $video->video_id], ['status', 'watched']])->first();
                               
-                              ?>
+                           ?>
                            <h4 class="color-dark-green">{{ $video->name }} <span style="font-size: 1.2em;"><i class="fa fa-check-circle" style="color:{{ $videoWatchedSingle ? '#3c763d' : '#000' }};" aria-hidden="true"></i></h4>
                            <p class="color-dark-green">{{ $video->description }}</p>
                            <?php $decodedVideo = json_decode($video->video_upload); ?>
@@ -237,17 +213,17 @@
                            </div>
                            <?php endif ?>
                            <div class="separator separator-rounedd"></div>
-                           <h4 class="color-dark-green">المرفقات</h4>
+                           <h4 class="color-dark-green">@t('المرفقات')</h4>
                            <?php if ($key == 0): ?>
                            <div class="m-0">
                               <?php $allAttachments = json_decode($video->attachments); ?>
                               <?php if (count($allAttachments) > 0): ?>
                               <?php foreach ($allAttachments as $key => $attch): ?>
-                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">الملف الاول <span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
+                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">@t('الملف الاول ')<span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
                               <?php endforeach ?>
                               <?php else: ?>
                               <div class="m-0">
-                                 <p>No Attachment Found!</p>
+                                 <p>@t('No Attachment Found!')</p>
                               </div>
                               <?php endif ?>
                            </div>
@@ -256,18 +232,18 @@
                               <?php $allAttachments = json_decode($video->attachments); ?>
                               <?php if (count($allAttachments) > 0): ?>
                               <?php foreach ($allAttachments as $key => $attch): ?>
-                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">الملف الاول <span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
+                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">@t('الملف الاول ')<span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
                               <?php endforeach ?>
                               <?php else: ?>
                               <div class="m-0">
-                                 <p>No Attachment Found!</p>
+                                 <p>@t('No Attachment Found!')</p>
                               </div>
                               <?php endif ?>
                            </div>
                            <?php endif ?>
                            <div class="separator separator-rounedd"></div>
                            <div class="comments-area">
-                              <h5 class="comments-title color-dark-green">التعليقات الخاصة</h5>
+                              <h5 class="comments-title color-dark-green">@t('التعليقات الخاصة')</h5>
                               <ul class="comment-list">
                                  <?php $allComments = Comment::where([['status', 'active'], ['parent_id', 0], ['video_id', $video->id]])->orderBy('id', 'ASC')->get(); ?>
                                  <?php if (count($allComments) > 0): ?>
@@ -306,26 +282,26 @@
                                  <?php endforeach ?>
                                  <?php else: ?>
                                  <li>
-                                    <div>No Feedback Given</div>
+                                    <div>@t('No Feedback Given')</div>
                                  </li>
                                  <?php endif ?>
                               </ul>
                               <div class="comment-box mt-30">
                                  <div class="row">
                                     <div class="col-sm-12">
-                                       <h5>إرسال تعليق للمدرب خاص </h5>
+                                       <h5>@t('إرسال تعليق للمدرب خاص ')</h5>
                                        <div class="row">
                                           <form class="comment_form" method="POST" id="form_comment_{{ $video->id }}" action="{{ lang_url('submit_comment') }}">
                                              @csrf
                                              <div class="col-sm-12">
                                                 <div class="form-group">
-                                                   <textarea class="form-control user_cmnt" required name="current_user_comment"  placeholder="Enter Message" rows="5"></textarea>
+                                                   <textarea class="form-control user_cmnt" required name="current_user_comment"  placeholder="@t('Enter Message')" rows="5"></textarea>
                                                    <input type="hidden" name="video_id" value="{{ $video->id }}">
                                                    <input type="hidden" name="coach_id" value="{{ $video->user_id }}">
                                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                 </div>
                                                 <div class="form-group">
-                                                   <button type="submit" class="btn btn-theme-green btn-flat pull-left  m-0" data-loading-text="Please wait...">أرسال</button>
+                                                   <button type="submit" class="btn btn-theme-green btn-flat pull-left  m-0" data-loading-text="Please wait...">@t('أرسال')</button>
                                                 </div>
                                              </div>
                                           </form>
@@ -361,18 +337,18 @@
                coach_id = $this.attr('data-coach_id'),
                parent_id = $this.attr('data-parent_id'),
                replyForm = `<div class="rep-btn-section float-left col-11">
-                                        <form method="POST" id="form_comment_` + video_id + `" class="comment_form" action="{{ lang_url('submit_comment') }}">
-                                          <div class="inner-comment">
-                                        @csrf
-                                            <img src="\\public\\storage\\{{ Auth::user()->avatar }}" class="img-circle" alt="image description"">
-                                            <textarea name="current_user_comment" class="user_cmnt w-100 form-control" placeholder="Write your reply here" style="resize: none;"></textarea>
-                                             <input type="hidden" name="video_id" value="` + video_id + `">
-                                             <input type="hidden" name="coach_id" value="` + coach_id + `">
-                                             <input type="hidden" name="parent_id" value="` + parent_id + `">
-                                             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                               <button type="submit" class="btn btn-success comment">Comment</button>
-                                          </form>
-                                        </div>`;
+                <form method="POST" id="form_comment_` + video_id + `" class="comment_form" action="{{ lang_url('submit_comment') }}">
+                  <div class="inner-comment">
+                @csrf
+                    <img src="\\public\\storage\\{{ Auth::user()->avatar }}" class="img-circle" alt="image description"">
+                    <textarea name="current_user_comment" class="user_cmnt w-100 form-control" placeholder="Write your reply here" style="resize: none;"></textarea>
+                     <input type="hidden" name="video_id" value="` + video_id + `">
+                     <input type="hidden" name="coach_id" value="` + coach_id + `">
+                     <input type="hidden" name="parent_id" value="` + parent_id + `">
+                     <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                       <button type="submit" class="btn btn-success comment">Comment</button>
+                  </form>
+                </div>`;
    
            if (replyBox < 1) {
                $this.parent().append(replyForm);
@@ -440,7 +416,7 @@
                        // new comment
    
                        if (parent == undefined) {
-                           $(".main_comment_" + video_id + " ul.comment-list li:contains('No Feedback Given')").remove();
+                           $(".main_comment_" + video_id + " ul.comment-list li:contains(@t('No Feedback Given'))").remove();
    
                            var $newComment = `<li>
                                                        <div class="media comment-author"> 
@@ -452,7 +428,7 @@
                                                          <div class="col-xs-10 media-body bg-lighter p-10">
                                                            <div class="comment-section">
                                                              <p>` + commentForAppend + `</p>
-                                                             <button class="rep-btn comment_reply_button rep-btn pull-right m-0" data-coach_id="`+coach_idAppend+`" data-video_id="` + video_id + `" data-parent_id="` + response + `">Reply</button>
+                                                             <button class="rep-btn comment_reply_button rep-btn pull-right m-0" data-coach_id="`+coach_idAppend+`" data-video_id="` + video_id + `" data-parent_id="` + response + `">@t('Reply')</button>
                                                            </div>
                                                          </div>
                                                      </div>
@@ -700,24 +676,24 @@
    
                                        <div class="modal-body">
    
-                                         <p><small>You have watched all video of this chapter <br />Give test of this chapter for being a part of next chapter</small></p>
+                                         <p><small>@t('You have watched all video of this chapter') <br />@t('Give test of this chapter for being a part of next chapter')</small></p>
    
                                        </div>
    
                                        <div class="modal-footer">
    
-                                         <a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white"><button type="button" class="btn btn-primary">Start Test</button> </a>
+                                         <a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white"><button type="button" class="btn btn-primary">@t('Start Test')</button> </a>
    
                                            <?php
       if ($skipTest < 1) {
       
-        echo '<button type="button" class="btn btn-secondary">Skip Test</button>';
+        echo '<button type="button" class="btn btn-secondary">'.t('Skip Test').'</button>';
       
       }
       
       ?>
    
-                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">@t('Close')</button>
    
                                        </div>
    
@@ -729,33 +705,33 @@
    
                                <!-- Model Box For Test -->
    
-                               <h5>Attempt test for next chapter</h5>
+                               <h5>@t('Attempt test for next chapter')</h5>
    
                                <div class="row" style="margin-bottom:10px;">
    
                                  <div class="col-xs-2">
    
-                                   <div>Questions:</div>
+                                   <div>@t('Questions:')</div>
    
-                                   <div>Time:</div>
+                                   <div>@t('Time:')</div>
    
-                                   <div>Difficulty:</div>
+                                   <div>@t('Difficulty:')</div>
    
                                  </div>
    
                                  <div class="col-xs-10">
    
-                                   <div>From 10 up to 10 Questions</div>
+                                   <div>@t('From 10 up to 10 Questions')</div>
    
-                                   <div>About 10 Minutes</div>
+                                   <div>@t('About 10 Minutes')</div>
    
-                                   <div>The test will provide a variety of question from easy to hard ones</div>
+                                   <div>@t('The test will provide a variety of question from easy to hard ones')</div>
    
                                  </div>
    
                                </div>
    
-                               <button class="btn btn-success"><a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white"> Start Test</a></button>
+                               <button class="btn btn-success"><a href="{{ lang_url('chapters/'.$chapter->id.'/test/serve') }}" class="text-white">@t('Start Test')</a></button>
    
                              `);
    

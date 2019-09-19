@@ -93,7 +93,7 @@ html[dir="rtl"] .menuzord-menu {
 }
 html[dir="rtl"] .menuzord-menu.menuzord-right {
   float: left;
-  margin-right: 133px;
+  /*margin-right: 133px;*/
 }
 html[dir="rtl"] .menuzord-brand {
   margin-right: 0;

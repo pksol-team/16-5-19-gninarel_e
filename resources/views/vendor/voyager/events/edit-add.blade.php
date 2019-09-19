@@ -67,7 +67,22 @@
                                 @if (isset($row->details->legend) && isset($row->details->legend->text))
                                     <legend class="text-{{ $row->details->legend->align ?? 'center' }}" style="background-color: {{ $row->details->legend->bgcolor ?? '#f0f0f0' }};padding: 5px;">{{ $row->details->legend->text }}</legend>
                                 @endif
-                                <div class="form-group @if($row->type == 'relationship' && $row->display_name == 'Coach') hidden @endif @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+
+                                <?php 
+                                    $dynamicClass = NULL;
+                                    if ($edit) {
+                                        if ($row->display_name == 'Video' || $row->display_name == 'Attachment') {
+                                            $date = new DateTime($dataTypeContent->end_date);
+                                            $now = new DateTime();
+                                            if($date < $now) {
+                                                $dynamicClass = NULL;
+                                            } else {
+                                                $dynamicClass = 'hidden';
+                                            }
+                                        }
+                                    }
+                                 ?>
+                                <div class="form-group <?= $dynamicClass; ?> @if(!$edit && $row->display_name == 'Video') hidden @endif @if(!$edit && $row->display_name == 'Attachment') hidden @endif @if($row->display_name == 'Period') hidden @endif  @if($row->type == 'relationship' && $row->display_name == 'Coach') hidden @endif @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                     {{ $row->slugify }}
                                     <label class="control-label" for="name">{{ $row->display_name }}</label>
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
@@ -80,7 +95,11 @@
                                             @include('voyager::formfields.relationship', ['options' => $row->details])
                                         <?php endif ?>
                                     @else
-                                        {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        <?php if ($row->display_name == 'Period'): ?>
+                                            <input type="hidden" name="period" value="{{ $dataTypeContent->{$row->field} }}" />
+                                        <?php else: ?>
+                                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        <?php endif ?>
                                     @endif
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
@@ -172,6 +191,51 @@
                     elt.type = 'text';
                     $(elt).datetimepicker($(elt).data('datepicker'));
                 }
+            });
+
+            $('.form-group input[name=start_date]').datetimepicker({
+                format: 'YYYY-MM-DD'
+            }).on('dp.change', function(e) {
+                var $this = $(this);
+                var startDate = $this.val();
+                var endDate = $('.form-group input[name=end_date]').val();
+
+                var startDay = new Date(endDate);
+                var endDay = new Date(startDate);
+                var millisecondsPerDay = 1000 * 60 * 60 * 24;
+                var millisBetween = startDay.getTime() - endDay.getTime();
+                var days = millisBetween / millisecondsPerDay;
+
+                if (endDate != '' && days > -1) {
+                    $('.form-group input[name=period]').val(days);
+                } else {
+                    $('.form-group input[name=period]').val(0);
+                }
+
+
+            });
+
+            $('.form-group input[name=end_date]').datetimepicker({
+                format: 'YYYY-MM-DD'
+            }).on('dp.change', function(e) {
+
+                var $this = $(this);
+                var startDate = $('.form-group input[name=start_date]').val();
+                var endDate = $this.val();
+
+                var startDay = new Date(endDate);
+                var endDay = new Date(startDate);
+                var millisecondsPerDay = 1000 * 60 * 60 * 24;
+                var millisBetween = startDay.getTime() - endDay.getTime();
+                var days = millisBetween / millisecondsPerDay;
+
+                if (startDate != '' && days > -1) {
+                    $('.form-group input[name=period]').val(days);
+                } else {
+                    $('.form-group input[name=period]').val(0);
+                }
+
+                
             });
 
             @if ($isModelTranslatable)

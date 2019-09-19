@@ -12,11 +12,11 @@
           <div class="row">
             <div class="col-md-12">
                 <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                    <li><a href="{{ lang_url('') }}">الصفحة الرئيسية</a></li>
-                    <li class="active text-gray-silver">عن الأتجاه الأفضل</li>
-                    <li class="active text-gray-silver">تعريف</li>
+                    <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
+                    <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
+                    <li class="active text-gray-silver">@t('تعريف')</li>
                 </ol>
-                <h2 class="title text-white">عن الأتجاه الأفضل</h2>
+                <h2 class="title text-white">@t('عن الأتجاه الأفضل')</h2>
             </div>
           </div>
         </div>
@@ -39,17 +39,37 @@
                        <img width="80%" src="\public\storage\{{ $schoolNative->image }}" alt="{{ $schoolNative->name }}">
                     </div>
                     <div class="book-detail">
-                       <h3 class="mb-2"><strong>School Description:</strong></h3>
+                       <h3 class="mb-2"><strong>@t('School Description:')</strong></h3>
                       {!! $schoolNative->description !!}
                     </div>
                     <div>
-                       <div class="row mt-3">
-                          <div class="col-xs-12 p-0">
-                             <a class="" href="{{ lang_url('plans_pricing') }}">
-                                <button class="btn btn-success w-100">Enroll in</button>
-                             </a>
-                          </div><!-- /.col-4 -->
-                       </div><!-- /.row -->
+                      <?php if (Auth::check()): ?>
+                        <?php 
+                          $my_subscriptions = DB::table('users_subscription')
+                            ->join('schools_natives', 'users_subscription.school_id', '=', 'schools_natives.school_id')
+                        ->select('schools_natives.*', 'users_subscription.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status')
+                        ->where([['users_subscription.status', '!=', 'active'], ['users_subscription.user_id', '=', Auth::user()->id], ['schools_natives.status', '=', 'active'], ['schools_natives.lang', '=', json_decode(Auth::user()->settings)->locale], ['schools_natives.id', '=', $schoolNative->id]])
+                            ->first();
+                        ?>
+                        <?php if (count($my_subscriptions) < 1): ?>
+                         <div class="row mt-3">
+                            <div class="col-xs-12 p-0">
+                               <a class="" href="{{ lang_url('plans_pricing') }}">
+                                  <button class="btn btn-success w-100">@t('Enroll in')</button>
+                               </a>
+                            </div><!-- /.col-4 -->
+                         </div><!-- /.row -->
+                        <?php endif ?>
+                      <?php else: ?>
+
+                        <div class="row mt-3">
+                           <div class="col-xs-12 p-0">
+                              <a class="" href="{{ lang_url('userlogin') }}">
+                                 <button class="btn btn-success w-100">@t('Enroll in')</button>
+                              </a>
+                           </div><!-- /.col-4 -->
+                        </div><!-- /.row -->
+                      <?php endif ?>
                     </div>
                  </div>
               </div>

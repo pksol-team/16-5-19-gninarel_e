@@ -1,7 +1,7 @@
 <?php 
     use App\Event;
     use App\ProductsNative;
-    use App\School;
+    use App\SchoolPlan;
 ?>
 @extends('voyager::master')
 
@@ -90,8 +90,8 @@
                                             @endphp
                                         @elseif(json_decode($dataTypeContent)->object_type == '2')
                                             @php
-                                                $school = School::find(json_decode($dataTypeContent)->object_id);
-                                                echo($school->name);
+                                                $school_Plan = SchoolPlan::find(json_decode($dataTypeContent)->object_id);
+                                                echo($school_Plan->title);
                                             @endphp
                                         @else
                                             @php

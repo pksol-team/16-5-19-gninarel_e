@@ -821,3 +821,54 @@ ol.carousel-indicators {
 .media_page .tab-content h3 {
     color: #41a161 !important;
 }
+
+/* sssssssssssss */
+
+
+.activity-detail.table-bordered>thead>tr>td, .activity-detail.table-bordered>thead>tr>th {
+    border-bottom-width: 2px;
+    padding: 5px !important;
+}
+.activity-detail.table-bordered>tbody>tr>td, .activity-detail.table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+.activity-detail-one td {
+    color: #203444;
+    font-size: 18px;
+}
+.activity-detail-one td {
+    padding: 8px;
+}
+
+
+@media screen and (max-width: 1199px) and (min-width: 992px) {
+    .menuzord.orange .menuzord-menu > li.active > a, .menuzord-menu > li > a{
+        padding: 25px 23px;
+    }
+    html[dir="rtl"] .menuzord-menu.menuzord-right {
+      margin-right: 0;
+    }
+    li.dashboard-btn a {
+    padding: 10px 20px;
+    }
+}
+@media screen and (max-width: 991px) {
+
+    .menuzord.orange .menuzord-menu > li.active > a, .menuzord-menu > li > a{
+        padding: 25px 7px;
+    }
+    html[dir="rtl"] .menuzord-menu.menuzord-right {
+      margin-right: 0;
+    }
+    li.dashboard-btn a {
+    padding: 10px 7px;
+    }
+    .carousel .item>img {
+        height: 400px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+}

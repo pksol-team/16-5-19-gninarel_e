@@ -1966,3 +1966,14 @@ var areeb = {};
     );
 
 })(jQuery);
+
+
+
+
+/* responsive-menu-setting */
+
+// $(document).ready(function(){
+//     $("a.showhide").click(function(){
+//       $("ul.menuzord-menu.dark.menuzord-right.menuzord-indented.scrollable").css("display", "block");
+//     });
+// });

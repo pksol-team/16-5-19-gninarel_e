@@ -28,6 +28,9 @@
             @endif
         @endforeach
         @include('voyager::multilingual.language-selector')
+        <a href="{{ lang_url('mark_as_read') }}" class="btn btn-primary">
+            <i class="fa fa-check"></i> <span>Mark all as read</span>
+        </a>
     </div>
 @stop
 

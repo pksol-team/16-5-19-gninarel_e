@@ -6,8 +6,8 @@
    <div class="row">
       <div class="col-md-12">
          <div class="our_logo text-center">
-            <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" alt="" class="logo_black"></a>
-            <h1 class="text-center"><span>{{ ($type == 'book' ? 'Books': 'Tools' ) }}</span></h1>
+            <a href="{{ lang_url('') }}"><img src="/frontend/assets/img/logo21.png" class="logo_black"></a>
+            <h1 class="text-center"><span>{{ ($type == 'book' ? t('Books'): t('Tools') ) }}</span></h1>
          </div>
       </div>
    </div>
@@ -49,7 +49,7 @@
                           </p>
                           <div class="podcast-post-content-container">
                              <p>{{ $product->short_description }}</p>
-                             <p><a class="readmore" href="{{ lang_url('product/'.$product->product_id.'/view') }}">View More </a></p>
+                             <p><a class="readmore" href="{{ lang_url('product/'.$product->product_id.'/view') }}">@t('View More') </a></p>
                           </div>
                        </div>
                     </div>
@@ -63,7 +63,7 @@
                 <div class="post-detail">
                    <div class="podcast-post-content post-content">
                       <h2 class="blog-shortcode-post-title">
-                         No Record Found !
+                         @t('No Record Found !')
                       </h2>
                    </div>
                 </div>

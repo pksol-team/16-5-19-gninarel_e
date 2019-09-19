@@ -52,7 +52,7 @@
 
             <h4>
 
-               <strong>Description:</strong>
+               <strong>@t('Description:')</strong>
 
             </h4>
 
@@ -64,7 +64,7 @@
 
             <h4>
 
-               <strong>Categories: </strong>
+               <strong>@t('Categories:') </strong>
 
             </h4>
 
@@ -96,7 +96,7 @@
 
                            } else {
 
-                              echo '<li><span>Uncategorized</span></li>';  
+                              echo '<li><span>'.t('Uncategorized').'</span></li>';  
 
                            }
 
@@ -104,7 +104,7 @@
 
                      } else {
 
-                        echo '<li><span>Uncategorized</span></li>';
+                        echo '<li><span>'.t('Uncategorized').'</span></li>';
 
                      }
 
@@ -126,7 +126,9 @@
 
                <div class="col-md-12">
 
-                  <h3>This course is divided into {{ count($chapterNative) }} main chapters:</h3>
+                  <h3>@t('This course is divided into :CountChapterNative main chapters:', ['CountChapterNative' => count($chapterNative)])</h3>
+
+                 <!--  <h3>This course is divided into {{ count($chapterNative) }} main chapters:</h3> -->
 
                   <div class="section-li">
 
@@ -158,7 +160,7 @@
 
                                     <div class="card-body">
 
-                                    <strong>Description:</strong> <p class="text-dark">{{ $chapters->description }}</p>
+                                    <strong>@t('Description:')</strong> <p class="text-dark">{{ $chapters->description }}</p>
 
                                        <div id="accordion-1">
 
@@ -178,7 +180,7 @@
 
                                              <?php foreach ($sectionNative as $key_section => $sections): ?>
 
-                                                <h3>This chapter is divided into {{ count($sectionNative) }} main sections:</h3>
+                                                <h3>@t('This chapter is divided into :countSectionNative main sections:',['countSectionNative' => count($sectionNative) ])</h3>
 
 
 
@@ -202,7 +204,7 @@
 
                                                       <div class="card-body">
 
-                                                         <strong>Description:</strong> <p class="text-dark">{{ $sections->description }}</p>
+                                                         <strong>@t('Description:')</strong> <p class="text-dark">{{ $sections->description }}</p>
 
                                                          <?php 
 
@@ -232,7 +234,7 @@
 
                                                                         <a href="{{ lang_url('courses/'.$course_id.'/video/'.$video->id) }}" class="d-inline-block">
 
-                                                                           <button class="btn btn-sm watch_all_video">Watch Video</button>
+                                                                           <button class="btn btn-sm watch_all_video">@t('Watch Video')</button>
 
                                                                         </a>
 
@@ -252,7 +254,7 @@
 
                                                             <ul>
 
-                                                               <li><span>No Videos found in this section</span></li>
+                                                               <li><span>@t('No Videos found in this section')</span></li>
 
                                                             </ul>
 
@@ -270,7 +272,7 @@
 
                                              <ul>
 
-                                                <li><span>No Sections found in this chapter</span></li>
+                                                <li><span>@t('No Sections found in this chapter')</span></li>
 
                                              </ul> 
 
@@ -294,7 +296,7 @@
 
                            <ul>
 
-                              <li><span>No chapters found in this course</span></li>
+                              <li><span>@t('No chapters found in this course')</span></li>
 
                            </ul>   
 

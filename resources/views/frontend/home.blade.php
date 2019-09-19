@@ -30,24 +30,24 @@
           <div class="item active">
             <img src="/frontend/_assets/images/slide-1.png">
             <div class="carousel-caption custom-caption">
-              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">أساسيات التعامل حتي الأحترافية في التداول السعودي</h1>
-              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني</h4>
+              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('أساسيات التعامل حتي الأحترافية في التداول السعودي')</h1>
+              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني')</h4>
             </div>
           </div>
 
           <div class="item">
             <img src="/frontend/_assets/images/slide-1.png">
             <div class="carousel-caption custom-caption">
-              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">أساسيات التعامل حتي الأحترافية في التداول السعودي</h1>
-              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني</h4>
+              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('أساسيات التعامل حتي الأحترافية في التداول السعودي')</h1>
+              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني')</h4>
             </div>
           </div>
 
           <div class="item">
             <img src="/frontend/_assets/images/slide-1.png">
             <div class="carousel-caption custom-caption">
-              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">أساسيات التعامل حتي الأحترافية في التداول السعودي</h1>
-              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني</h4>
+              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('أساسيات التعامل حتي الأحترافية في التداول السعودي')</h1>
+              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني')</h4>
             </div>
           </div>
         </div>
@@ -55,117 +55,15 @@
         <!-- Left and right controls -->
         <a class="left carousel-control" href="#myCarousel" data-slide="prev">
           <span class="glyphicon glyphicon-chevron-left"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-          <span class="sr-only">Previous</span>
+          <span class="sr-only">@t('Previous')</span>
         </a>
         <a class="right carousel-control" href="#myCarousel" data-slide="next">
           <span class="glyphicon glyphicon-chevron-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-          <span class="sr-only">Next</span>
+          <span class="sr-only">@t('Next')</span>
         </a>
       </div>
 
-      <!-- <div class="custom-carousel" data-nav="true">
-
-        <div class="item bg-img-cover" data-bg-img="/frontend/_assets/images/slide-1.png">
-
-          <div class="display-table">
-
-            <div class="display-table-cell">
-
-              <div class="container pt-150 pb-150">
-
-                <div class="row">
-
-                  <div class="col-md-12 text-right">
-
-                    <div class="inline-block mt-60 pb-60 pl-60 pr-60 pt-40">
-
-                      <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">أساسيات التعامل حتي الأحترافية في التداول السعودي</h1>
-
-                      <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني</h4>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="item bg-img-cover" data-bg-img="/frontend/_assets/images/slide-1.png">
-
-          <div class="display-table">
-
-            <div class="display-table-cell">
-
-              <div class="container pt-150 pb-150">
-
-                <div class="row">
-
-                  <div class="col-md-12 text-right">
-
-                    <div class="inline-block mt-60 pb-60 pl-60 pr-60 pt-40">
-
-                      <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">أساسيات التعامل حتي الأحترافية في التداول السعودي</h1>
-
-                      <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني</h4>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="item bg-img-cover" data-bg-img="/frontend/_assets/images/slide-1.png">
-
-          <div class="display-table">
-
-            <div class="display-table-cell">
-
-              <div class="container pt-150 pb-150">
-
-                <div class="row">
-
-                  <div class="col-md-12 text-right">
-
-                    <div class="inline-block mt-60 pb-60 pl-60 pr-60 pt-40">
-
-                      <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">أساسيات التعامل حتي الأحترافية في التداول السعودي</h1>
-
-                      <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني</h4>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>  
-
-      </div> -->
-
     </section>
-
-    
 
     <!-- Section: About -->
 
@@ -179,7 +77,7 @@
 
                     <div class="col-md-12 text-right">
 
-                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">أحدث الأخبار </h2>
+                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">@t('أحدث الأخبار ')</h2>
 
                     </div>
 
@@ -205,9 +103,9 @@
 
                             <div class="content flip p-25 pt-0 text-center">
 
-                              <h3>عنوان الخبر</h3>
+                              <h3>@t('عنوان الخبر')</h3>
 
-                              <p class="text-right">أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول</p>
+                              <p class="text-right">@t('أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول')</p>
 
                             </div>
 
@@ -231,9 +129,9 @@
 
                             <div class="content flip p-25 pt-0 text-center">
 
-                              <h3>عنوان الخبر</h3>
+                              <h3>@t('عنوان الخبر')</h3>
 
-                              <p class="text-right">أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول</p>
+                              <p class="text-right">@t('أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول')</p>
 
                             </div>
 
@@ -257,9 +155,9 @@
 
                             <div class="content flip p-25 pt-0 text-center">
 
-                              <h3>عنوان الخبر</h3>
+                              <h3>@t('عنوان الخبر')</h3>
 
-                              <p class="text-right">أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول</p>
+                              <p class="text-right">@t('أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول')</p>
 
                             </div>
 
@@ -299,7 +197,7 @@
 
                     <div class="col-md-12 rtl p-0">
 
-                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">شركائنا </h2>
+                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">@t('شركائنا ')</h2>
 
                     </div>
 

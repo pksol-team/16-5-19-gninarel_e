@@ -85,7 +85,7 @@ class IndexController extends Controller
 	// View Home Page
 	public function index()
 	{
-		$title = 'Home';
+		$title = t('Home');
 		return view('frontend.home', compact('title'));
 
 	}
@@ -93,7 +93,7 @@ class IndexController extends Controller
 	// View Login Page
 	public function login($lang = NULL)
 	{
-		$title = 'Login';
+		$title = t('Login');
 		if (Auth::check()) {
 			return redirect(lang_url('/'));
 		} else {
@@ -139,14 +139,14 @@ class IndexController extends Controller
 						return redirect(lang_url(''));
 					}
 				} else {
-					return redirect()->back()->withInput()->with('error', 'You account is locked for some reason! kindly contact Support team');
+					return redirect()->back()->withInput()->with('error', t('You account is locked for some reason! kindly contact Support team'));
 				}
 			}
 			else{
-				return redirect()->back()->withInput()->with('error', 'User password does not match! If you do not have your account <a href="'. lang_url('register') .'">Register here </a>');
+				return redirect()->back()->withInput()->with('error', t('User password does not match! If you do not have your account').' <a href="'. lang_url('register') .'">'.t('Register here').' </a>');
 			}
 		}else {
-			return redirect()->back()->withInput()->with('error', 'This email address is not registered <a href="'. lang_url('register') .'">Register here </a>');
+			return redirect()->back()->withInput()->with('error', t('This email address is not registered'). '<a href="'. lang_url('register') .'">'.t('Register here').' </a>');
 		}
 	}
 
@@ -160,7 +160,7 @@ class IndexController extends Controller
 	// View register Page
 	public function register()
 	{
-		$title = 'Register';
+		$title = t('Register');
 		if (Auth::check()) {
 			return redirect(lang_url('/'));
 		} else {
@@ -219,7 +219,7 @@ class IndexController extends Controller
   //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
   //   	});
 
-		return redirect(lang_url('userlogin'))->with('message', 'Registration completed successfully kindly login');
+		return redirect(lang_url('userlogin'))->with('message', t('Registration completed successfully kindly login'));
 		} else {
 			return redirect()->back()->withInput()->with('error', $authenticateResult);
 		}
@@ -230,7 +230,7 @@ class IndexController extends Controller
 	{
         $haveUser = User::WHERE('email', $email)->first();
         if ($haveUser) {
-    		return $messsage = 'This email address is already registered!';
+    		return $messsage = t('This email address is already registered!');
         }
         else {
         	return true;
@@ -240,14 +240,14 @@ class IndexController extends Controller
 	// View About Page
 	public function about()
 	{
-		$title = 'About';
+		$title = t('About');
 		return view('frontend.about', compact('title'));
 	}
 
 	// View Forgot password Page
 	public function forgot_password()
 	{
-		$title = 'Reset Password';
+		$title = t('Reset Password');
 		if (Auth::check()) {
 			return redirect(lang_url('userlogin'));
 		} else {
@@ -280,9 +280,9 @@ class IndexController extends Controller
 			Mail::send([], $data, function ($m) use($data) {
 	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
 	    	});
-			return redirect()->back()->withInput()->with('message', 'Password Reset link send to your email kindly check your email');
+			return redirect()->back()->withInput()->with('message', t('Password Reset link send to your email kindly check your email'));
 		}else {
-			return redirect()->back()->withInput()->with('error', 'This email address is not registered <a href="'. lang_url('register') .'">Register here </a>');
+			return redirect()->back()->withInput()->with('error', t('This email address is not registered'). '<a href="'. lang_url('register') .'">'.t('Register here').' </a>');
 		}
 		
 	}
@@ -291,7 +291,7 @@ class IndexController extends Controller
 	public function enter_new_password($GUID)
 	{
 
-		$title = 'Reset your password';
+		$title = t('Reset your password');
 		if (Auth::check()) {
 			return redirect(lang_url('/'));
 		} else {
@@ -317,12 +317,12 @@ class IndexController extends Controller
 		    	$Updatepassword = ['password' => bcrypt($confirm_password), 'GUID' => NULL];
 		        $UserUpd = User::where('GUID', $GUID)->update($Updatepassword);
 		        if ($UserUpd == TRUE) {
-					return redirect(lang_url('userlogin'))->with('message', 'Password reset successfully');
+					return redirect(lang_url('userlogin'))->with('message', t('Password reset successfully'));
 		        } else {
-					return redirect()->back()->withInput()->with('error', 'Oops! Something went wrong..');
+					return redirect()->back()->withInput()->with('error', t('Oops! Something went wrong..'));
 		        }
 			} else {
-				return redirect()->back()->with('error', 'Your password and confirmation password do not match');	
+				return redirect()->back()->with('error', t('Your password and confirmation password do not match'));	
 			}
 		}
 	}
@@ -330,7 +330,7 @@ class IndexController extends Controller
 	//view Confirm email page
 	public function confirm_email($hash_key)
 	{
-		$title = 'Confirm email';
+		$title = t('Confirm email');
 		if (Auth::check()) {
 			// return redirect(lang_url('/'));
 			return view('frontend.confirm_email', compact('title'));
@@ -343,7 +343,7 @@ class IndexController extends Controller
 	// Verify Email through email
 	public function verify_email($id, $hashkey)
 	{
-		$title = 'Verification email';
+		$title = t('Verification email');
         $userFound = DB::table('users')->where([['id', $id], ['confirm_email', $hashkey]])->first();
         if ($userFound) {
 
@@ -356,7 +356,7 @@ class IndexController extends Controller
         	$message = 'Thanks for verify your email. Please complete your profile';
 
         } else {
-        	$message = 'Oops! Link expired or account already confirmed';
+        	$message = t('Oops! Link expired or account already confirmed');
         }
 		return view('frontend.thankyou_email', compact('title', 'message'));
 	}
@@ -364,7 +364,7 @@ class IndexController extends Controller
 	// View all Tools
 	public function tools()
 	{
-		$title = 'All Tools';
+		$title = t('All Tools');
 
 		$type = 'tool';
 
@@ -379,7 +379,7 @@ class IndexController extends Controller
 	// View all Books
 	public function books()
 	{
-		$title = 'All Books';
+		$title = t('All Books');
 
 		$type = 'book';
 
@@ -393,9 +393,9 @@ class IndexController extends Controller
 	}
 
 	// View Product detail
-	public function product_detail($product_id)
+	public function product_detail($product_native_id)
 	{
-    	$product = ProductsNative::with('productSpec')->where([['lang', $this->langCode], ['product_id', $product_id]])->first();
+    	$product = ProductsNative::with('productSpec')->where([['lang', $this->langCode], ['id', $product_native_id]])->first();
 
     	if (count($product) > 0) {
 	    	
@@ -432,13 +432,13 @@ class IndexController extends Controller
 	public function checkout_post(Request $request)
 	{
 		$user = Auth::user();
-		$product_native_id = $request->input('product_native_id');
-		$qty_input = $request->input('qty-input');
-		$product_price = $request->input('product_price');
-		$total_price = $request->input('total_price_hidden');
 		$user_name = $request->input('first_name');
 		$user_last_name = $request->input('last_name');
 		$user_address = $request->input('user_address');
+		$qty_input = $request->input('qty-input');
+		$product_price = $request->input('product_price');
+		$total_price = $request->input('total_price_hidden');
+		$product_native_id = $request->input('product_native_id');
 		if ($user) {
 			$user_id = $user->id;
 		} else {
@@ -462,8 +462,33 @@ class IndexController extends Controller
 			'product_quantity' => $qty_input,
 			'created_at' => Carbon::now(),
 		];
+
+		$productName = ProductsNative::find($product_native_id);
 		
 		$orderInserted = Order::insert($newOrder);
+		$userEmail = $user->email;
+
+        $subject = 'Better Trend Purchases';
+    	$msg_template = '
+		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+			    	<h3>Contact: </h3>
+			    	<h4 style="padding: 0 20px 0 0;">Hello '.$user->name.'! <br><br>
+			    	</h4>
+			    	<p>Your order has been placed here are the details</p>
+			    	<p>
+			    		<ul style="list-style: none;">
+			    			<li>Product Name: '.$productName.'</li>
+			    			<li>Price: '.$product_price.'</li>
+			    			<li>Total Price: '.$total_price.'</li>
+			    			<li>Quantity: '.$qty_input.'</li>
+			    		</ul>
+			    	</p>
+		    	</div>
+		    	';
+		$data = array( 'email' => $userEmail, 'subject' => $subject, 'message' => $msg_template);
+		Mail::send([], $data, function ($m) use($data) {
+           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    	});
 
 		return redirect(lang_url('thank_you'));
 
@@ -472,14 +497,14 @@ class IndexController extends Controller
 	// View Thank You Page
 	public function thank_you()
 	{
-		$title = 'Thank You';
+		$title = t('Thank You');
 		return view('frontend.thankyou', compact('title'));
 	}
 
 	// View plans_pricing Page
 	public function plans_pricing()
 	{
-		$title = 'Plans and Pricing';
+		$title = t('Plans and Pricing');
 
 		$allPlans = SchoolPlan::where('status', 'active')->get();
 
@@ -490,15 +515,15 @@ class IndexController extends Controller
 	// View Contact Us page
 	public function contact_us()
 	{
-		$title = 'Contact Us';
+		$title = t('Contact Us');
 		return view('frontend.contact_us', compact('title'));
 	}
 
 	// Contact Us Email Section
 	public function contact_us_email(Request $request)
 	{
-		$admin = User::where('role_id', 1)->first();
-		$adminEmail = $admin->email;
+		$admin = User::where('role_id', '1')->first();
+		$adminEmail = 'support@bettertrend.net';
 
 		$first_name = $request->first_name;
 		$last_name = $request->last_name;
@@ -507,24 +532,16 @@ class IndexController extends Controller
 		$email = $request->email;
 		$message = $request->message;
 
-        $subject = 'Better Trend Contact';
+        $subject = 'Support message from: '.$first_name;
     	$msg_templateAdmin = '
 		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-			    	<h3>Contact: </h3>
-			    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
-			    		'.$first_name.' have sent a message through the contact form.
-			    		the details are below
-			    	</h4>
-			    	<p>
-			    		<ul style="list-style: none;">
-			    			<li>First Name: '.$first_name.'</li>
-			    			<li>Last Name: '.$last_name.'</li>
-			    			<li>Mobile Number: '.$mobile_Number.'</li>
-			    			<li>Subject: '.$subject.'</li>
-			    			<li>Email: '.$email.'</li>
-			    			<li>Message: '.$message.'</li>
-			    		</ul>
-			    	</p>
+		    		<ul style="list-style: none;">
+		    			<li>Name: '.$first_name.' '.$last_name.'</li>
+		    			<li>Type: '.$subject.'</li>
+		    			<li>Email: '.$email.'</li>
+		    			<li>Mobile Number: '.$mobile_Number.'</li>
+		    			<li>Message: '.$message.'</li>
+		    		</ul>
 		    	</div>
 		    	';
 		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
@@ -546,48 +563,41 @@ class IndexController extends Controller
 		Mail::send([], $data, function ($m) use($data) {
            $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
     	});
-		return redirect()->back()->withInput()->with('message', 'Thank you for contacting us');
+		return redirect()->back()->with('message', t('Thank you for contacting us'));
 	}
 
 	// View Terms and conditions Page
 	public function terms()
 	{
-		$title = 'Terms and Conditions';
+		$title = t('Terms and Conditions');
 		return view('frontend.terms', compact('title'));
 	}
 
 	// View refund policy Page
 	public function refund_policy()
 	{
-		$title = 'Refund Policy';
+		$title = t('Refund Policy');
 		return view('frontend.refund_policy', compact('title'));
 	}
 
 	// View Disclaimers Page
 	public function disclaimers()
 	{
-		$title = 'Disclaimers';
+		$title = t('Disclaimers');
 		return view('frontend.disclaimers', compact('title'));
 	}
 
 	// View Partners Page
 	public function our_partners()
 	{
-		$title = 'Our Partners';
+		$title = t('Our Partners');
 		return view('frontend.our_partners', compact('title'));
-	}
-
-	// View podcasts Page
-	public function podcasts()
-	{
-		$title = 'Podcasts';
-		return view('frontend.podcasts', compact('title'));
 	}
 
 	// View media Page
 	public function media()
 	{
-		$title = 'Media';
+		$title = t('Media');
     	$youtubeVideos = VideoYoutube::where('status', 'active')->get();
     	$videosCategories = VideoYoutube::where('status', 'active')->groupBy('category')->get();
     	
@@ -607,7 +617,7 @@ class IndexController extends Controller
 	{
 		if (Auth::check()) {
 	    	$user = Auth::user();
-			$title = 'Purchased Schools';
+			$title = t('Purchased Schools');
 	        $my_subscriptions = DB::table('users_subscription')
             ->join('schools_natives', 'users_subscription.school_id', '=', 'schools_natives.school_id')
 	    	->select('schools_natives.*', 'users_subscription.*', 'users_subscription.school_id AS subscription_school_id', 'users_subscription.status AS subscription_status')
@@ -665,7 +675,7 @@ class IndexController extends Controller
 
 	public function allschools()
 	{
-		$title = 'All Schools';
+		$title = t('All Schools');
     	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
 		return view('frontend.all_schools', compact('title', 'schoolNative'));
 	}
@@ -714,7 +724,7 @@ class IndexController extends Controller
 	// View all Courses Page
 	public function courses()
 	{
-		$title = 'All Courses';
+		$title = t('All Courses');
     	$courseNative = CoursesNative::with('courses')->where([['lang', $this->langCode], ['status', 'active']])->get();
 		return view('frontend.courses', compact('title', 'courseNative'));
 	}
@@ -759,7 +769,7 @@ class IndexController extends Controller
 	// View All Coaches Page
 	public function coaches()
 	{
-		$title = 'All Coaches';
+		$title = t('All Coaches');
 
 		$requestStatus = NULL;
 		if (Auth::check()) {
@@ -777,21 +787,28 @@ class IndexController extends Controller
 		$allUsers = AppliedCoach::with('users')->whereHas('users', function ($query) {
     		$query->where('role_id', '2')->where('status', 'active');
     	})->where('status', 'approve')->get();
+
 		
 		return view('frontend.coaches', compact('title', 'allUsers', 'requestStatus'));
 	}
 
 	// View Plan FOrm Page
 	public function buy_plan(Request $request)
-	{
-		$title = 'Buy Plan';
-		$price = $request->price;
-		$no = $request->no;
-		$plan_name = $request->plan_name;
-		$duration = $request->duration;
-    	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
-		
-		return view('frontend.plan_purchase', compact('title', 'schoolNative', 'no', 'price', 'plan_name', 'duration'));
+	{	
+		if (Auth::check()) {
+			$title = t('Buy Plan');
+			$price = $request->price;
+			$no = $request->no;
+			$planId = $request->plan_id;
+			$plan_name = $request->plan_name;
+			$duration = $request->duration;
+	    	$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
+			
+			return view('frontend.plan_purchase', compact('title', 'schoolNative', 'no', 'price', 'plan_name', 'planId', 'duration'));
+		} else {
+			Session::put('url.intended', lang_url('plans_pricing'));
+			return redirect(lang_url('userlogin'));
+		}
 	}
 
 	// View About Page
@@ -827,7 +844,7 @@ class IndexController extends Controller
 		if ($inserted) {
 			return redirect(lang_url('thank_you'));
 		} else {
-			return redirect()->back()->with('error', 'Opps! something went wrong');
+			return redirect()->back()->with('error', t('Opps! something went wrong'));
 		}
 
 	}
@@ -836,7 +853,7 @@ class IndexController extends Controller
 	// View Profile Page
 	public function profile()
 	{
-		$title = 'Profile';
+		$title = t('Profile');
 		if (Auth::check()) {
 	        $UserTbl = Auth::user();
 			return view('frontend.profile', compact('title', 'UserTbl'));
@@ -849,7 +866,7 @@ class IndexController extends Controller
 	
 	public function coach_profile($user_id)
 	{
-		$title = 'Coach Profile';
+		$title = t('Coach Profile');
 
 		$allCoaches = AppliedCoach::with('users')->whereHas('users', function ($query) use ($user_id) {
     		$query->where('id', $user_id)->where('role_id', '2')->where('status', 'active');
@@ -890,7 +907,7 @@ class IndexController extends Controller
 			$path = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
 			$newPicName = 'users'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
 			if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif') {
-				return redirect()->back()->with('error', 'Only Image Allowed');
+				return redirect()->back()->with('error', t('Only Image Allowed'));
 			}
 			$upload_success = Input::file('profile_picture')->move($folder, $newPicName);
 
@@ -921,7 +938,7 @@ class IndexController extends Controller
 		    
 	        $done = User::where('id', $user->id)->update($userUpdate);	
 
-			return redirect()->back()->with('message', 'Profile updated successfully');
+			return redirect()->back()->with('message', t('Profile updated successfully'));
 
 		} else {
 			return redirect(lang_url('/'));
@@ -932,7 +949,7 @@ class IndexController extends Controller
 	// View My Purchases Page
 	public function my_purchases()
 	{
-		$title = 'My Purchases';
+		$title = t('My Purchases');
 		if (Auth::check()) {
 	        $user = Auth::user();
 	        $all_purchases = Order::with('ProductsNative')->where('user_id', $user->id)->get();
@@ -946,7 +963,7 @@ class IndexController extends Controller
 	// View My Subscription Page
 	public function my_subscriptions()
 	{
-		$title = 'My Subscriptions';
+		$title = t('My Subscriptions');
 		if (Auth::check()) {
 	        $user = Auth::user();
 	        $my_subscriptions = UserSubscription::where('user_id', $user->id)->get();
@@ -960,7 +977,7 @@ class IndexController extends Controller
 	// View My Training Activities Page
 	public function training_activities()
 	{
-		$title = 'My Training Activities';
+		$title = t('My Training Activities');
 		$langCode = $this->langCode;
 		if (Auth::check()) {
 	        $user = Auth::user();
@@ -984,7 +1001,7 @@ class IndexController extends Controller
 	// View My Training Activities Detail Page
 	public function activity_detail($subscription_id)
 	{
-		$title = 'Activity Detail';
+		$title = t('Activity Detail');
 		if (Auth::check()) {
 	        $user = Auth::user();
 
@@ -1012,7 +1029,7 @@ class IndexController extends Controller
 	// View Communication Contact Us
 	public function communication()
 	{
-		$title = 'Contact Help Support';
+		$title = t('Contact Help Support');
 		if (Auth::check()) {
 	        $user = Auth::user();
 			return view('frontend.communication', compact('title'));
@@ -1025,9 +1042,9 @@ class IndexController extends Controller
 	// Contact Us Email Section
 	public function communication_contact_us_email(Request $request)
 	{
-		$admin = User::where('role_id', 1)->first();
+		$admin = User::where('role_id', '1')->first();
 		$mobile_Number = $admin->mobile_Number;
-		$adminEmail = $admin->email;
+		$adminEmail = 'support@bettertrend.net';
 		$subject = $request->subject;
 		$email = $request->email;
 		$message = $request->message;
@@ -1035,40 +1052,38 @@ class IndexController extends Controller
         $subject = 'Better Trend Contact';
     	$msg_templateAdmin = '
 		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-			    	<h3>Contact: </h3>
-			    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
-			    		'.Auth::user()->name.' have sent a message through the Commnunication Form.
-			    		the details are below
-			    	</h4>
-			    	<p>
+			    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
 			    		<ul style="list-style: none;">
+			    			<li>Name: '.Auth::user()->name.' '.Auth::user()->last_name.'</li>
+			    			<li>Type: '.$subject.'</li>
 			    			<li>Email: '.$email.'</li>
 			    			<li>Mobile Number: '.$mobile_Number.'</li>
-			    			<li>Subject: '.$subject.'</li>
 			    			<li>Message: '.$message.'</li>
 			    		</ul>
-			    	</p>
+			    	</div>
 		    	</div>
 		    	';
 		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-		// Mail::send([], $data, function ($m) use($data) {
-  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-  //   	});
+		Mail::send([], $data, function ($m) use($data) {
+           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    	});
+
     	$msg_templateUser = '
     	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
 	    	<h3>Contact: </h3>
-	    	<h4 style="padding: 0 20px 0 0;">Hello! <br><br></h4>
+	    	<h4 style="padding: 0 20px 0 0;">Hello '.Auth::user()->name.'! <br><br>
+	    	</h4>
 	    	<br>
-	    	<p>we received your Email and thank you to contact us and we usually response within 48 hours</p>
+	    	<p>Thank you! we have received your Email and we usually response within 48 hours</p>
     	</div>
     	';
         
 		$data = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
 
-		// Mail::send([], $data, function ($m) use($data) {
-  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-  //   	});
-		return redirect()->back()->withInput()->with('message', 'Thank you for contacting us');
+		Mail::send([], $data, function ($m) use($data) {
+           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    	});
+		return redirect()->back()->with('message', t('Thank you for contacting us'));
 	}
 
 	// Email Subscribe Form Submitted
@@ -1086,43 +1101,31 @@ class IndexController extends Controller
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) ) {
 			$emailFound = EmailSubscribe::where('email', $email)->first();
 			if ($emailFound) {
-				return redirect()->back()->withInput()->with('emailSubscriptionError', 'You have already subscribed');
+				$unsubscribe = '<a style="font-size: 10px;" class="btn btn-primary btn-sm" href="email_unsubscribed/'.$email.'">'.t('Unsubscribe here').'</a>';
+				return redirect()->back()->withInput()->with('emailSubscriptionError', t('You have already subscribed') .$unsubscribe.'');
 			} else {
 				$inserted = EmailSubscribe::insert($subscribed);
 
-				return redirect()->back()->withInput()->with('emailSubscriptionMessage', 'You have successfully subscribed');
+				return redirect()->back()->withInput()->with('emailSubscriptionMessage', t('You have successfully subscribed'));
 			}
 		} else {
-			return redirect()->back()->withInput()->with('emailSubscriptionError', 'Incorrect Email Address');
+			return redirect()->back()->withInput()->with('emailSubscriptionError', t('Incorrect Email Address'));
 		}
 
 	}
+	// unscribe email
+	public function email_unsubscribed($email)
+	{
+		$emailFound = EmailSubscribe::where('email', $email)->first();
+		if (count($emailFound) > 0) {
 
-	
+			$done = EmailSubscribe::where('email', $email)->delete();
+			return redirect()->back()->withInput()->with('emailSubscriptionMessage', t('You have successfully unsubscribed'));
+		} else {
+			return redirect()->back();
+		}
 
-	// Apply to be a coach form
-	// public function be_a_coach()
-	// {
-	// 	$title = 'Apply to be a coach';
- //        $requestStatus = NULL;
-	// 	if (Auth::check()) {
-	//         $user = Auth::user();
-	//         $foundRequest = AppliedCoach::where('user_id', $user->id)->first();
-	//         if ($foundRequest) {
-	//         	$requestStatus = $foundRequest->status;
-	//         	if ($requestStatus != 'approve') {
-	// 				return view('frontend.be_a_coach', compact('title', 'requestStatus'));
-	//         	} else {
-	// 				return redirect(lang_url('profile'));	
-	//         	}
-	//         } else {
-	// 			return view('frontend.be_a_coach', compact('title', 'requestStatus'));
-	//         }
-	// 	} else {
-	// 		Session::put('url.intended', lang_url('be_a_coach'));
-	// 		return redirect(lang_url('userlogin'));
-	// 	}
-	// }
+	}
 
 	// be a coach request submit
 	public function be_a_coach_submit(Request $request)
@@ -1144,11 +1147,11 @@ class IndexController extends Controller
 				$path = pathinfo($expfile->getClientOriginalName(), PATHINFO_EXTENSION);
 				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
 				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					return redirect()->back()->with('error', t('Only (png,jpg,jpeg,gif,bmp,pdf) Allowed'));
 				}
 
 				if ($expfile->getSize() > 11140000) {
-					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					return redirect()->back()->with('error', t('Max upload File Allowed upto 10 MB'));
 				}
 
 				$upload_success = $expfile->move($folder, $newPicName);
@@ -1175,11 +1178,11 @@ class IndexController extends Controller
 				$path = pathinfo($certfile->getClientOriginalName(), PATHINFO_EXTENSION);
 				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
 				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					return redirect()->back()->with('error', t('Only (png,jpg,jpeg,gif,bmp,pdf) Allowed'));
 				}
 
 				if ($certfile->getSize() > 11140000) {
-					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					return redirect()->back()->with('error', t('Max upload File Allowed upto 10 MB'));
 				}
 
 				$upload_success = $certfile->move($folder, $newPicName);
@@ -1210,7 +1213,7 @@ class IndexController extends Controller
 				}
 
 				if ($edufile->getSize() > 11140000) {
-					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					return redirect()->back()->with('error', t('Max upload File Allowed upto 10 MB'));
 				}
 
 				$upload_success = $edufile->move($folder, $newPicName);
@@ -1237,11 +1240,11 @@ class IndexController extends Controller
 				$path = pathinfo($licfiles->getClientOriginalName(), PATHINFO_EXTENSION);
 				$newPicName = 'applied-coach'.DIRECTORY_SEPARATOR.$monthFolder.DIRECTORY_SEPARATOR.Str::random(20).'.'.$path;
 				if ($path != 'png' && $path != 'jpg' && $path != 'jpeg' && $path != 'gif' &&  $path != 'bmp') {
-					return redirect()->back()->with('error', 'Only (png,jpg,jpeg,gif,bmp,pdf) Allowed');
+					return redirect()->back()->with('error', t('Only (png,jpg,jpeg,gif,bmp,pdf) Allowed'));
 				}
 
 				if ($licfiles->getSize() > 11140000) {
-					return redirect()->back()->with('error', 'Max upload File Allowed upto 10 MB');
+					return redirect()->back()->with('error', t('Max upload File Allowed upto 10 MB'));
 				}
 
 				$upload_success = $licfiles->move($folder, $newPicName);
@@ -1267,15 +1270,100 @@ class IndexController extends Controller
 		if (Auth::check()) {
 			$role_id = Auth::user()->role_id;
 			if ($role_id == '1') {
-				return redirect()->back()->with('error', 'You don\'t have acces to be a coach');
+				return redirect()->back()->with('error', t('You don\'t have acces to be a coach'));
 			} elseif ($role_id == '2') {
-				return redirect()->back()->with('error', 'You are already coach');
+				return redirect()->back()->with('error', t('You are already coach'));
 			} else {
 				$getInsertedId = Auth::user()->id;
 		        $foundRequest = AppliedCoach::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
-		        if ($foundRequest->status == 'pending') {
-					return redirect()->back()->with('error', 'You have already sent request');
-		        }
+		        if ($foundRequest) {
+			        if ($foundRequest->status == 'pending') {
+						return redirect()->back()->with('error', t('You have already sent request'));
+			        }
+		        } else {
+        	        $user_id = $getInsertedId;
+        	        $name = $request->name;
+        	        $phone = $request->phone;
+        	        $email = $request->email;
+        	        $experience = $request->experience;
+        	        $certificates = $request->certificates;
+        	        $education = $request->education;
+        	        $training_license = $request->training_license;
+        	        $about_coach = $request->about_coach;
+        	        $status = 'pending';
+
+        	        $updateRequestedCoach = [
+        	        	'user_id' => $user_id,
+        	        	'name' => $name,
+        	        	'phone' => $phone,
+        	        	'email' => $email,
+        	        	'experience' => $experience,
+        	        	'exp_attch' => $exp_attch,
+        	        	'certificates' => $certificates,
+        	        	'cert_attch' => $cert_attch,
+        	        	'education' => $education,
+        	        	'edu_attc' => $edu_attc,
+        	        	'training_license' => $training_license,
+        	        	'lic_attch' => $lic_attch,
+        	        	'about_coach' => $about_coach,
+        	        	'status' => $status,
+        				'created_at' => Carbon::now()
+        	        ];
+
+        			$subject = 'Request to be a Coach - Better Trend';
+
+        	        $requestAdded = AppliedCoach::insert($updateRequestedCoach);
+        			$last_id = DB::getPdo()->lastInsertId();
+        			if (count($last_id) > 0) {
+        		    	$msg_templateAdmin = '
+        				    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+        					    	<h3>Applied for Coach: </h3>
+        					    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
+        					    		'.$name.' ('.$email.') sent a request to be a coach.
+        					    		the details are below
+        					    	</h4>
+        					    	<p>
+        					    		<ul style="list-style: none;">
+        					    			<li>Name: '.$name.'</li>
+        					    			<li>Mobile Number: '.$phone.'</li>
+        					    			<li>Email: '.$email.'</li>
+        					    			<li>About user: '.$about_coach.'</li>
+        					    		</ul>
+        					    	</p>
+        				    	</div>
+        				    	';
+		    	    	$msg_templateUser = '
+		    			    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+		    				    	<h3>Applied for Coach: </h3>
+		    				    	<h4 style="padding: 0 20px 0 0;">Hello '.$name.'</h4>
+		    				    	<p>Your request of coach has been sent to support team</p>
+		    				    	<p>Thank you for your interest</p>
+		    			    	</div>
+		    			    	';
+        				$dataAdmin = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+        				$dataUser = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
+        				// Mail::send([], $dataAdmin, function ($m) use($dataAdmin) {
+		        		//    $m->to($dataAdmin['email'])->subject($dataAdmin['subject'])->setBody($dataAdmin['message'], 'text/html');
+		        		// });
+        				// Mail::send([], $dataUser, function ($m) use($dataUser) {
+		        		//    $m->to($dataUser['email'])->subject($dataUser['subject'])->setBody($dataUser['message'], 'text/html');
+		        		// });
+
+        				$newNotification = [
+        					'table_ID' => $last_id,
+        					'slug' => 'applied-coach',
+        					'title' => 'Coach request',
+        					'short_desc' => $name.' has applied to be a coach',
+        					'url' => 'admin/applied-coach/'.$last_id.'/edit',
+        					'status' => 0,
+        				    'created_at' => Carbon::now()
+        				];
+
+        				Notification::insert($newNotification);
+
+        				return redirect()->back()->with('message', t('Thank you for your interest to be a coach. Your request has been sent successfully!'));
+			        }
+				}
 			}
 		} else {
 
@@ -1289,15 +1377,17 @@ class IndexController extends Controller
 				$getInsertedId = $haveUser->id;
 
 				if ($haveUser->role_id == '1') {
-					return redirect()->back()->with('error', 'You don\'t have acces to be a coach');
+					return redirect()->back()->with('error', t('You don\'t have acces to be a coach'));
 				} elseif ($haveUser->role_id == '2') {
-					return redirect()->back()->with('error', 'You are already coach');
+					return redirect()->back()->with('error', t('You are already coach'));
 				} else {
 					$getInsertedId = $haveUser->id;
 			        $foundRequest = AppliedCoach::where('user_id', $haveUser->id)->orderBy('id', 'DESC')->first();
-			        if ($foundRequest->status == 'pending') {
-						return redirect()->back()->with('error', 'You have already sent request');
-			        }
+			        if ($foundRequest) {
+				        if ($foundRequest->status == 'pending') {
+							return redirect()->back()->with('error', t('You have already sent request'));
+				        }
+				    }
 				}
 
 		    }
@@ -1324,12 +1414,6 @@ class IndexController extends Controller
 					];
 				DB::table('user_roles')->insert($role);
 			}
-			//  else {
-			// 	$foundRequest = AppliedCoach::where('user_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
-		 //        if ($foundRequest->status == 'pending') {
-			// 		return redirect()->back()->with('error', 'You have already sent request');
-		 //        }
-			// }
 		}
 
         $user_id = $getInsertedId;
@@ -1368,7 +1452,7 @@ class IndexController extends Controller
 		if (count($last_id) > 0) {
 	    	$msg_templateAdmin = '
 			    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-				    	<h3>Contact: </h3>
+				    	<h3>Applied for Coach: </h3>
 				    	<h4 style="padding: 0 20px 0 0;">Hello '.$admin->name.'! <br><br>
 				    		'.$name.' ('.$email.') sent a request to be a coach.
 				    		the details are below
@@ -1383,10 +1467,22 @@ class IndexController extends Controller
 				    	</p>
 			    	</div>
 			    	';
-			$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-			// Mail::send([], $data, function ($m) use($data) {
-	  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-	  //   	});
+			 $msg_templateUser = '
+			    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+				    	<h3>Applied for Coach: </h3>
+				    	<h4 style="padding: 0 20px 0 0;">Hello '.$name.'</h4>
+				    	<p>Your request of coach has been sent to support team</p>
+				    	<p>Thank you for your interest</p>
+			    	</div>
+			    	';
+			$dataAdmin = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+			$dataUser = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
+			// Mail::send([], $dataAdmin, function ($m) use($dataAdmin) {
+    		//    $m->to($dataAdmin['email'])->subject($dataAdmin['subject'])->setBody($dataAdmin['message'], 'text/html');
+    		// });
+			// Mail::send([], $dataUser, function ($m) use($dataUser) {
+    		//    $m->to($dataUser['email'])->subject($dataUser['subject'])->setBody($dataUser['message'], 'text/html');
+    		// });
 
 			$newNotification = [
 				'table_ID' => $last_id,
@@ -1394,13 +1490,13 @@ class IndexController extends Controller
 				'title' => 'Coach request',
 				'short_desc' => $name.' has applied to be a coach',
 				'url' => 'admin/applied-coach/'.$last_id.'/edit',
-				'status' => 'pending',
+				'status' => 0,
 			    'created_at' => Carbon::now()
 			];
 
 			Notification::insert($newNotification);
 
-			return redirect()->back()->with('message', 'Thank you for your interest to be a coach. Your request has been sent successfully!');
+			return redirect()->back()->with('message', t('Thank you for your interest to be a coach. Your request has been sent successfully!'));
 		}
 	}
 
@@ -1509,30 +1605,6 @@ class IndexController extends Controller
 		}
 	}
 
-	// // view comments reply in backend
-	// public function comments_reply_backend($comment_id)
-	// {
- //        $dataType = Voyager::model('DataType')->where('slug', '=', 'comments')->first();
- //        $model = app($dataType->model_name);
-
- //        // Check if BREAD is Translatable
- //        if (($isModelTranslatable = is_bread_translatable($model))) {
- //            $dataTypeContent->load('translations');
- //        }
-	// 	$usesSoftDeletes = true;
-	// 	$showSoftDeleted = true;
- //        $isServerSide = isset($dataType->server_side) && $dataType->server_side;
-		
- //        // GET THE DataType based on the slug
-
-	// 	$dataTypeContent = DB::table('comments')->where('parent_id', $comment_id)->get();
-	// 	$commentsReply = DB::table('comments')->where('id', $comment_id)->first();
-
-
- //    	return Voyager::view('vendor.voyager.comments.comments')->with(compact('dataTypeContent', 'commentsReply', 'dataType', 'usesSoftDeletes', 'showSoftDeleted', 'isServerSide', 'isModelTranslatable'));
-	// }
-
-
 	// video resume check
 	public function videoStartsFrom(Request $request)
 	{
@@ -1584,7 +1656,7 @@ class IndexController extends Controller
 	// chapter start after video complete
 	public function chapter_test($chapter_id)
 	{
-		$title = 'Chapter Test';
+		$title = t('Chapter Test');
 		if (Auth::check()) {
 			$chapter_native = ChaptersNative::where('id', $chapter_id)->first();
 			$allVideosWatched = User_access::where([['user_id', Auth::user()->id], ['object_id', $chapter_native->chapter_id], ['object_type', 'chapter'], ['status', 'completed']])->first();
@@ -1693,7 +1765,7 @@ class IndexController extends Controller
 	
 	public function all_tests()
 	{
-		$title = 'All Tests';
+		$title = t('All Tests');
 		if (Auth::check()) {
 			$allTests = TestResult::with('exam')->where('user_id', Auth::user()->id)->get();
 			return view('frontend.all_tests', compact('title', 'allTests'));
@@ -1706,7 +1778,7 @@ class IndexController extends Controller
 	// all events page
 	public function events()
 	{
-		$title = 'Events';
+		$title = t('Events');
 
 		$eventNative = EventsNative::with('events')->where([['lang', $this->langCode], ['status', 'active']])->get();
 
@@ -1716,7 +1788,7 @@ class IndexController extends Controller
 	//event detail page
 	public function eventDetail($event_id)
 	{
-		$title = 'Event Detail';
+		$title = t('Event Detail');
 		$eventNative = EventsNative::with('events')->where([['event_id', $event_id], ['lang', $this->langCode], ['status', 'active']])->first();
 
 		if ($eventNative) {
@@ -1733,7 +1805,7 @@ class IndexController extends Controller
 			Session::put('url.intended', lang_url($course_id.'/enroll_course'));
 		}
 
-		$title = 'Enroll in Course';
+		$title = t('Enroll in Course');
 
 		$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($course_id) {
     		$query->where([['school_id', NULL], ['id', $course_id]]);
@@ -1756,7 +1828,7 @@ class IndexController extends Controller
 	public function enroll_form(Request $request)
 	{
 		$user_id =  NULL;
-		$course_id = $request->input('course_id');
+		$event_id = $request->input('event_id');
 		$first_name = $request->input('first_name');
 		$last_name = $request->input('last_name');
 		$mobile_number = $request->input('mobile_number');
@@ -1768,11 +1840,68 @@ class IndexController extends Controller
 			$last_name = Auth::user()->last_name;
 			$mobile_number = Auth::user()->phone;
 			$email = Auth::user()->email;
+		} else {
+			$authenticateResult = $this->register_authenticate($email);
+			if ($authenticateResult === true) {
+				$hashKey = uniqid(time());
+				$randPass = uniqid();
+				$user = [
+				    'name' => $first_name,
+				    'last_name' => $last_name,
+				    'role_id' => 3,
+				    'email' => $email,
+				    'phone' => $mobile_number,
+				    'password' => bcrypt($randPass),
+				    'status' => 'active',
+				    'type' => 'user',
+				    'settings' => '{"locale":"en"}',
+				    'created_at' => Carbon::now()
+				];
+				$insertedUser = User::insert($user);
+				$getInsertedId = DB::getPdo()->lastInsertId();
+				$user_id = $getInsertedId;
+					$role = [
+						'user_id' => $getInsertedId,
+						'role_id' => 3,
+					];
+				DB::table('user_roles')->insert($role);
+
+				Auth::loginUsingId($getInsertedId);
+
+				$msg_template = '
+					<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+						<h3>Welcome to Better Trend<br></h3>
+						<h4 style="padding: 0 20px 0 0;">
+							<span style="font-size:11.0pt;line-height:107%;color:#3e4247">
+								Thank You for Register
+							</span>
+						</h4>
+						<p>Here are your login details</p>
+						<p>kindly change your password after login</p>
+						<ul>
+							<li>email: '.$email.'</li>
+							<li>password: '.$randPass.' </li>
+						</ul>
+					</div>
+				';
+				$to = $email;
+			    $subject = 'Account registration';
+			    $content = $msg_template;
+
+				$data = array( 'email' => $to, 'subject' => $subject, 'message' => $content);
+				// Mail::send([], $data, function ($m) use($data) {
+		  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+		  //   	});
+
+			} else {
+				$userGet = User::where('email', $email)->first();
+				$user_id = $userGet->id;
+			}
 		}
 
 		$enrollCourse = [
 			'user_id' => $user_id,
-			'course_id' => $course_id,
+			'event_id' => $event_id,
 			'first_name' => $first_name,
 			'last_name' => $last_name,
 			'mobile_number' => $mobile_number,
@@ -1789,7 +1918,7 @@ class IndexController extends Controller
 		$getInsertedId = DB::getPdo()->lastInsertId();
 
 		if ($enrolledCourse) {
-			return redirect(lang_url($course_id.'/payment_course/'.$getInsertedId));
+			return redirect(lang_url($event_id.'/payment_course/'.$getInsertedId));
 		} else {
 			return redirect(lang_url('events'));
 		}
@@ -1797,24 +1926,24 @@ class IndexController extends Controller
 
 	}
 
-	public function payment_course($course_id, $subscriptions_id)
+	public function payment_course($event_id, $subscriptions_id)
 	{
 		if (!Auth::check()) {
-			Session::put('url.intended', lang_url($course_id.'/payment_course/'.$subscriptions_id));
+			Session::put('url.intended', lang_url($event_id.'/payment_course/'.$subscriptions_id));
 		}
 
-		$title = 'Course Enroll Payment';
+		$title = t('Event Enroll Payment');
 
 		$subscription = DB::table('course_subscriptions')->where('id', $subscriptions_id)->first();
 
-		$courseNative = CoursesNative::with('courses')->whereHas('courses', function ($query) use ($course_id) {
-    		$query->where([['school_id', NULL], ['id', $course_id]]);
+		$eventNative = EventsNative::with('events')->whereHas('events', function ($query) use ($event_id) {
+    		$query->where([['id', $event_id]]);
     	})->where([['lang', $this->langCode], ['status', 'active']])->first();
 
-    	if (count($courseNative) > 0 && count($subscription) > 0) {
+    	if (count($eventNative) > 0 && count($subscription) > 0) {
 
     		if ($subscription->payment_status == 'Not Paid' || $subscription->payment_status == 'Partially Paid') {
-				return view('frontend.course_payment', compact('title', 'courseNative', 'subscription'));
+				return view('frontend.course_payment', compact('title', 'eventNative', 'subscription'));
     		} else {
 				return redirect(lang_url('events'));
     		}
@@ -1841,6 +1970,7 @@ class IndexController extends Controller
 
 		$paid = '0';
 		$instalment_no = '0';
+
 
 		$alreadyEnrolled = DB::table('course_subscriptions')->where('id', $subscription_id)->first();
 
@@ -1871,7 +2001,11 @@ class IndexController extends Controller
 				if ($alreadyEnrolled->payment_status == 'Partially Paid') {
 
 					$payment_status = 'Partially Paid';
-					$paid = floatval($paid) + (floatval($course_price) / floatval($instalments));
+					if ($alreadyEnrolled->discount != NULL) {
+						$paid = floatval($paid) + (((floatval($course_price)* $alreadyEnrolled->discount)/100) / floatval($instalments));
+					} else {
+						$paid = floatval($paid) + (floatval($course_price) / floatval($instalments));
+					}
 
 					if ($paid == $course_price) {
 						$payment_status = 'Fully paid';
@@ -1906,17 +2040,52 @@ class IndexController extends Controller
 
 		$enrolledCourse = DB::table('course_subscriptions')->where('id', $subscription_id)->update($enrollCoursePayment);
 
+		$getEvent = DB::table('events')->where('id', $alreadyEnrolled->event_id)->first();
+
+		$userEmail = Auth::user()->email;
+
+		if ($discount_perc != NULL) {
+			$discount = (floatval($course_price) * 	floatval($discount_perc)) / 100;
+			$discountPrice = floatval($course_price) - floatval($discount);
+		} else {
+			$discount_perc = '0';
+			$discountPrice = $course_price;
+		}
+
+
+    	$msg_template = '
+	    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+		    	<h3>Contact: </h3>
+		    	<h4 style="padding: 0 20px 0 0;">Hello '.Auth::user()->name.'! <br><br>
+		    	</h4>
+		    	<p>You have successfully enroll in event here is details</p>
+		    	<p>
+		    		<ul style="list-style: none;">
+		    			<li>Event Name: '.$getEvent->name.'</li>
+		    			<li>Price: '.$course_price.'</li>
+		    			<li>Discount: '.$discount_perc.'</li>
+		    			<li>Total Price: '.$discountPrice.'</li>
+		    		</ul>
+		    	</p>
+	    	</div>
+	    	';
+        $content = $msg_template;
+        $subject = 'Enroll in event';
+
+		$data = array( 'email' => $userEmail, 'subject' => $subject, 'message' => $content);
+		// Mail::send([], $data, function ($m) use($data) {
+  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+  //   	});
+
 		return redirect(lang_url('thank_you'));
 	}
 	
 	// check coupen valid or not with ajax
 	public function coupenCheck(Request $request)
 	{
-		$user_id = $request->input('user_id');
 		$coupenCode = $request->input('coupenCode');
 		$object_id = $request->input('object_id');
 		$object_type = $request->input('object_type');
-
 
 		$foundCode = PromoCode::where([['code', $coupenCode], ['object_id', $object_id], ['object_type', $object_type], ['status', 'active']])->whereDate('expiry_date', '>', date('Y-m-d'))->first();
 
@@ -1926,11 +2095,54 @@ class IndexController extends Controller
 
 		} else {
 
-			if ($object_type == 'course') {
+			if ($object_type == '7') {
 
-				$course_ = Course::where('id', $object_id)->first();
-				if ($course_) {
-					$discountedPrice = floatval($course_->price) - ((floatval($course_->price)*(int)$foundCode->discount)/100);
+				$event = Event::where('id', $object_id)->first();
+
+				if ($event) {
+
+					$discountedPrice = (floatval($event->price) - ((floatval($event->price)*(int)$foundCode->discount)/100));
+
+					$result = [
+						'discountedPrice' => $discountedPrice,
+						'discount' => $foundCode->discount,
+						'instalments' => $event->instalments,
+
+					];
+
+					return $result;
+				} else {
+
+					return 0;
+
+				}
+
+			} else if ($object_type == '1') {
+				$qty = $request->input('qty_input');
+
+				$productNative = ProductsNative::where('id', $object_id)->first();
+				if ($productNative) {
+					$discountPrice = floatval($productNative->price) - ((floatval($productNative->price)*(int)$foundCode->discount)/100);
+					$discountedPrice = $discountPrice * floatval($qty);
+
+					$result = [
+						'discountedPrice' => $discountedPrice,
+						'discount' => $foundCode->discount,
+
+					];
+
+					return $result;
+				} else {
+
+					return 0;
+
+				}
+
+			} else if ($object_type == '2') {
+
+				$schoolPlan = SchoolPlan::where('id', $object_id)->first();
+				if ($schoolPlan) {
+					$discountedPrice = floatval($schoolPlan->price) - ((floatval($schoolPlan->price)*(int)$foundCode->discount)/100);
 
 					$result = [
 						'discountedPrice' => $discountedPrice,
@@ -1956,11 +2168,11 @@ class IndexController extends Controller
 	public function dropdownFieldSelect(Request $request)
 	{
 		$objectType = $request->input('objectType');
-		if ($objectType == 'events') {
-			$allData = DB::table($objectType)->where('coach_id', Auth::user()->id)->get();
-		} else {
-			$allData = DB::table($objectType)->where('user_id', Auth::user()->id)->get();
-		}
+		// if ($objectType == 'events') {
+		// } else if ($objectType == 'school_plans') {
+		// } else {
+		// }
+		$allData = DB::table($objectType)->get();
 
 		if ($allData) {
 			return $allData;
@@ -1973,8 +2185,6 @@ class IndexController extends Controller
 	// Change language of backend
 	public function changLangAdminPanel(Request $request)
 	{
-
-		
 
 		$locale = '{"locale":"'.$request->input('locale').'"}';
 		$user_id = Auth::user()->id;
@@ -1993,7 +2203,6 @@ class IndexController extends Controller
 	public function getNotifications(Request $request)
 	{
 	    $oldId = $request->input('notification_id');
-
 
 	    $html = '';
 
@@ -2054,9 +2263,19 @@ class IndexController extends Controller
 
 	}
 
+	// Mark All as read
+	public function mark_as_read()
+	{
+	    $statusRead = [
+	    	'status' => 1
+	    ];
+	    $newNotifications = Notification::where('id', '!=', '0')->update($statusRead);
+		return redirect()->back();
+	}
+
 	public function listings()
 	{
-		$title = 'Plans and Pricing';
+		$title = t('Plans and Pricing');
 		$type = 'tool';
 		//$type1 = 'book';
 		$allPlans = SchoolPlan::where('status', 'active')->get();
@@ -2073,9 +2292,7 @@ class IndexController extends Controller
 
 
 		$schoolNative = SchoolsNative::with('schools')->where([['lang', $this->langCode], ['status', 'active']])->get();
-		//return view('frontend.all_schools', compact('title', 'schoolNative'));
-
-		//return view('frontend.books', compact('title', 'productsDecode', 'type'));
+		
 		$eventNative = EventsNative::with('events')->where([['lang', $this->langCode], ['status', 'active']])->get();
 		
 
@@ -2083,17 +2300,29 @@ class IndexController extends Controller
 
 	}
 
-	
+	// test for mailing
+	public function test()
+	{
+		$adminEmail = 'aminshoukat4@gmail.com';
+        $subject = 'Support message from: Amin';
+    	$msg_templateAdmin = '
+		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+		    		<ul style="list-style: none;">
+		    			<li>Name: Amin Shoukat</li>
+		    			<li>Type: testing</li>
+		    			<li>Email: aminshoukat4@gmail.com</li>
+		    			<li>Mobile Number: 12345689</li>
+		    			<li>Message: Hello testing message</li>
+		    		</ul>
+		    	</div>
+		    	';
+		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
+		Mail::send([], $data, function ($m) use($data) {
+           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+    	});
+	}
 
 	
-
-	
-
-	
-
-	
-
-
 
 	
 	// create GUID (General Uniquq ID)
