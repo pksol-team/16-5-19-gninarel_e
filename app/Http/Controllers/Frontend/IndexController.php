@@ -1694,6 +1694,7 @@ class IndexController extends Controller
 		$initPercentage = $request->input('initPercentage');
 		$min_passing = $request->input('min_passing');
 		$chapter_native_id = $request->input('chapter_native_id');
+		$totalQuestion= $request->input('totalQuestion');
 		$answer_status = FALSE;
 
 		$ansCheck = TestAnswer::where('question_id', $question_id)->first();
@@ -1714,7 +1715,7 @@ class IndexController extends Controller
 		$answerInserted = UserAnswer::insert($insertAnswer);
 		if ($answerInserted) {
 
-			$percentage = '10';
+			$percentage = $totalQuestion;
 
 			if ($answer_status == TRUE) {
 				$initPercentage = (int)$initPercentage + (int)$percentage;
