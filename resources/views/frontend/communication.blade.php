@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الملف الشخصي')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Profile personly')</li>
                   </ol>
-                  <h2 class="title text-white">@t('الملف الشخصي')</h2>
+                  <h2 class="title text-white">@t('Profile personly')</h2>
                </div>
             </div>
          </div>
@@ -26,13 +26,13 @@
             <div class="col-md-3 col-sm-3 col-xs-12">
                <div class="vertical-tab">
                   <ul class="nav nav-tabs">
-                     <li><a class="d-block" href="{{ lang_url('profile') }}" ><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t('الملف الشخصي ')</a></li>
-                     <li><a class="d-block" href="{{ lang_url('all_purchases') }}" ><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('مشترياتي') </a></li>
-                     <li class="d-block"><a class="d-block" href="{{ lang_url('all_subscriptions') }}" ><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('باقاتي')</a></li>
-                     <li class="d-block"><a href="{{ lang_url('schools') }}" ><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t('المدرسة  الالكترونية') </a></li>
-                     <li class="d-block"><a href="{{ lang_url('training_activities') }}" ><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('الانشطة التدريبة') </a></li>
-                     <li  class="active"><a href="#tab6" ><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('التواصل ') </a></li>
-                     <li><a class="d-block" href="{{ lang_url('logout_frontend') }}"><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/>@t(' خروج')</a></li>
+                     <li><a class="d-block" href="{{ lang_url('profile') }}" ><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t('Profile personly')</a></li>
+                     <li><a class="d-block" href="{{ lang_url('all_purchases') }}" ><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('My purchases') </a></li>
+                     <li class="d-block"><a class="d-block" href="{{ lang_url('all_subscriptions') }}" ><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('My Packages')</a></li>
+                     <li class="d-block"><a href="{{ lang_url('schools') }}" ><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t('Electronic School') </a></li>
+                     <li class="d-block"><a href="{{ lang_url('training_activities') }}" ><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('Training activities') </a></li>
+                     <li  class="active"><a href="#tab6" ><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('Communication') </a></li>
+                     <li><a class="d-block" href="{{ lang_url('logout_frontend') }}"><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/>@t('Exit')</a></li>
                   </ul>
                </div>
             </div>
@@ -62,18 +62,18 @@
                                  <div class="col-md-12 col-sm-12">
                                     <div class="col-sm-12 p-0">
                                        <div class="form-group mb-30">
-                                          <label for="mobile_Number">@t('رقم الهاتف المحمول  ')</label>
-                                          <input class="form-control" type="text" placeholder="@t('عرقم الهاتف المحمول  ')" id="mobile_Number" name="mobile_Number" required>
+                                          <label for="mobile_Number">@t('Mobile Phone Number')</label>
+                                          <input class="form-control" type="text" placeholder="@t('Mobile Phone Number')" id="mobile_Number" name="mobile_Number" required>
                                        </div>
                                     </div>
                                     <div class="col-sm-12 p-0">
                                        <div class="form-group mb-30">
-                                          <label for="subject">@t('نموضوع ')</label>
+                                          <label for="subject">@t('Subject')</label>
                                           <select class="form-control" id="subject" name="subject" required="required">
                                              <option value="" hidden>@t('Subject')</option>
-                                             <option value="Technical support">@t('Technical support')</option>
+                                             <option value="Technical support">@t('Technical Support')</option>
                                              <option value="Sales">@t('Sales')</option>
-                                             <option value="Complaint">@t('Complaint')</option>
+                                             <option value="Complaint">@t('Complaint') </option>
                                              <option value="Suggestions">@t('Suggestions')</option>
                                              <option value="Special">@t('Special')</option>
                                              <option value="request">@t('Request')</option>
@@ -83,18 +83,18 @@
                                     </div>
                                     <div class="col-sm-12 p-0">
                                        <div class="form-group mb-30">
-                                          <label for="email">@t('عنوان بريد الكتروني ')</label>
-                                          <input class="form-control" placeholder="@t('ععنوان بريد الكتروني ')" type="email" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" required>
+                                          <label for="email">@t('Email address')</label>
+                                          <input class="form-control" placeholder="@t('Email address')" type="email" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" required>
                                        </div>
                                     </div>
                                     <div class="col-sm-12 p-0">
                                        <div class="form-group mb-30">
-                                          <label for="summernote">@t('معلومات اضافية')</label>
-                                          <textarea id="summernote" class="form-control" name="message" rows="10" cols="5" placeholder="@t('رسالة')" required></textarea>
+                                          <label for="summernote">@t('additional information')</label>
+                                          <textarea id="summernote" class="form-control" name="message" rows="10" cols="5" placeholder="@t('Message')" required></textarea>
                                        </div>
                                     </div>
                                     <div class="form-group form-group-center text-center mb-30 mt-20">
-                                       <button type="submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">@t('أرسال')</button>
+                                       <button type="submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">@t('send')</button>
                                     </div>
                                  </div>
                               </div>

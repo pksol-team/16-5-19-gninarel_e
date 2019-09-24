@@ -8,11 +8,11 @@
          <div class="row">
             <div class="col-md-12">
                <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                  <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                  <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
-                  <li class="active text-gray-silver">@t('تعريف')</li>
+                  <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                  <li class="active text-gray-silver">@t('For the best direction')</li>
+                  <li class="active text-gray-silver">@t('Definition of')</li>
                </ol>
-               <h2 class="title text-white">@t('عن الأتجاه الأفضل')</h2>
+               <h2 class="title text-white">@t('For the best direction')</h2>
             </div>
          </div>
       </div>
@@ -29,13 +29,7 @@
       <div class="col-10 order-md-1">
          <div class="row">
             <div class="col-12 col-md-12 col-sm-6 col-xs-12 mb-3">
-               <label for="first_name">@t('Event Price:') <b class="course_actual_price">{{ $eventNative->events->price }}</b></label>
-               <?php if ($subscription->payment_status == 'Partially Paid'): ?>
-               <?php if ($subscription->discount != NULL): ?>
-               <span class="d-block">@t('Discount:') {{ $subscription->discount }}%</span>
-               <?php endif ?>
-               <span class="d-block">@t('Total Paid:') {{ $subscription->paid }}</span>
-               <?php endif ?>
+              
             </div>
          </div>
          <div class="row">
@@ -185,6 +179,18 @@
             <div class="col-12 col-md-12 col-sm-6 col-xs-12 mb-3 text-left">
                <button class="btn submmit btn btn-dark btn-xl btn-blue mt-10" type="submit">@t('Proceed')</button>
             </div>
+            <div >
+               <label for="first_name">@t('Event Price:') <b class="course_actual_price">{{ $eventNative->events->price }}</b></label>
+               <?php if ($subscription->payment_status == 'Partially Paid'): ?>
+               <?php if ($subscription->discount != NULL): ?>
+               <span class="d-block">@t('Discount:') {{ $subscription->discount }}%</span>
+               <?php endif ?>
+               <span class="d-block">@t('Total Paid:') {{ $subscription->paid }}</span>
+               <?php endif ?>
+            </div>
+
+         </div>
+      </div>
          </div>
       </div>
 </form>

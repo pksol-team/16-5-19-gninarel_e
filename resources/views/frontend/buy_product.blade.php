@@ -84,12 +84,12 @@
       <div class="modal-content">
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title text-center color-theme-green font-weight-700 font-26 mt-20 mb-10" id="myModalLabel">@t('طلب المنتج بعد عملية التحويل ')</h4>
-            <p class="color-dark-green text-right">@t('فضلا قم بتعبئة النموذج بعد عملية التحويل المبلغ على حسابتنا البنكية ')</p>
-            <p class="text-gray mb-0 text-right">@t('معلومات البنك :')</p>
-            <p class="text-gray mb-0 text-right">@t('اسم البنك :') <span>@t(' البنك الاول')</span></p>
-            <p class="text-gray mb-0 text-right">@t('رقم الحساب :') <span>@t(' 33333333332323')</span></p>
-            <p class="text-gray mb-0 text-right">@t('رقم الايبان :') <span>@t('sasasasasasasasasas') </span></p>
+            <h4 class="modal-title text-center color-theme-green font-weight-700 font-26 mt-20 mb-10" id="myModalLabel">@t('Order the product after the conversion')</h4>
+            <p class="color-dark-green text-right">@t('Please fill out the form after the transfer process on our bank account')</p>
+            <p class="text-gray mb-0 text-right">@t('Bank information'):</p>
+            <p class="text-gray mb-0 text-right">@t('Bank name'): <span>@t('First Bank')</span></p>
+            <p class="text-gray mb-0 text-right">@t('account number'): <span>@t(' 33333333332323')</span></p>
+            <p class="text-gray mb-0 text-right">@t('IBAN'): <span>@t('sasasasasasasasasas') </span></p>
          </div>
          <div class="modal-body">
             <!-- add new job Form -->
@@ -98,15 +98,15 @@
                   <div class="col-md-12 col-sm-12">
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-30">
-                           <label for="name">@t('الأسم')</label>
-                           <input id="name" name="name" class="form-control" type="text" placeholder="@t('الأسم')" required="" aria-required="true">
+                           <label for="name">@t('The name')</label>
+                           <input id="name" name="name" class="form-control" type="text" placeholder="@t('The name')" required="" aria-required="true">
                         </div>
                      </div>
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-30">
-                           <label for="city">@t('المدينة ')</label>
+                           <label for="city">@t('City')</label>
                            <select class="form-control" id="city">
-                              <option>@t('الرياض')</option>
+                              <option>@t('Riyadh')</option>
                               <option>@t('2')</option>
                               <option>@t('3')</option>
                               <option>@t('4')</option>
@@ -116,33 +116,33 @@
                      </div>
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-30">
-                           <label for="account-number">@t('الحساب ')</label>
-                           <input id="account-number" name="account-number" class="form-control" type="text" placeholder="@t('رقم الحساب')" required="" aria-required="true">
+                           <label for="account-number">@t('Account')</label>
+                           <input id="account-number" name="account-number" class="form-control" type="text" placeholder="@t('account number')" required="" aria-required="true">
                         </div>
                      </div>
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-30">
-                           <label for="amount">@t('المبلغ المحول')</label>
-                           <input id="amount" name="amount" class="form-control" type="text" placeholder="@t('المبلغ المحول')" required="" aria-required="true">
+                           <label for="amount">@t('Amount transferred')</label>
+                           <input id="amount" name="amount" class="form-control" type="text" placeholder="@t('Amount transferred')" required="" aria-required="true">
                         </div>
                      </div>
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-30">
-                           <label for="mobile">@t('رقم الجوال')</label>
-                           <input id="mobile" name="mobile" class="form-control" type="text" placeholder="@t('رقم الجوال')" required="" aria-required="true">
+                           <label for="mobile">@t('Mobile number')</label>
+                           <input id="mobile" name="mobile" class="form-control" type="text" placeholder="@t('Mobile number')" required="" aria-required="true">
                         </div>
                      </div>
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-30">
-                           <label for="email">@t('البريد الالكتروني')</label>
-                           <input id="email" name="email" class="form-control" type="email" placeholder="@t('البريد الالكتروني')" required="" aria-required="true">
+                           <label for="email">@t('E-mail')</label>
+                           <input id="email" name="email" class="form-control" type="email" placeholder="@t('Email')" required="" aria-required="true">
                         </div>
                      </div>
                      <div class="col-sm-12 p-0">
                         <div class="form-group mb-0">
-                           <label for="job_end">@t('ايصال التحويل')</label>
+                           <label for="job_end">@t('Transfer receipt')</label>
                            <div class="file-input-wrapper">
-                              <label for="upload-file" class="file-input-button">@t('أستعراض')</label>
+                              <label for="upload-file" class="file-input-button">@t('review')</label>
                               <input id="upload-file" type="file" name="file1" />
                            </div>
                         </div>
@@ -152,7 +152,7 @@
             </form>
          </div>
          <div class="modal-footer text-center mb-30">
-            <button type="button" class="btn btn-dark btn-flat btn-theme-green">@t('طلب المنتج')</button>
+            <button type="button" class="btn btn-dark btn-flat btn-theme-green">@t('Order the product')</button>
          </div>
       </div>
    </div>

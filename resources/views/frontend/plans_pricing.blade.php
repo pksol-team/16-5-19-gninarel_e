@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الخدمات والمنتجات')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Services and products')</li>
                   </ol>
-                  <h2 class="title text-white">@t('الباقات ')</h2>
+                  <h2 class="title text-white">@t('Packages ')</h2>
                </div>
             </div>
          </div>
@@ -52,7 +52,7 @@
                   <input type="hidden" name="no" value="2" />
                   <input type="hidden" name="duration" value="{{ $plans->duration }}" />
                   <input type="hidden" name="price" value="{{ $plans->price }}" />
-                  <button class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat" type="submit">@t('إشتراك ( :plansprice ريال شهريا )', ['plansprice' => $plans->price ])</button>
+                  <button class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat" type="submit">@t('Participation ( :plansprice SR per month )', ['plansprice' => $plans->price ])</button>
                </form>
             </div>
             <?php endforeach ?>

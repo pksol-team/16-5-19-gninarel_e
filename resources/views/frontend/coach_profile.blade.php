@@ -11,11 +11,11 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
-                     <li class="active text-gray-silver">@t('المدربين')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('For the best direction')</li>
+                     <li class="active text-gray-silver">@t('Trainers')</li>
                   </ol>
-                  <h2 class="title text-white">@t('محمد اليحي')</h2>
+                  <h2 class="title text-white">@t('Free Membership')</h2>
                </div>
             </div>
          </div>
@@ -32,7 +32,7 @@
                         <div class="post-thumb thumb"> <img src="\public\storage\{{ $allCoaches->users->avatar }}" alt="{{ $allCoaches->users->name }}" class="img-responsive img-fullwidth"> </div>
                      </div>
                      <div class="entry-title pt-10 pl-15">
-                        <h4 class="color-theme-green font-weight-600">@t('حول')</h4>
+                        <h4 class="color-theme-green font-weight-600">@t('About')</h4>
                      </div>
                      <div class="entry-content mt-10">
                         <p class="mb-15">{{ $allCoaches->users->about }}</p>
@@ -49,7 +49,7 @@
          <div class="section-content">
             <div class="row">
                <div class="col-md-12 text-center mt-30">
-                  <h4 class="text-center">@t('الحسابات الاجتماعية  للمدرب')</h4>
+                  <h4 class="text-center">@t('Around...')</h4>
                   <ul class="styled-icons flat medium list-inline mb-40">
                      <?php if ($allCoaches->users->instagram != '' && $allCoaches->users->instagram != NULL): ?>
                      <li><a target="_blank" href="{{ strstr( $allCoaches->users->instagram, 'http' ) ? $allCoaches->users->instagram : 'https://'.$allCoaches->users->instagram }}"><i class="fa fa-instagram"></i></a> </li>

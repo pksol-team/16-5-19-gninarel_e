@@ -12,11 +12,11 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
-                     <li class="active text-gray-silver">@t('تعريف')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('For the best direction')</li>
+                     <li class="active text-gray-silver">@t('Definition of')</li>
                   </ol>
-                  <h2 class="title text-white">@t('عن الأتجاه الأفضل')</h2>
+                  <h2 class="title text-white">@t('For the best direction')</h2>
                </div>
             </div>
          </div>
@@ -78,18 +78,18 @@
                         <?php endif ?>
                         <div class="col-sm-12 p-0">
                            <div class="form-group mb-30">
-                              <label for="price">@t('عضوية ')<small><span class="mbrshp_name">{{ $plan_name }}</span></small> </label>
+                              <label for="price">@t('membership ')<small><span class="mbrshp_name">{{ $plan_name }}</span></small> </label>
                               <input id="price" class="form-control total_price_" type="text" value="${{ $price }}" id="price" readonly>
                            </div>
                         </div>
                         <div class="col-sm-12 p-0">
                            <div class="form-group mb-30">
-                              <label for="price"> @t('تنتهي صلاحيته في')</label>
+                              <label for="price"> @t('Expires in')</label>
                               <input value="{{ $time }}" class="form-control" type="text" placeholder="@t(' الرقم السري')" readonly>
                            </div>
                         </div>
                         <div class="col-sm-12 p-0 mb-20">
-                          <label for="couponCode">@t('رمز القسيمة')</label>
+                          <label for="couponCode">@t('Coupon code')</label>
                           <input value="{{ old('couponCode') }}" data-plan_id="{{ $planId }}" type="text" class="form-control couponCode" name="couponCode" style="width: 68%;">
                           <button type="button" class="btn btn-success apply_code" style="display: inline-block;">@t('Apply code')</button>
                           <img src="\public\loading.gif" class="loader_coupen mr-1 ml-1">
@@ -100,7 +100,7 @@
                         </div>
                         <div class="form-group form-group-center text-center mb-30 mt-20">
                            <input name="form_botcheck" class="form-control" type="hidden" value="">
-                           <button type="submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">@t('شراء حزمة')</button>
+                           <button type="submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">@t('Buy a package')</button>
                         </div>
                      </div>
                   </div>

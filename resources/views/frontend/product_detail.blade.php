@@ -11,7 +11,7 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
                      <li class="active text-gray-silver">@t('الخدمات')</li>
                   </ol>
                   <h2 class="title text-white">@t('الملف الشامل لسوق الأسهم') </h2>
@@ -131,12 +131,6 @@
                         <div class="form-group mb-30">
                            <label for="phone">@t('رقم الجوال')</label>
                            <input id="phone" name="phone" class="form-control" type="text" placeholder="@t('رقم الجوال')" required="" aria-required="true" value="{{ Auth::check() ? Auth::user()->phone : '' }}">
-                        </div>
-                     </div>
-                     <div class="col-sm-12 p-0">
-                        <div class="form-group mb-30">
-                           <label for="email">@t('البريد الالكتروني')</label>
-                           <input id="email" name="email" class="form-control" type="email" placeholder="@t('البريد الالكتروني')" required="" aria-required="true" value="{{ Auth::check() ? Auth::user()->email : '' }}">
                         </div>
                      </div>
                      <div class="col-sm-12 p-0">

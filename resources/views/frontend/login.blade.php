@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الدخول')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Access')</li>
                   </ol>
-                  <h2 class="title text-white">@t('منطقة الدخول')</h2>
+                  <h2 class="title text-white">@t('Entry area')</h2>
                </div>
             </div>
          </div>
@@ -47,28 +47,28 @@
                         <div class="col-md-12 col-sm-12">
                            <div class="col-sm-12 p-0">
                               <div class="form-group mb-30">
-                                 <label for="email">@t('البريد الإلكتروني')</label>
-                                 <input id="email" name="email" class="form-control" type="email" placeholder="@t('البريد الإلكتروني')" value="{{ old('email') }}" required>
+                                 <label for="email">@t('E-mail')</label>
+                                 <input id="email" name="email" class="form-control" type="email" placeholder="@t('E-mail')" value="{{ old('email') }}" required>
                               </div>
                            </div>
                            <div class="col-sm-12 p-0">
                               <div class="form-group mb-30">
-                                 <label for="password">@t('الرقم السري')</label>
-                                 <input id="password" name="password" class="form-control" type="password" placeholder="@t('الرقم السري')" value="{{ old('password') }}" size="20" required>
+                                 <label for="password">@t('password')</label>
+                                 <input id="password" name="password" class="form-control" type="password" placeholder="@t('password')" value="{{ old('password') }}" size="20" required>
                               </div>
                            </div>
-                           <a href="{{ lang_url('forgot_password') }}" class="reset-password">@t('إستعادة الرقم السري ؟')</a>
+                           <a href="{{ lang_url('forgot_password') }}" class="reset-password">@t('Password Recovery?')</a>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-6">
                            <div class="form-group form-group-center text-center mb-30 mt-20 ">
-                              <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100" value="@t('دخول  ')">
+                              <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100" value="@t('Entry  ')">
                            </div>
                         </div>
                         <div class="col-md-6">
                            <div class="form-group form-group-center text-center mb-30 mt-20 ">
-                              <a href="{{ lang_url('register') }}" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">@t('تسجيل جديد ')</a>
+                              <a href="{{ lang_url('register') }}" class="btn btn-dark btn-theme-colored btn-flat text-uppercase pr-100 pl-100">@t('new registration ')</a>
                            </div>
                         </div>
                      </div>

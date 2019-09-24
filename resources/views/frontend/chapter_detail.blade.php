@@ -1,4 +1,5 @@
 <?php 
+   
    use Carbon\Carbon;
    use App\VideoNative;
    use App\User_access;
@@ -64,10 +65,10 @@
          <div class="row">
             <div class="col-md-12">
                <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                  <li><a href="index.html">@t('الصفحة الرئيسية')</a></li>
-                  <li class="active text-gray-silver">@t('الأنشطة التدريبية')</li>
+                  <li><a href="index.html">@t('the main page')</a></li>
+                  <li class="active text-gray-silver">@t('Training activities')</li>
                </ol>
-               <h2 class="title text-white">@t('احتراف التداول 1')</h2>
+               <h2 class="title text-white">@t('Professional Trading 1')</h2>
             </div>
          </div>
       </div>
@@ -79,13 +80,13 @@
          <div class="col-md-3 col-sm-3 col-xs-12">
             <div class="vertical-tab">
                <ul class="nav nav-tabs">
-                  <li class=""><a href="{{ lang_url('profile') }}"><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t('الملف الشخصي ')</a></li>
-                  <li><a href="{{ lang_url('all_purchases') }}"><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('مشترياتي')</a></li>
-                  <li><a href="{{ lang_url('all_subscriptions') }}"><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('باقاتي')</a></li>
-                  <li><a href="{{ lang_url('schools') }}"><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t(' المدرسة  الالكترونية')</a></li>
-                  <li class="active"><a href="{{ lang_url('training_activities') }}"><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('الانشطة التدريبة')</a></li>
-                  <li><a href="{{ lang_url('communication') }}"><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('التواصل ')</a></li>
-                  <li><a href="{{ lang_url('logout_frontend') }}" ><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/>@t('خروج')</a></li>
+                  <li class=""><a href="{{ lang_url('profile') }}"><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t('Profile personly')</a></li>
+                  <li><a href="{{ lang_url('all_purchases') }}"><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('My purchases')</a></li>
+                  <li><a href="{{ lang_url('all_subscriptions') }}"><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('My Packages')</a></li>
+                  <li><a href="{{ lang_url('schools') }}"><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t('Electronic School')</a></li>
+                  <li class="active"><a href="{{ lang_url('training_activities') }}"><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('Training activities')</a></li>
+                  <li><a href="{{ lang_url('communication') }}"><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('Communication')</a></li>
+                  <li><a href="{{ lang_url('logout_frontend') }}" ><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/>@t('Exit')</a></li>
                </ul>
             </div>
          </div>
@@ -162,7 +163,7 @@
                <div class="tab-pane fade in active" id="tab5">
                   <div class="row mb-30">
                      <div class="col-md-12">
-                        <h2 class="text-right color-theme-green">@t('التفاصيل')</h2>
+                        <h2 class="text-right color-theme-green">@t('the details')</h2>
                      </div>
                   </div>
                   <div class="row">
@@ -171,8 +172,8 @@
                            <table class="table sub-table border-white">
                               <tbody>
                                  <tr>
-                                    <td class="bg-lighter">@t('عنوان النشاط ')</td>
-                                    <td>@t('احتراف التداول 1')</td>
+                                    <td class="bg-lighter">@t('Title of activity')</td>
+                                    <td>@t('Professional Trading 1')</td>
                                  </tr>
                                  <tr>
                                     <td class="bg-lighter">{{ $chapter->name }} </td>
@@ -197,7 +198,13 @@
                            <?php $decodedVideo = json_decode($video->video_upload); ?>
                            <?php if (count($decodedVideo) > 0): ?>
                            <div class="fluid-video-wrapper">
-                              <?php if ($key == 0): ?>
+                              <?php if ($key == 0):
+
+                                   echo $decodedVideo[0]->download_link;
+
+
+
+                               ?>
                               <video data-user-id="{{ Auth::user()->id }}" data-video-id="{{ $video->videos->id }}" data-videonative-id="{{ $video->id }}" class="plyr_Player" width="100%" height="530" ata-plyr-config='{ "title": "{{ $video->name }}" }' playsinline controls disablePictureInPicture controlsList="nodownload">
                                  <source src="\public\storage\{{ $decodedVideo[0]->download_link }}" type="video/mp4" />
                                  <source src="\public\storage\{{ $decodedVideo[0]->download_link }}" type="video/webm" />
@@ -213,13 +220,13 @@
                            </div>
                            <?php endif ?>
                            <div class="separator separator-rounedd"></div>
-                           <h4 class="color-dark-green">@t('المرفقات')</h4>
+                           <h4 class="color-dark-green">@t('Attachments')</h4>
                            <?php if ($key == 0): ?>
                            <div class="m-0">
                               <?php $allAttachments = json_decode($video->attachments); ?>
                               <?php if (count($allAttachments) > 0): ?>
                               <?php foreach ($allAttachments as $key => $attch): ?>
-                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">@t('الملف الاول ')<span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
+                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">@t('First file')<span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
                               <?php endforeach ?>
                               <?php else: ?>
                               <div class="m-0">
@@ -232,7 +239,7 @@
                               <?php $allAttachments = json_decode($video->attachments); ?>
                               <?php if (count($allAttachments) > 0): ?>
                               <?php foreach ($allAttachments as $key => $attch): ?>
-                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">@t('الملف الاول ')<span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
+                              <p><a target="_blank" href="\public\storage\{{ $attch->download_link }}">@t('First file')<span class="color-dark-green mr-20 ml-10">{{ substr($attch->original_name, -20) }}</span><i class="fa fa-paperclip"></i></a></p>
                               <?php endforeach ?>
                               <?php else: ?>
                               <div class="m-0">
@@ -243,7 +250,7 @@
                            <?php endif ?>
                            <div class="separator separator-rounedd"></div>
                            <div class="comments-area">
-                              <h5 class="comments-title color-dark-green">@t('التعليقات الخاصة')</h5>
+                              <h5 class="comments-title color-dark-green">@t('Special comments')</h5>
                               <ul class="comment-list">
                                  <?php $allComments = Comment::where([['status', 'active'], ['parent_id', 0], ['video_id', $video->id]])->orderBy('id', 'ASC')->get(); ?>
                                  <?php if (count($allComments) > 0): ?>
@@ -289,7 +296,7 @@
                               <div class="comment-box mt-30">
                                  <div class="row">
                                     <div class="col-sm-12">
-                                       <h5>@t('إرسال تعليق للمدرب خاص ')</h5>
+                                       <h5>@t('Send a private coach comment')</h5>
                                        <div class="row">
                                           <form class="comment_form" method="POST" id="form_comment_{{ $video->id }}" action="{{ lang_url('submit_comment') }}">
                                              @csrf
@@ -301,7 +308,7 @@
                                                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                                                 </div>
                                                 <div class="form-group">
-                                                   <button type="submit" class="btn btn-theme-green btn-flat pull-left  m-0" data-loading-text="Please wait...">@t('أرسال')</button>
+                                                   <button type="submit" class="btn btn-theme-green btn-flat pull-left  m-0" data-loading-text="Please wait...">@t('send')</button>
                                                 </div>
                                              </div>
                                           </form>

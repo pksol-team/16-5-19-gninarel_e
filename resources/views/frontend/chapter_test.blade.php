@@ -1,3 +1,4 @@
+
 @extends('frontend.template.layout')
 @section('title') <?= $title; ?> @stop
 @section('content')
@@ -11,9 +12,9 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
-                     <li class="active text-gray-silver">@t('تعريف')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('For the best direction')</li>
+                     <li class="active text-gray-silver">@t('Definition of')</li>
                   </ol>
                   <h2 class="title text-white">@t('Chapter Test')</h2>
                </div>
@@ -22,13 +23,16 @@
       </div>
    </section>
    <!-- Divider: about -->
-   <?php if (count($chapterExamQuestions) > 0): ?>
+ 
+
+   <?php 
+    if (count($chapterExamQuestions) > 0): ?>
    <section class="divider">
       <div class="container">
          <div class="row pt-30 rtl">
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
                <h4>{{ $chapter->name  }} @t('Test')</h4>
-               <h6>@t('Question') <span class="question_no">@t('1')</span>@t('Out of 10') </h6>
+               <h6>@t('Question') <span class="question_no">@t('1')</span>@t(' Out of'){{count($chapterExamQuestions)}} </h6>
             </div>
             <!-- /.col-8 -->
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 time_remaining_div">
@@ -71,6 +75,7 @@
                <?php endif ?>
             </div>
             <button class="answerbutton btn btn-success mt-4 mb-2">@t('Continue') ❯</button>
+            <button class="previousQuestion btn btn-success mt-4 mb-2 ">@t('Back') ❯</button>
          </div>
          <!-- /.questionwithoptions -->
          <?php endforeach ?>
@@ -162,9 +167,12 @@
                      data: {"_token": "{{ csrf_token() }}", 'user_id':'{{ Auth::user()->id }}', 'exam_id':exam_id, 'question_id':question_id, 'answer':answer, 'remainingQuestions':remainingQuestions, 'initPercentage':initPercentage, 'min_passing':min_passing, 'chapter_native_id':chapter_native_id},
                  })
                  .done(function(response) {
+
+
    
                    var nextQuestion = qustionDiv.fadeOut().next('.questionwithoptions');
                    $('.percentageCalculate').val(response['percentage']);
+
                    $('.test_result').html(response['result']);
    
    
@@ -225,10 +233,13 @@
    
        if (answerElem.length > 0) {
          
+          var totalQuestion={{count($chapterExamQuestions)}};
+
+
          $.ajax({
                  type: 'POST',
                  url: '{{ lang_url("test_answer") }}',
-                 data: {"_token": "{{ csrf_token() }}", 'user_id':'{{ Auth::user()->id }}', 'exam_id':exam_id, 'question_id':question_id, 'answer':answer, 'remainingQuestions':remainingQuestions, 'initPercentage':initPercentage, 'min_passing':min_passing, 'chapter_native_id':chapter_native_id},
+                 data: {"_token": "{{ csrf_token() }}", 'user_id':'{{ Auth::user()->id }}', 'exam_id':exam_id, 'question_id':question_id, 'answer':answer, 'remainingQuestions':remainingQuestions, 'initPercentage':initPercentage, 'min_passing':min_passing, 'chapter_native_id':chapter_native_id,'totalQuestion':totalQuestion},
              })
              .done(function(response) {
    
@@ -252,14 +263,81 @@
                  $('.time_remaining_div').remove();
                  $('.question_loader_lg').hide();
                  $('.test_complete_result .test_percentage').html($('.percentageCalculate').val());
+
                  $('.test_complete_result').fadeIn();
+
+                
                }
    
              });
          
        }
+       else
+       {
+
+                    var nextQuestion = qustionDiv.fadeOut().next('.questionwithoptions');
+
+                   if (nextQuestion.length > 0) {
+                    
+                     nextQuestion.fadeIn("slow", function() {
+                         $(this).removeClass("hide");
+                         $('#time_remaining').html(nextQuestion.find('.questionTimeRemaining').val());
+                         setTimeout(startTimer, 1000);
+                         $('.question_no').html(parseInt($('.question_no').html()) +1);
+                     });
+                     qustionDiv.remove();
+                     $('.question_loader_lg').hide();
+   
+                   } else {
+                     $('.time_remaining_div').remove();
+                     $('.test_complete_result .test_percentage').html($('.percentageCalculate').val());
+                     $('.test_complete_result').fadeIn();
+                     $('.question_loader_lg').hide();
+                     if($('.percentageCalculate').val()==0)
+                     {
+                       $('.test_result').html("Not Passed");
+                    }
+                   }
+
+
+       }
+
        
      });
+
+
+      $(document).on('click', '.questionwithoptions:not(.hide) button.previousQuestion', function(e) {
+     
+                       var $this = $(this);
+                      qustionDiv = $this.parent();
+                   
+                    var nextQuestion = qustionDiv.fadeOut().prev('.questionwithoptions');
+
+                  
+
+                  
+                    
+                     nextQuestion.fadeIn("slow", function() {
+                         $(this).removeClass("hide");
+                         $('#time_remaining').html(nextQuestion.find('.questionTimeRemaining').val());
+                         setTimeout(startTimer, 1000);
+                         $('.question_no').html(parseInt($('.question_no').html()) -1);
+                     });
+                     qustionDiv.remove();
+                     $('.question_loader_lg').hide();
+   
+                  
+   
+                  
+
+          
+       
+
+     });
+
+
+
+
      
    });
 </script>

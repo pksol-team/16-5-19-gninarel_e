@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="index.html">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الدخول')</li>
+                     <li><a href="index.html">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Access')</li>
                   </ol>
-                  <h2 class="title text-white">@t('منطقة الدخول')</h2>
+                  <h2 class="title text-white">@t('Entry area')</h2>
                </div>
             </div>
          </div>
@@ -47,8 +47,8 @@
                         <div class="col-md-12 col-sm-12">
                            <div class="col-sm-12 p-0">
                               <div class="form-group mb-30">
-                                 <label for="email">@t('البريد الإلكتروني')</label>
-                                 <input id="email" name="email" class="form-control" type="email" placeholder="@t('البريد الإلكتروني')" required="" aria-required="true" value="{{ old('email') }}" required >
+                                 <label for="email">@t('E-mail')</label>
+                                 <input id="email" name="email" class="form-control" type="email" placeholder="@t('E-mail')" required="" aria-required="true" value="{{ old('email') }}" required >
                               </div>
                            </div>
                            <div class="col-sm-12 p-0">

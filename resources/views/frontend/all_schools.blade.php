@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الخدمات والمنتجات')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Services and products')</li>
                   </ol>
-                  <h2 class="title text-white">@t('المدارس الالكترونية')</h2>
+                  <h2 class="title text-white">@t('E - Schools')</h2>
                </div>
             </div>
          </div>
@@ -24,8 +24,8 @@
       <div class="container">
          <div class="row rtl">
             <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-               <h2 class="mt-0 font-30 heading-title-spec">@t('المدارس الإلكترونية')</h2>
-               <p class="mb-30">@t('وصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هناوصف الباقة هنا')</p>
+               <h2 class="mt-0 font-30 heading-title-spec">@t('E - Schools')</h2>
+               <p class="mb-30">@t('Package Description Here Package Description Here Package Description Here Package Description Package Description Here Package Description Package Here Description Package Here')</p>
             </div>
          </div>
          <div class="row rtl">
@@ -39,7 +39,7 @@
                   <img src="\public\storage\{{ $school->image }}" alt="{{ $school->name }}">  
                   <p>{{ $school->description }}</p>
                </div>
-               <a href="{{ lang_url('school/'.$school->schools->id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('التفاصيل ')</a>
+               <a href="{{ lang_url('school/'.$school->schools->id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('the details')</a>
             </div>
             <?php endforeach ?>
             <?php else: ?>

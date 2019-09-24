@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="index.html">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الشركاء')</li>
+                     <li><a href="index.html">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Partners')</li>
                   </ol>
-                  <h2 class="title text-white">@t('الشركاء')</h2>
+                  <h2 class="title text-white">@t('Partners')</h2>
                </div>
             </div>
          </div>

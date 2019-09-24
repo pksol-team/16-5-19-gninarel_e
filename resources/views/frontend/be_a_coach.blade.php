@@ -36,7 +36,7 @@
             @if($requestStatus)
             <div class="alert alert-red">
                <ul class="list-unstyled mb-0">
-                  <li class="text-white">@t('Your have already send coach request! Your request is') ({{ ucwords($requestStatus) }})</li>
+                  <li class="text-white">@t('Your have already send coach request! Your request is') ({{ t(ucwords($requestStatus)) }})</li>
                </ul>
             </div>
             @endif

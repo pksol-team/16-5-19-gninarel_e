@@ -9,13 +9,15 @@
          <!-- Section Content -->
          <div class="section-content">
             <div class="row">
+
+
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
-                     <li class="active text-gray-silver">@t('تعريف')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('For the best direction')</li>
+                     <li class="active text-gray-silver">@t('Definition of')</li>
                   </ol>
-                  <h2 class="title text-white">@t('عن الأتجاه الأفضل')</h2>
+                  <h2 class="title text-white">@t('For the best direction')</h2>
                </div>
             </div>
          </div>
@@ -26,6 +28,7 @@
       <div class="container">
          <div class="row pt-30 rtl">
             <div class="col-md-12">
+                <a href="{{ lang_url('schools') }}" class="btn btn-dark btn-xl btn-blue pull-left"></i>@t('School Page')</a>
                <table id="school-Datatable" class="display custom-table table-bordered" width="100%">
                   <thead>
                      <tr>

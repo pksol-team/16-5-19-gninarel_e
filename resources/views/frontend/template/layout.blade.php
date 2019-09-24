@@ -82,27 +82,33 @@
                 <img src="/frontend/_assets/images/header-logo.png" alt="">
                 </a>
                 <ul class="menuzord-menu dark">
-                  <li class="active"><a href="{{ lang_url('') }}">@t('الرئيسية ')</a></li>
+                  <li class="active"><a href="{{ lang_url('') }}">@t('Main')</a></li>
                   <li class="">
-                    <a href="#">الأتجاة الأفضل </a>
+                    <a href="#">@t('The best direction')</a>
                     <ul class="dropdown">
-                      <li><a href="{{ lang_url('about') }}">@t('تعريف  ')</a></li>
-                      <li><a href="{{ lang_url('coaches') }}">@t('المدربين  ')</a></li>
+                      <li><a href="{{ lang_url('about') }}">@t('Definition of')</a></li>
+                      <li><a href="{{ lang_url('coaches') }}">@t('Trainers')</a></li>
                     </ul>
                   </li>
                   <li class="">
-                    <a href="{{ lang_url('plans_pricing') }}">@t('الخدمات ')</a>
+                    <a href="{{ lang_url('plans_pricing') }}">@t('Services')</a>
                     <ul class="dropdown">
-                      <li><a href="{{ lang_url('plans_pricing') }}"> @t('باقات الاشتراك  ') </a></li>
-                      <li><a href="{{ lang_url('tools') }}">الملف الشامل</a></li>
-                      <li><a href="{{ lang_url('books') }}">الكتب</a></li>
-                      <li><a href="{{ lang_url('allschools') }}">@t('المدرسة الإلكترونية ')</a></li>
-                      <li><a href="{{ lang_url('events') }}">الدورات</a></li>
+                      <li><a href="{{ lang_url('plans_pricing') }}"> @t('Subscription Packages') </a></li>
+                      <li><a href="{{ lang_url('tools') }}">@t('Comprehensive File')</li>
+                      <li><a href="{{ lang_url('books') }}">@t('Books')</a></li>
+                      <li><a href="{{ lang_url('allschools') }}">@t('Electronic School')</a></li>
+                      <li><a href="{{ lang_url('events') }}">@t('Courses')</a></li>
                     </ul>
                   </li>
-                  <li class=""><a href="{{ lang_url('media') }}">@t('المكتبة التعليمية ')</a></li>
-                  <li class=""><a href="{{ lang_url('contact_us') }}">@t('أتصل بنا  ')</a></li>
-                  <li class="dashboard-btn"><a href="{{ lang_url('profile') }}">{{ Auth::check() ? Auth::user()->name : t('بوابة العملاء  ') }}  </a></li>
+                  <li class=""><a href="{{ lang_url('media') }}">@t('Educational Library')</a></li>
+                  <li class=""><a href="{{ lang_url('contact_us') }}">@t('call us')</a></li>
+                  @if(Auth::Check())
+                   <li class="dashboard-btn mar" style="margin-left: 4px;" ><a href="{{ lang_url('logout_frontend') }}">@t('Exit')</a></li>
+                  @endif
+                  <li class="dashboard-btn"><a href="{{ lang_url('profile') }}">{{ Auth::check() ? Auth::user()->name : t('Customer Portal') }}  </a></li>
+                   
+
+
                 </ul>
               </nav>
             </div>
@@ -124,41 +130,41 @@
             </div>
             <div class="col-sm-6 col-md-4 col-xs-12 footer-widget-col">
               <div class="widget dark">
-                <h4 class="widget-title">@t('صفحات الموقع ')</h4>
+                <h4 class="widget-title">@t('Site pages')</h4>
                 <div class="col-md-6 col-sm-12 p-0">
                   <ul class="list angle-double-right list-border">
-                    <li><a href="{{ lang_url('about') }}"><span>-</span>@t(' عن الاتجاه الأفضل ')</a></li>
-                    <li><a href="{{ lang_url('') }}"><span>-</span>@t(' بوابة المستخدمين')</a></li>
+                    <li><a href="{{ lang_url('about') }}"><span>-</span>@t('For the best direction')</a></li>
+                    <li><a href="{{ lang_url('') }}"><span>-</span>@t('Users Portal')</a></li>
                     <!-- <li><a href="news.html"><span>-</span> الاخبار والمقالات </a></li> -->
                     <!-- <li><a href="calendar.html"><span>-</span> تقويم الأحداث </a></li> -->
-                    <li><a href="{{ lang_url('coaches') }}"><span>-</span>@t(' المدربين ')</a></li>
+                    <li><a href="{{ lang_url('coaches') }}"><span>-</span>@t('Trainers')</a></li>
                   </ul>
                 </div>
                 <div class="col-md-6 col-sm-12 p-0">
                   <ul class="list angle-double-right list-border">
-                    <li><a href="{{ lang_url('our_partners') }}"><span>-</span>@t(' الشركاء')</a></li>
-                    <li><a href="{{ lang_url('terms_and_conditions') }}"><span>-</span>@t(' ساسية وشروط الاستخدام ')</a></li>
+                    <li><a href="{{ lang_url('our_partners') }}"><span>-</span>@t('Partners')</a></li>
+                    <li><a href="{{ lang_url('terms_and_conditions') }}"><span>-</span>@t('Policy and Terms of Use')</a></li>
                     <!-- <li><a href="warning.html"><span>-</span> إشعار التحذير من المخاطر   </a></li> -->
-                    <li><a href="{{ lang_url('contact_us') }}"><span>-</span>@t(' التواصل ')</a></li>
+                    <li><a href="{{ lang_url('contact_us') }}"><span>-</span>@t('Communication')</a></li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="col-sm-6 col-md-3 col-xs-12 footer-widget-col">
               <div class="widget dark">
-                <h4 class="widget-title">@t('المنتجات والخدمات ')</h4>
+                <h4 class="widget-title">@t('Products and Services')</h4>
                 <ul class="list angle-double-right list-border">
-                  <li><a href="{{ lang_url('books') }}"><span>-</span>@t(' الكتب')</a></li>
+                  <li><a href="{{ lang_url('books') }}"><span>-</span>@t('Books')</a></li>
                   <!-- <li><a href="general-file.html"><span>-</span> الملف الشامل </a></li>     -->
-                  <li><a href="{{ lang_url('allschools') }}"><span>-</span>@t(' المدرسة الالكترونية  ')</a></li>
-                  <li><a href="{{ lang_url('plans_pricing') }}"><span>-</span>@t(' باقات الاشتراك   ')</a></li>
-                  <li><a href="{{ lang_url('events') }}"><span>-</span>@t(' الدورات  ')</a></li>
+                  <li><a href="{{ lang_url('allschools') }}"><span>-</span>@t('Electronic School')</a></li>
+                  <li><a href="{{ lang_url('plans_pricing') }}"><span>-</span>@t('Subscription Packages')</a></li>
+                  <li><a href="{{ lang_url('events') }}"><span>-</span>@t('Courses')</a></li>
                 </ul>
               </div>
             </div>
             <div class="col-sm-6 col-md-3 col-xs-12 footer-widget-col">
               <div class="widget dark">
-                <h4 class="widget-title">@t('تواصل معنا ')</h4>
+                <h4 class="widget-title">@t('Connect with us')</h4>
                 <p class="font-14 mt-20 mb-20">
                   Support@bettertrend.net
                 </p>
@@ -168,7 +174,7 @@
                   <li><a target="_blank" href="https://www.twitter.com"><i class="fa fa-twitter"></i></a> </li>
                   <li><a target="_blank" href="https://www.youtube.com"><i class="fa fa-youtube"></i></a> </li>
                 </ul>
-                <h4 class="widget-title">@t('القائمة')</h4>
+                <h4 class="widget-title">@t('the list')</h4>
                 @if(session()->has('emailSubscriptionError'))
                 <div class="alert alert-red w-50" style="margin:0 auto;">
                   <ul class="list-unstyled mb-0">
@@ -188,7 +194,7 @@
                   <div class="input-group">
                     <input style="color: black;" type="email"  name="email" placeholder="@t(' Your Email')" class="form-control input-lg font-16" data-height="45px" id="mce-EMAIL-footer" value="{{ old('email') }}" required>
                     <span class="input-group-btn">
-                    <button data-height="45px" class="btn bg-theme-color-2 text-white btn-xs m-0 font-14" type="submit">@t('إشتراك')</button>
+                    <button data-height="45px" class="btn bg-theme-color-2 text-white btn-xs m-0 font-14" type="submit">@t('Participation')</button>
                     </span>
                   </div>
                 </form>
@@ -198,7 +204,7 @@
           <div class="row">
             <div class="col-sm-12 col-md-12 col-xs-12">
               <div class="widget dark">
-                <h4 class="widget-title" style="color:#D5D5D5 !important">@t('أشعار المخاطر ')</h4>
+                <h4 class="widget-title" style="color:#D5D5D5 !important">@t('Risk Notices')</h4>
                 <p class="">@t('footerNotice')</p>
               </div>
             </div>

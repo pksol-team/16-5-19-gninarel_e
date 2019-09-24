@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('إشعار التحذير من المخاطر')</li>
+                     <li><a href="{{ lang_url('') }}">@t('Home')</a></li>
+                     <li class="active text-gray-silver">@t('Thank You')</li>
                   </ol>
-                  <h2 class="title text-white">@t('إشعار التحذير من المخاطر')</h2>
+                  <h2 class="title text-white">@t('Thank You')</h2>
                </div>
             </div>
          </div>

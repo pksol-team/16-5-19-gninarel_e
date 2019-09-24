@@ -11,10 +11,10 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                     <li class="active text-gray-silver">@t('الملف الشخصي')</li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                     <li class="active text-gray-silver">@t('Profile personly')</li>
                   </ol>
-                  <h2 class="title text-white">@t('الملف الشخصي')</h2>
+                  <h2 class="title text-white">@t('Profile personly')</h2>
                </div>
             </div>
          </div>
@@ -26,13 +26,13 @@
             <div class="col-md-3 col-sm-3 col-xs-12">
                <div class="vertical-tab">
                   <ul class="nav nav-tabs">
-                     <li><a class="d-block" href="{{ lang_url('profile') }}" ><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t(' الملف الشخصي ')</a></li>
-                     <li><a class="d-block" href="{{ lang_url('all_purchases') }}" ><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('مشترياتي') </a></li>
-                     <li class="active"><a class="d-block" href="#tab3" ><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('باقاتي') </a></li>
-                     <li><a class="d-block" href="{{ lang_url('schools') }}" ><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t('المدرسة  الالكترونية') </a></li>
-                     <li><a class="d-block" href="{{ lang_url('training_activities') }}" ><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('الانشطة التدريبة') </a></li>
-                     <li><a class="d-block" href="{{ lang_url('communication') }}" ><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('التواصل ') </a></li>
-                     <li><a class="d-block" href="{{ lang_url('logout_frontend') }}"><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/> @t('خروج')</a></li>
+                     <li><a class="d-block" href="{{ lang_url('profile') }}" ><img src="/frontend/_assets/images/icon-1.png" class="img-responsive" alt="icon-1"/>@t('Profile personly ')</a></li>
+                     <li><a class="d-block" href="{{ lang_url('all_purchases') }}" ><img src="/frontend/_assets/images/icon-2.png" class="img-responsive" alt="icon-2"/>@t('My purchases') </a></li>
+                     <li class="active"><a class="d-block" href="#tab3" ><img src="/frontend/_assets/images/icon-3.png" class="img-responsive" alt="icon-3"/>@t('My Packages') </a></li>
+                     <li><a class="d-block" href="{{ lang_url('schools') }}" ><img src="/frontend/_assets/images/icon-4.png" class="img-responsive" alt="icon-4"/>@t('Electronic School') </a></li>
+                     <li><a class="d-block" href="{{ lang_url('training_activities') }}" ><img src="/frontend/_assets/images/icon-5.png" class="img-responsive" alt="icon-5"/>@t('Training activities') </a></li>
+                     <li><a class="d-block" href="{{ lang_url('communication') }}" ><img src="/frontend/_assets/images/icon-6.png" class="img-responsive" alt="icon-6"/>@t('Communication ') </a></li>
+                     <li><a class="d-block" href="{{ lang_url('logout_frontend') }}"><img src="/frontend/_assets/images/icon-7.png" class="img-responsive" alt="icon-7"/> @t('Exit')</a></li>
                   </ul>
                </div>
             </div>
@@ -41,7 +41,7 @@
                   <div class="tab-pane fade in active" id="tab3">
                      <div class="row mb-30">
                         <div class="col-md-12">
-                           <a href="{{ lang_url('plans_pricing') }}" class="btn btn-dark btn-xl btn-blue pull-left"><i class="fa fa-plus ml-10"></i>@t('إستعراض الباقات') </a>
+                           <a href="{{ lang_url('plans_pricing') }}" class="btn btn-dark btn-xl btn-blue pull-left"><i class="fa fa-plus ml-10"></i>@t('Browse packages') </a>
                         </div>
                      </div>
                      <div class="row">
@@ -50,12 +50,12 @@
                               <table class="table  sub-table">
                                  <thead>
                                     <tr>
-                                       <th>@t('اريخ الاشتراك')</th>
-                                       <th>@t('اريخ الانتهاء')</th>
-                                       <th>@t('ايام متبقية')</th>
-                                       <th>@t('اسم الباقة')</th>
-                                       <th>@t('المبلغ')</th>
-                                       <th>@t('حالة العرض')</th>
+                                       <th>@t('Subscription date')</th>
+                                       <th>@t('Expiry date')</th>
+                                       <th>@t('Days left')</th>
+                                       <th>@t('Package name')</th>
+                                       <th>@t('the amount')</th>
+                                       <th>@t('View status')</th>
                                     </tr>
                                  </thead>
                                  <tbody>

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
@@ -70,10 +69,12 @@ class IndexController extends Controller
      * @return void
      */
 	public $langCode;
+	public $domainCheck;
 
 	public function __construct()
     {
         $this->langCode = Request::locale();
+        $this->domainCheck = strstr(request()->getHost(), "elearning.test");
     }
 
      /**
@@ -114,6 +115,7 @@ class IndexController extends Controller
 					Auth::attempt(['email' => $email, 'password' => $password]);
 					
 					$userAgent = $request->header('User-Agent');
+					$userIP = $request->ip();
 					$loginUser = Auth::user();
 
 					$userLoginDetail = UserLoginDetail::where([['email', $loginUser->email], ['user_agent', $userAgent]])->first();
@@ -126,6 +128,7 @@ class IndexController extends Controller
 						$insertLoginDetail = [
 							'email' => $loginUser->email,
 							'user_agent' => $userAgent,
+							'ip' => $userIP,
 							'status' => $status,
 						    'created_at' => Carbon::now()
 						];
@@ -154,7 +157,7 @@ class IndexController extends Controller
 	public function logout_frontend() {
 		Auth::logout();
 		session()->flush();
-		return redirect(lang_url(''));
+		return redirect()->back();
 	}
 
 	// View register Page
@@ -184,8 +187,10 @@ class IndexController extends Controller
 		    'role_id' => 3,
 		    'email' => $email,
 		    'phone' => $phone,
+		    'type' => 'user',
 		    'password' => bcrypt($password),
 		    'status' => 'active',
+		    'confirm_email' => $hashKey,
 		    'settings' => '{"locale":"en"}',
 		    'created_at' => Carbon::now()
 		];
@@ -206,7 +211,7 @@ class IndexController extends Controller
 						Thank You for Register
 					</span>
 				</h4>
-				<button style="cursor: pointer;color: #fff;background-color: #28a745;border-color: #28a745;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;user-select: none;border: 1px solid transparent;padding: .375rem .75rem;font-size: 1rem;line-height: 1.5;border-radius: .25rem;"><a href="'.$baseUrl.'/verify_email/'.$getInsertedId.'/'.$password.'" style="color:#fff;">Confirm your email here</a>
+				<button style="cursor: pointer;color: #fff;background-color: #28a745;border-color: #28a745;display: inline-block;font-weight: 400;text-align: center;white-space: nowrap;vertical-align: middle;user-select: none;border: 1px solid transparent;padding: .375rem .75rem;font-size: 1rem;line-height: 1.5;border-radius: .25rem;"><a href="'.$baseUrl.'/verify_email/'.$getInsertedId.'/'.$hashKey.'" style="color:#fff;">Confirm your email here</a>
 				</button>
 			</div>
 		';
@@ -215,9 +220,11 @@ class IndexController extends Controller
 	    $content = $msg_template;
 
 		$data = array( 'email' => $to, 'subject' => $subject, 'message' => $content);
-		// Mail::send([], $data, function ($m) use($data) {
-  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-  //   	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
 
 		return redirect(lang_url('userlogin'))->with('message', t('Registration completed successfully kindly login'));
 		} else {
@@ -277,9 +284,11 @@ class IndexController extends Controller
             $subject = 'Reset your password';
 
 			$data = array( 'email' => $email, 'subject' => $subject, 'message' => $content);
-			Mail::send([], $data, function ($m) use($data) {
-	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-	    	});
+			if (!$this->domainCheck) {
+				Mail::send([], $data, function ($m) use($data) {
+		           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+		    	});
+			}
 			return redirect()->back()->withInput()->with('message', t('Password Reset link send to your email kindly check your email'));
 		}else {
 			return redirect()->back()->withInput()->with('error', t('This email address is not registered'). '<a href="'. lang_url('register') .'">'.t('Register here').' </a>');
@@ -349,7 +358,7 @@ class IndexController extends Controller
 
         	$confirm_email = [
         		'confirm_email' => NULL,
-        		'status' => 'active',
+        		'email_verified_at' => Carbon::now()
         	];
         
         	DB::table('users')->where([['id', $id], ['confirm_email', $hashkey]])->update($confirm_email);
@@ -379,7 +388,9 @@ class IndexController extends Controller
 	// View all Books
 	public function books()
 	{
+
 		$title = t('All Books');
+
 
 		$type = 'book';
 
@@ -466,29 +477,33 @@ class IndexController extends Controller
 		$productName = ProductsNative::find($product_native_id);
 		
 		$orderInserted = Order::insert($newOrder);
-		$userEmail = $user->email;
 
-        $subject = 'Better Trend Purchases';
-    	$msg_template = '
-		    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
-			    	<h3>Contact: </h3>
-			    	<h4 style="padding: 0 20px 0 0;">Hello '.$user->name.'! <br><br>
-			    	</h4>
-			    	<p>Your order has been placed here are the details</p>
-			    	<p>
-			    		<ul style="list-style: none;">
-			    			<li>Product Name: '.$productName.'</li>
-			    			<li>Price: '.$product_price.'</li>
-			    			<li>Total Price: '.$total_price.'</li>
-			    			<li>Quantity: '.$qty_input.'</li>
-			    		</ul>
-			    	</p>
-		    	</div>
-		    	';
-		$data = array( 'email' => $userEmail, 'subject' => $subject, 'message' => $msg_template);
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
+		if ($user_id) {
+			$userEmail = $user->email;
+	        $subject = 'Better Trend Purchases';
+	    	$msg_template = '
+			    	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
+				    	<h3>Contact: </h3>
+				    	<h4 style="padding: 0 20px 0 0;">Hello '.$user->name.'! <br><br>
+				    	</h4>
+				    	<p>Your order has been placed here are the details</p>
+				    	<p>
+				    		<ul style="list-style: none;">
+				    			<li>Product Name: '.$productName.'</li>
+				    			<li>Price: '.$product_price.'</li>
+				    			<li>Total Price: '.$total_price.'</li>
+				    			<li>Quantity: '.$qty_input.'</li>
+				    		</ul>
+				    	</p>
+			    	</div>
+			    	';
+			$data = array( 'email' => $userEmail, 'subject' => $subject, 'message' => $msg_template);
+			if (!$this->domainCheck) {
+				Mail::send([], $data, function ($m) use($data) {
+		           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+		    	});
+			}
+		}
 
 		return redirect(lang_url('thank_you'));
 
@@ -545,9 +560,11 @@ class IndexController extends Controller
 		    	</div>
 		    	';
 		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
     	$msg_templateUser = '
     	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
 	    	<h3>Contact: </h3>
@@ -559,10 +576,11 @@ class IndexController extends Controller
     	';
         
 		$data = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
-
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
 		return redirect()->back()->with('message', t('Thank you for contacting us'));
 	}
 
@@ -606,7 +624,6 @@ class IndexController extends Controller
 
     	$mediadocuments = MediaDocument::where('status', 'active')->get();
     	$documentCategories = MediaDocument::where('status', 'active')->groupBy('category')->get();
-
     	
 		return view('frontend.media', compact('title', 'youtubeVideos', 'videosCategories', 'mediaImages', 'imageCategories', 'mediadocuments', 'documentCategories'));
 	}
@@ -615,6 +632,8 @@ class IndexController extends Controller
 
 	public function schools()
 	{
+
+
 		if (Auth::check()) {
 	    	$user = Auth::user();
 			$title = t('Purchased Schools');
@@ -703,7 +722,6 @@ class IndexController extends Controller
 			$userAgent = $_SERVER['HTTP_USER_AGENT'];
 
 			//chapters of single course
-
 	    	$chapter = Chapter::find($chapter_id)->chapterDetail()->where([['lang', $this->langCode], ['status', 'active']])->first();
 
 	    	if (count($chapter) > 0) {
@@ -1064,9 +1082,11 @@ class IndexController extends Controller
 		    	</div>
 		    	';
 		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
 
     	$msg_templateUser = '
     	<div style="text-align: left;padding-left: 20px;padding-top: 50px;padding-bottom: 30px;">
@@ -1080,9 +1100,11 @@ class IndexController extends Controller
         
 		$data = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
 
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
 		return redirect()->back()->with('message', t('Thank you for contacting us'));
 	}
 
@@ -1342,12 +1364,14 @@ class IndexController extends Controller
 		    			    	';
         				$dataAdmin = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
         				$dataUser = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
-        				// Mail::send([], $dataAdmin, function ($m) use($dataAdmin) {
-		        		//    $m->to($dataAdmin['email'])->subject($dataAdmin['subject'])->setBody($dataAdmin['message'], 'text/html');
-		        		// });
-        				// Mail::send([], $dataUser, function ($m) use($dataUser) {
-		        		//    $m->to($dataUser['email'])->subject($dataUser['subject'])->setBody($dataUser['message'], 'text/html');
-		        		// });
+						if (!$this->domainCheck) {
+	        				Mail::send([], $dataAdmin, function ($m) use($dataAdmin) {
+			        		   $m->to($dataAdmin['email'])->subject($dataAdmin['subject'])->setBody($dataAdmin['message'], 'text/html');
+			        		});
+	        				Mail::send([], $dataUser, function ($m) use($dataUser) {
+			        		   $m->to($dataUser['email'])->subject($dataUser['subject'])->setBody($dataUser['message'], 'text/html');
+			        		});
+	        			}
 
         				$newNotification = [
         					'table_ID' => $last_id,
@@ -1477,12 +1501,14 @@ class IndexController extends Controller
 			    	';
 			$dataAdmin = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
 			$dataUser = array( 'email' => $email, 'subject' => $subject, 'message' => $msg_templateUser);
-			// Mail::send([], $dataAdmin, function ($m) use($dataAdmin) {
-    		//    $m->to($dataAdmin['email'])->subject($dataAdmin['subject'])->setBody($dataAdmin['message'], 'text/html');
-    		// });
-			// Mail::send([], $dataUser, function ($m) use($dataUser) {
-    		//    $m->to($dataUser['email'])->subject($dataUser['subject'])->setBody($dataUser['message'], 'text/html');
-    		// });
+			if (!$this->domainCheck) {
+				Mail::send([], $dataAdmin, function ($m) use($dataAdmin) {
+	    		   $m->to($dataAdmin['email'])->subject($dataAdmin['subject'])->setBody($dataAdmin['message'], 'text/html');
+	    		});
+				Mail::send([], $dataUser, function ($m) use($dataUser) {
+	    		   $m->to($dataUser['email'])->subject($dataUser['subject'])->setBody($dataUser['message'], 'text/html');
+	    		});
+			}
 
 			$newNotification = [
 				'table_ID' => $last_id,
@@ -1547,7 +1573,6 @@ class IndexController extends Controller
 				$watchedvideoCount = User_access::where([['user_id', $user_id], ['object_type', $object_typeVideo]])->count();
 
 				// last video of chapter
-				// if (count($watchedvideoCount) == $total_videos) {
 				if ($next_video_id == 0 ) {
 					
 					$chapterAccessInserted = User_access::insert($insertChapterAccess);
@@ -1656,6 +1681,8 @@ class IndexController extends Controller
 	// chapter start after video complete
 	public function chapter_test($chapter_id)
 	{
+
+
 		$title = t('Chapter Test');
 		if (Auth::check()) {
 			$chapter_native = ChaptersNative::where('id', $chapter_id)->first();
@@ -1665,7 +1692,7 @@ class IndexController extends Controller
 
 		        $user = Auth::user();
 		        $chapter = ChaptersNative::where('id', $chapter_id)->first();
-
+		       
 		        $chapterExamQuestions = DB::table('exam')
 	            ->join('test_questions', 'exam.id', '=', 'test_questions.exam_id')
 	            ->join('test_answers', 'test_questions.id', '=', 'test_answers.question_id')
@@ -1673,7 +1700,7 @@ class IndexController extends Controller
 		    	->where([['exam.chapter_id', $chapter_id], ['exam.status', 'active'], ['test_questions.question_status', 'active']])
 	            ->inRandomOrder()
 	            ->get();
-
+	          
 				return view('frontend.chapter_test', compact('title', 'chapter', 'chapterExamQuestions'));
 
 			}
@@ -1694,6 +1721,7 @@ class IndexController extends Controller
 		$initPercentage = $request->input('initPercentage');
 		$min_passing = $request->input('min_passing');
 		$chapter_native_id = $request->input('chapter_native_id');
+		$totalQuestion= $request->input('totalQuestion');
 		$answer_status = FALSE;
 
 		$ansCheck = TestAnswer::where('question_id', $question_id)->first();
@@ -1714,7 +1742,7 @@ class IndexController extends Controller
 		$answerInserted = UserAnswer::insert($insertAnswer);
 		if ($answerInserted) {
 
-			$percentage = '10';
+			$percentage = $totalQuestion;
 
 			if ($answer_status == TRUE) {
 				$initPercentage = (int)$initPercentage + (int)$percentage;
@@ -1778,6 +1806,8 @@ class IndexController extends Controller
 	// all events page
 	public function events()
 	{
+
+		
 		$title = t('Events');
 
 		$eventNative = EventsNative::with('events')->where([['lang', $this->langCode], ['status', 'active']])->get();
@@ -1889,9 +1919,11 @@ class IndexController extends Controller
 			    $content = $msg_template;
 
 				$data = array( 'email' => $to, 'subject' => $subject, 'message' => $content);
-				// Mail::send([], $data, function ($m) use($data) {
-		  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-		  //   	});
+				if (!$this->domainCheck) {
+					Mail::send([], $data, function ($m) use($data) {
+			           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+			    	});
+				}
 
 			} else {
 				$userGet = User::where('email', $email)->first();
@@ -1928,6 +1960,7 @@ class IndexController extends Controller
 
 	public function payment_course($event_id, $subscriptions_id)
 	{
+		
 		if (!Auth::check()) {
 			Session::put('url.intended', lang_url($event_id.'/payment_course/'.$subscriptions_id));
 		}
@@ -2073,9 +2106,11 @@ class IndexController extends Controller
         $subject = 'Enroll in event';
 
 		$data = array( 'email' => $userEmail, 'subject' => $subject, 'message' => $content);
-		// Mail::send([], $data, function ($m) use($data) {
-  //          $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-  //   	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
 
 		return redirect(lang_url('thank_you'));
 	}
@@ -2243,9 +2278,9 @@ class IndexController extends Controller
 	    }
 
 	    $data = json_encode([
-	                'htmlContent' => $html,
-	                'count' => $notificationCount ,
-	            ]);
+            'htmlContent' => $html,
+            'count' => $notificationCount ,
+        ]);
 	   
 	    echo $data;
 	    
@@ -2317,9 +2352,11 @@ class IndexController extends Controller
 		    	</div>
 		    	';
 		$data = array( 'email' => $adminEmail, 'subject' => $subject, 'message' => $msg_templateAdmin);
-		Mail::send([], $data, function ($m) use($data) {
-           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
-    	});
+		if (!$this->domainCheck) {
+			Mail::send([], $data, function ($m) use($data) {
+	           $m->to($data['email'])->subject($data['subject'])->setBody($data['message'], 'text/html');
+	    	});
+		}
 	}
 
 	

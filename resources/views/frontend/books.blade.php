@@ -11,10 +11,10 @@
          <div class="row">
             <div class="col-md-12">
                <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                  <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                  <li class="active text-gray-silver">@t('الخدمات والمنتجات')</li>
+                  <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                  <li class="active text-gray-silver">@t('Services and products')</li>
                </ol>
-               <h2 class="title text-white">@t('الملف الشامل')</h2>
+               <h2 class="title text-white">@t('Comprehensive file')</h2>
             </div>
          </div>
       </div>
@@ -24,7 +24,7 @@
    <div class="container">
       <div class="row rtl">
          <div class="col-xs-12 col-sm-12 col-md-12 mb-sm-30">
-            <h2 class="mt-0 font-30 heading-title-spec">@t('الادوات المساعدة') </h2>
+            <h2 class="mt-0 font-30 heading-title-spec">@t('Utilities') </h2>
          </div>
       </div>
       <div class="row rtl">
@@ -36,7 +36,7 @@
                <img height="340" src="\public\storage\{{ $product->thumbnail }}" alt="{{ $product->name }}">  
                <p>{{ $product->short_description }}</p>
             </div>
-            <a href="{{ lang_url('product/'.$product->id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('تفاصيل الملف ')</a>
+            <a href="{{ lang_url('product/'.$product->id.'/view') }}" class="btn btn-lg btn-theme-green text-uppercase btn-block pt-20 pb-20 btn-flat">@t('File details')</a>
          </div>
          <?php endforeach ?>
          <?php else: ?>

@@ -1,3 +1,5 @@
+
+
 @extends('frontend.template.layout')
 
 @section('title') <?= $title; ?> @stop
@@ -9,16 +11,16 @@
   <!-- Start main-content -->
   <div class="main-content">
        <!-- Section: inner-header -->
-    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="images/breadcrumb-bg.png">
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/frontend/_assets/images/breadcrumb-bg.png">
       <div class="container pt-70 pb-20">
         <!-- Section Content -->
         <div class="section-content">
           <div class="row">
             <div class="col-md-12">
                 <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                    <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-                    <li><a href="{{ lang_url('events') }}">@t('تقويم الأحداث ')</a></li>
-                    <li class="active text-gray-silver">@t('تفاصيل الحدث')</li>
+                    <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
+                    <li><a href="{{ lang_url('events') }}">@t('Calendar of events ')</a></li>
+                    <li class="active text-gray-silver">@t('Event details')</li>
                 </ol>
                 <h2 class="title text-white">{{ $eventNative->name }}</h2>
             </div>
@@ -55,6 +57,10 @@
               <li>
                 <h5>@t('Title:')</h5>
                 <p>{{ $eventNative->name }}</p>
+              </li>
+              <li>
+                <h5>@t('Event Price:')</h5>
+                <p>{{ $eventNative->events->price}}</p>
               </li>
               <li>
                 <h5>@t('Classification:')</h5>
@@ -136,36 +142,44 @@
             <input type="hidden" class="user_id" name="user_id" value="{{ Auth::check() ? Auth::user()->id : '' }}" />
             <input type="hidden" name="event_id" value="{{ $eventNative->events->id }}" />
 
+            @if(Auth::check())
+              <input type="hidden" value="{{ Auth::user()->name }}" name="first_name">
+              <input type="hidden" value="{{ Auth::user()->last_name }}" name="last_name">
+              <input type="hidden" value="{{ Auth::user()->email }}" name="email">
+              <input type="hidden" value="{{ Auth::user()->phone }}" name="mobile_number">
+            @else
+
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" class="form-control" value="{{ Auth::check() ? Auth::user()->name : '' }}" id="first_name" name="first_name" placeholder="@t('First name')" required>
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="@t('First name')" required>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" class="form-control" value="{{ Auth::check() ? Auth::user()->last_name : '' }}" id="last_name" name="last_name" placeholder="@t('Last name')" required>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="@t('Last name')" required>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="email" class="form-control" value="{{ Auth::check() ? Auth::user()->email : '' }}" id="email" name="email" placeholder="example@example.com" required>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com" required>
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                      <input type="text" class="form-control" value="{{ Auth::check() ? Auth::user()->phone : '' }}" id="mobile_number" name="mobile_number" placeholder="@t('+123-342')" required>
+                      <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="@t('+123-342')" required>
                   </div>
                 </div>
+                @endif
                 <div class="col-sm-12">
                   <div class="form-group text-center">
                     <?php if (Auth::check()): ?>
 
                       <?php $enrolledCourse = DB::table('course_subscriptions')->where([['status', 'active'], ['event_id', $eventNative->events->id], ['user_id', Auth::user()->id]])->first(); ?>
                       <?php if (!$enrolledCourse): ?>
-                        <button data-loading-text="Please wait..." class="btn btn-dark btn-theme-colored btn-sm btn-block mt-20 pt-10 pb-10" type="submit">@t('Register now')</button>
+                        <button data-loading-text="@t('Please wait')..." class="btn btn-dark btn-theme-colored btn-sm btn-block mt-20 pt-10 pb-10" type="submit">@t('Register now')</button>
                       <?php else: ?>
-                        <span>@t('Note:') <b>@t('You are already Enrolled in this event')</b></span>
+                        <span>@t('Note'): <b>@t('You are already Enrolled in this event')</b></span>
                       <?php endif ?>
                     <?php else: ?>
                       <button data-loading-text="Please wait..." class="btn btn-dark btn-theme-colored btn-sm btn-block mt-20 pt-10 pb-10" type="submit">@t('Register now')</button>

@@ -20,7 +20,7 @@
             <div class="row">
                <div class="col-md-12">
                   <ol class="breadcrumb text-right text-black mb-0 mt-40">
-                     <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
+                     <li><a href="{{ lang_url('') }}">@t('the main page')</a></li>
                      <li class="active text-gray-silver">@t('الاشتراكات الرئيسية ')</li>
                      <li class="active text-gray-silver">@t('المدارس الالكترونية ')</li>
                   </ol>
@@ -33,6 +33,7 @@
    <section class="divider bg-white">
       <div class="container pt-150">
          <div class="row">
+             <a href="{{ lang_url('schools') }}" class="btn btn-dark btn-xl btn-blue pull-left"><i class="fa fa-backward" aria-hidden="true"></i></a>
             <div class="col-md-3 col-sm-3 col-xs-12">
                <div class="vertical-tab">
                 <ul class="nav nav-tabs">

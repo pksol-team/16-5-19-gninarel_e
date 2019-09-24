@@ -24,6 +24,7 @@
            <th>@t('Subscription date')</th>
            <th>@t('Event Type')</th>
            <th>@t('Event Classification')</th>
+           <th>@t('Online Link')</th>
            <th>@t('Venue')</th>
            <th>@t('Event Date')</th>
            <!-- <th>Period (days)</th> -->
@@ -45,14 +46,13 @@
             <td>{{ $training_activity->name }}</td>
             <td>
                <?php 
-
                  $dt = new DateTime($training_activity->enroll_date);
                  echo $dt->format('d-m-Y');
-
               ?>
             </td>
             <td>{{ ucwords(str_replace('_', ' ', $training_activity->type)) }}</td>
             <td>{{ $training_activity->classification }}</td>
+            <td class="half-gray"><a style="color:blue;" href="{{ $training_activity->zoom_link }}">Click here</a></td>
             <td>{{ $training_activity->location }}</td>
             <td>
               <?php 
@@ -86,7 +86,6 @@
             <td>{{ $training_activity->paid }}</td>
             <td>
               <?php if ($training_activity->type == 'cooperative_courses'): ?>
-                
 
               <?php else: ?>
                 <?php $remaining = $training_activity->price - $training_activity->paid; ?>

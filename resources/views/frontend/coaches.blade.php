@@ -11,11 +11,11 @@
         <div class="row">
           <div class="col-md-12">
             <ol class="breadcrumb text-right text-black mb-0 mt-40">
-              <li><a href="{{ lang_url('') }}">@t('الصفحة الرئيسية')</a></li>
-              <li class="active text-gray-silver">@t('عن الأتجاه الأفضل')</li>
-              <li class="active text-gray-silver">@t('المدربين')</li>
+              <li><a href="{{ lang_url('') }}">@t('Instructor social accounts...')</a></li>
+              <li class="active text-gray-silver">@t('For the best direction')</li>
+              <li class="active text-gray-silver">@t('Trainers')</li>
             </ol>
-            <h2 class="title text-white">@t('المدربين')</h2>
+            <h2 class="title text-white">@t('Trainers')</h2>
           </div>
         </div>
       </div>
@@ -96,8 +96,8 @@
             <a data-toggle="modal" data-target="#join-trainers" class="join-trainers">
               <div class="content border-1px p-60 bg-light clearfix text-center color-semi-gray">
                 <i class="fa fa-plus font-60 mb-20" style="color: #E0E0E0"></i>
-                <h4 class="mt-0 color-semi-gray mb-5 font-26">@t('إنظمام')</h4>
-                <p class="mb-10 font-22">@t('انظم لمدربين الاتجاه الأفضل')</p>
+                <h4 class="mt-0 color-semi-gray mb-5 font-26">@t('Accession')</h4>
+                <p class="mb-10 font-22">@t('Join the best trend coaches')</p>
               </div>
             </a>
           </div>
@@ -109,8 +109,8 @@
             <a data-toggle="modal" data-target="#join-trainers" class="join-trainers">
               <div class="content border-1px p-60 bg-light clearfix text-center color-semi-gray">
                 <i class="fa fa-plus font-60 mb-20" style="color: #E0E0E0"></i>
-                <h4 class="mt-0 color-semi-gray mb-5 font-26">@t('إنظمام')</h4>
-                <p class="mb-10 font-22">@t('انظم لمدربين الاتجاه الأفضل')</p>
+                <h4 class="mt-0 color-semi-gray mb-5 font-26">@t('Accession')</h4>
+                <p class="mb-10 font-22">@t('Join the best trend coaches')</p>
               </div>
             </a>
           </div>
@@ -126,9 +126,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-center color-theme-green font-weight-700 font-26 mt-20 mb-10" id="myModalLabel">@t('انضمام')</h4>
-        <p class="color-dark-green">@t('نموذج انضمام متدرب جديد لفريق عمل الاتجاه الأفضل 
-          فضلاً قم بتعبة النموذج التالي :')
+        <h4 class="modal-title text-center color-theme-green font-weight-700 font-26 mt-20 mb-10" id="myModalLabel">@t('joining')</h4>
+        <p class="color-dark-green">@t('A new trainee joining the best direction team
+           Please fill out the following form:')
         </p>
       </div>
       <div class="modal-body">
@@ -139,53 +139,53 @@
             <div class="col-md-12 col-sm-12">
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputName1">@t('الأسم')</label>
+                  <label for="InputName1">@t('The name')</label>
                   <input id="InputName1" name="name" class="form-control" type="text" placeholder="@t('الأسم')" value="{{ Auth::check() ? Auth::user()->name : '' }}" required>
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputPhone1">@t('رقم الهاتف المحمول ')</label>
-                  <input id="InputPhone1" name="phone" class="form-control" type="text" placeholder="@t('رقم الهاتف المحمول')" value="{{ Auth::check() ? Auth::user()->phone : '' }}" required>
+                  <label for="InputPhone1">@t('Mobile Phone Number')</label>
+                  <input id="InputPhone1" name="phone" class="form-control" type="text" placeholder="@t('Mobile Phone Number')" value="{{ Auth::check() ? Auth::user()->phone : '' }}" required>
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputEmail1">@t('رالبريد الإلكتروني')</label>
-                  <input id="InputEmail1" name="email" class="form-control" type="text" placeholder="@t('البريد الإلكتروني ')" value="{{ Auth::check() ? Auth::user()->email : '' }}" required>
+                  <label for="InputEmail1">@t('Email')</label>
+                  <input id="InputEmail1" name="email" class="form-control" type="text" placeholder="@t('Email')" value="{{ Auth::check() ? Auth::user()->email : '' }}" required>
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputExperience1">@t('سنوات الخبرة')</label>
-                  <input id="InputExperience1" class="form-control" type="text" placeholder="@t('سنوات الخبرة')" name="experience">
+                  <label for="InputExperience1">@t('Years of Experience')</label>
+                  <input id="InputExperience1" class="form-control" type="text" placeholder="@t('Years of Experience')" name="experience">
                   <input id="upload-file" class="custom-upload" type="file" name="exp_attch[]" accept=".jpg,.png,.pdf,.jpeg,.gif,.bmp" multiple />
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputCertificates1">@t('سشهادات')</label>
-                  <input id="InputCertificates1" class="form-control" type="text" placeholder="@t('سشهادات')" name="certificates">
+                  <label for="InputCertificates1">@t('Certificates')</label>
+                  <input id="InputCertificates1" class="form-control" type="text" placeholder="@t('Certificates')" name="certificates">
                   <input id="upload-file" class="custom-upload" type="file" name="cert_attch[]" accept=".jpg,.png,.pdf,.jpeg,.gif,.bmp" multiple />
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputEducation1">@t('سالتعليم ')</label>
-                  <input id="InputEducation1" class="form-control" type="text" placeholder="@t('سالتعليم ')" name="education">
+                  <label for="InputEducation1">@t('Education')</label>
+                  <input id="InputEducation1" class="form-control" type="text" placeholder="@t('Education')" name="education">
                   <input id="upload-file" class="custom-upload" type="file" name="edu_attc[]" accept=".jpg,.png,.pdf,.jpeg,.gif,.bmp" multiple />
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="InputLicense1">@t('سنوات الخبرة')</label>
-                  <input id="InputLicense1" class="form-control" type="text" placeholder="@t('سنوات الخبرة')" name="training_license">
+                  <label for="InputLicense1">@t('Years of Experience')</label>
+                  <input id="InputLicense1" class="form-control" type="text" placeholder="@t('Years of Experience')" name="training_license">
                   <input id="upload-file" class="custom-upload" type="file" name="lic_attch[]" accept=".jpg,.png,.pdf,.jpeg,.gif,.bmp" multiple />
                 </div>
               </div>
               <div class="col-sm-12 p-0">
                 <div class="form-group mb-30">
-                  <label for="about">@t('اعن دورتك  ')</label>
+                  <label for="about">@t('I announce your cycle')</label>
                   <textarea id="about" name="about_coach" class="form-control" type="text" placeholder="@t('اعن دورتك ')" required>
                   {{ Auth::check() ? Auth::user()->about : '' }}
                   </textarea>
@@ -195,7 +195,7 @@
           </div>
       </div>
       <div class="modal-footer text-center mb-30">
-        <button type="submit" class="btn btn-dark btn-flat btn-theme-green">@t('تسجيل إنضمام')</button>
+        <button type="submit" class="btn btn-dark btn-flat btn-theme-green">@t('Register Join')</button>
       </div>
       </form>
     </div>

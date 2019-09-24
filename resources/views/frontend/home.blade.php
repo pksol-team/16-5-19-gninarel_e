@@ -30,16 +30,16 @@
           <div class="item active">
             <img src="/frontend/_assets/images/slide-1.png">
             <div class="carousel-caption custom-caption">
-              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('أساسيات التعامل حتي الأحترافية في التداول السعودي')</h1>
-              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني')</h4>
+              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('Fundamentals of dealing even professional in Saudi trading')</h1>
+              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('Holds a license from the General Organization for Technical and Vocational Training')</h4>
             </div>
           </div>
 
           <div class="item">
             <img src="/frontend/_assets/images/slide-1.png">
             <div class="carousel-caption custom-caption">
-              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('أساسيات التعامل حتي الأحترافية في التداول السعودي')</h1>
-              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('حاصل علي ترخيص من المؤؤسة العامة للتدريب التقني والمهني')</h4>
+              <h1 class="text-white font-weight-500 mb-0 mt-0 font-32">@t('Fundamentals of dealing even professional in Saudi trading')</h1>
+              <h4 class="text-white font-weight-400 mb-0 mt-0 font-22 mt-20">@t('Holds a license from the General Organization for Technical and Vocational Training')</h4>
             </div>
           </div>
 
@@ -77,7 +77,7 @@
 
                     <div class="col-md-12 text-right">
 
-                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">@t('أحدث الأخبار ')</h2>
+                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">@t('latest news ')</h2>
 
                     </div>
 
@@ -103,9 +103,9 @@
 
                             <div class="content flip p-25 pt-0 text-center">
 
-                              <h3>@t('عنوان الخبر')</h3>
+                              <h3>@t('News Title')</h3>
 
-                              <p class="text-right">@t('أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول')</p>
+                              <p class="text-right">@t('To be the first choice in trading knowledge. To be the first choice in trading knowledge')</p>
 
                             </div>
 
@@ -129,9 +129,9 @@
 
                             <div class="content flip p-25 pt-0 text-center">
 
-                              <h3>@t('عنوان الخبر')</h3>
+                              <h3>@t('News Title')</h3>
 
-                              <p class="text-right">@t('أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول')</p>
+                              <p class="text-right">@t('To be the first choice in trading knowledge. To be the first choice in trading knowledge')</p>
 
                             </div>
 
@@ -155,9 +155,9 @@
 
                             <div class="content flip p-25 pt-0 text-center">
 
-                              <h3>@t('عنوان الخبر')</h3>
+                              <h3>@t('News Title')</h3>
 
-                              <p class="text-right">@t('أن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداولأن نكون الخيار الأول في  معرفة التداول')</p>
+                              <p class="text-right">@t('To be the first choice in trading knowledge. To be the first choice in trading knowledge')</p>
 
                             </div>
 
@@ -197,7 +197,7 @@
 
                     <div class="col-md-12 rtl p-0">
 
-                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">@t('شركائنا ')</h2>
+                        <h2 class="mt-0 mb-50 font-30 heading-title-spec">@t('Our partners ')</h2>
 
                     </div>
 
