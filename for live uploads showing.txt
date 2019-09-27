@@ -10,13 +10,13 @@ i found the solution ! the promblem was in the symlink(storage symbolic link). i
 
 4.in common settings --> select *once per 5 minutes
 
-5.in the command field add this ln -s /home/cpanel_username/project_name/storage/app/public /home/cpanel_sername/project_name/public/storage
+5.in the command field add this 
 
-(my site was in subdomain) example-ln -s /home/your_cpannel_user name/public_html/subdomain_foldername/storage/app/public /home/cpanel_username/public_html/subdomain_foldername/public/storage
+ln -s /home/clickhostings/public_html/booking-taxi/storage/app/public /home/clickhostings/public_html/booking-taxi/public/storage	    
 
 syntax-->ln -s target_path link_path
 
-6.type your email in the cron email and update email(when the job was done email notification wiil come to your inbox check the spam folder)
+6.type your email in the cron email and update email(when the job was done email notification will come to your inbox check the spam folder)
 
 6.create new cronjob
 
